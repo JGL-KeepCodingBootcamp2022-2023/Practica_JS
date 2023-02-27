@@ -1,1 +1,1 @@
-# Pr-ctica_JS
+# Práctica_JS
