@@ -17,14 +17,14 @@ console.log('                        By Javier Girón López')
     
     // ✅CREAR LOS BARCOS PARA LOS JUGADORES
     game.setUpGame.shipsToPlayers(playerA)
-    game.setUpGame.shipsToPlayers(playerB)
+    //game.setUpGame.shipsToPlayers(playerB)
     //console.log(playerB.ships[0].PORTAAVIONES.life) // <-- Acceso a life Funcina
     //console.log(playerB.ships[0].PORTAAVIONES.figure) // <-- Acceso a figure funciona
     //console.log(playerA.ships)
     //COLOCAR LOS BARCOS
     //TODO meter todo esto en una función
    
-    game.setUpGame.playerShip(playerA, playerAGrid)
+    //game.setUpGame.playerShip(playerA, playerAGrid)
     //game.setUpGame.playerShip(playerB, playerBGrid)
     
     //MOSTRAR TABLERO COMPLETO JUGADOR A
@@ -33,7 +33,7 @@ console.log('                        By Javier Girón López')
     console.log()
 
     //MOSTRAR TABLERO COMPLETO JUGADOR B
-    printLine(`${playerB.name} Game Board`)
+    //printLine(`${playerB.name} Game Board`)
     //print_Grid(playerBGrid)
 
    // 👀 METER BIEN EL ARRAY DE LAS POSICIONES
@@ -51,7 +51,7 @@ console.log(playerA.ships[9].LANCHA.position)
 //console.log(playerB.ships[0].PORTAAVIONES.position)*/
 printHeading('THE BATTTLESHIP SIMULATOR STARTS')
 console.log()
-game.start()
+//game.start()
 //REPETICIÓN DE TURNOS 200 DISPAROS (100 POR JUGADOR)
     //👀 ESTÁ FALLANDO ALGO EN EL DIBUJO DE LOS TABLEROS Y EL FIGURIN.
     //👀 EL PRIMER FIGURIN FALLA PARA EL SHOOTER. NO LO MUESTRA.

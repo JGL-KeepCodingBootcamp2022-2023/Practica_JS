@@ -29,11 +29,11 @@ export default {
                 {id: 'Lancha2', LANCHA: JSON.parse(JSON.stringify(LANCHA))},
                 {id: 'Lancha3', LANCHA: JSON.parse(JSON.stringify(LANCHA))}
             ],
-            player.positions = [[],[],[],[],[],[],[],[],[],[]]
+            player.positions = []
         },
 
 
-        playerShip(player, playerGrid){
+        /*playerShip(player, playerGrid){
             let i = 0;
             for (i = 0; i < 10; i++){
                 if (i == 0){
@@ -58,8 +58,9 @@ export default {
                     this.placeShips(player, player.ships[i].LANCHA, playerGrid)
                 }
             }
-        },
+        },*/
         //Colocar los barcos de los jugadores
+        
         //player.positions[this.pos].push(Object.assign([], this.array))
         //
         randomCoords(barco, gridSize){
@@ -69,16 +70,18 @@ export default {
             return array
         },
 
-        freeSpace(player, barco, coords, gridSize, playerGrid, find){           
+        freeSpace(player, barco, coords, gridSize, playerGrid){           
             for(let i = 0; i < 10; i++){
-                find = player.positions[i].findIndex(element => element[0] === coords[0] && element[1] === coords[1]);
+                
+                /*find = player.positions[i].findIndex(element => element[0] === coords[0] && element[1] === coords[1]);
                 if (find !=-1 && coords[0] > 0 && coords[0] < gridSize - barco.life){
                     break
                 }
             }
             return find
-        },
-        
+            */
+        }
+    },
         testCoords(player, barco, coords, gridSize, playerGrid, find, a){
             let array = [coords[0],coords[1]];
             if (a == 'Par'){
@@ -102,6 +105,8 @@ export default {
             return find 
         },
         push(player, coords, array){
+            
+            //player.positions[this.pos].push(Object.assign([], this.array))
             //console.log(coords);
             //console.log(array)
             switch(this.pos) {
@@ -158,10 +163,20 @@ export default {
 
         place(player, barco, coords, gridSize, playerGrid, a){
             let array = [];
+
+//Esto es lo que he añadido hoy
+            let newPosition = [];
             array = []
             for (let i = 0; i < barco.life; i++){
                 playerGrid[coords[1]][coords[0]] = barco.figure;
                 array.push(Object.assign([], coords))
+                
+                newPosition = player.positions.map(() => {
+                    let newArray = player.positions.push(Object.assign([], array));
+                    return newArray
+                })
+                this.positions = newPosition;
+//
                 if (a == 'Par'){
                     ++coords[0]
                 }
@@ -341,13 +356,13 @@ export default {
     
     round(shooter, enemy, countRound) {
         let find = 'Soy find';
-        printLine(`ROUND ${countRound}`)
+        /*printLine(`ROUND ${countRound}`)
         printLine(`Round ${shooter.shoots} for ${shooter.name}`)
         do {this.toShoot(shooter)
-            find = this.toTestLog(shooter, shooter.shootCoord, find)    //Compruebo si se ha realizado el disparo        
+            find = this.toTestLog(shooter, shooter.shootCoord)    //Compruebo si se ha realizado el disparo        
         }
         while (find != -1)
-        this.toLog(shooter, shooter.shootCoord)
+        this.toLog(shooter, shooter.shootCoord)*/
     },
     
     start(){
@@ -365,7 +380,7 @@ export default {
             do {
                 life = this.enemy.life
                 this.round(this.shooter, this.enemy, countRound)
-                console.log(`Shoot #${this.shooter.shoots} pointing to ${this.shooter.shootCoord[1]}${String.fromCharCode(this.shooter.shootCoord[0] + 65)}: ${figurin}`)
+                /*console.log(`Shoot #${this.shooter.shoots} pointing to ${String.fromCharCode(this.shooter.shootCoord[0] + 65)}${this.shooter.shootCoord[1]}: ${figurin}`)
                 figurin = this.toSeeEnemyGrid(this.shooter, this.enemy, this.figurin, turn)             // Miro el disparo en el tablero del enemigo
                 console.log()
                 printLine('Own board')
@@ -379,7 +394,7 @@ export default {
                 console.log(`La vida de ${this.enemy.name} es de ${this.enemy.life}`) //Borrar
                 this.totalShoots++
                 countRound++        //MODIFICAR PARA EL TOTAL Y PARA CADA JUGADOR
-                life1 = this.enemy.life
+                life1 = this.enemy.life*/
             }
             while( life1 < life && this.enemy.life >= 1)
             }
