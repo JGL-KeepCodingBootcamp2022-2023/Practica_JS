@@ -51,8 +51,8 @@ export default {
                         player.ships[i].PORTAAVIONES,
                         playerGrid
                     );
-                }
-                 /*else if (i == 1) {
+                } else {
+                /*else if (i == 1) {
                     this.pos = i;
                     this.placeShips(player, player.ships[i].BUQUE, playerGrid);
                 } else if (i == 2 || i == 3) {
@@ -73,7 +73,8 @@ export default {
                     this.pos = i;
                     this.placeShips(player, player.ships[i].LANCHA, playerGrid);
                 }*/
-                else{console.log('probando ciclo for i=0')}
+                    console.log('probando ciclo for i=0');
+                }
             }
         },
 
@@ -86,28 +87,27 @@ export default {
             a % 2 == 0 ? (aName = 'Par') : (aName = 'Impar');
 
             //do {
-                coords = this.randomCoords(barco); //Me devuelve array de coordenadas
-     
-                find = this.freeSpace(
-                    player,
-                    barco,
-                    coords,
-                    gridSize,
-                    playerGrid,
-                    find
-                ); //Devuelve si está libre o no esa coordenada
-                find = this.testCoords(
-                    player,
-                    barco,
-                    coords,
-                    gridSize,
-                    playerGrid,
-                    find,
-                    a
-                ); // Devuelve si se puede colocar el barco ahí o no.
+            coords = this.randomCoords(barco); //Me devuelve array de coordenadas
+
+            find = this.freeSpace(
+                player,
+                barco,
+                coords,
+                gridSize,
+                playerGrid,
+                find
+            ); //Devuelve si está libre o no esa coordenada
+            find = this.testCoords(
+                player,
+                barco,
+                coords,
+                gridSize,
+                playerGrid,
+                find,
+                a
+            ); // Devuelve si se puede colocar el barco ahí o no.
             //} while (find != -1 && coords[0] <= gridSize - barco.life);
             this.place(player, barco, coords, gridSize, playerGrid, a);
-            
         },
 
         //player.positions[this.pos].push(Object.assign([], this.array))
@@ -122,20 +122,36 @@ export default {
         },
 
         freeSpace(player, barco, coords, gridSize, playerGrid) {
-            let find = []
-            player.positions.push(coords)
-            console.log('En freeSpace, player.positions', player.positions)
-            for (let i = 0; i < 1; i++) {
-                find = player.positions[i].findIndex(element => element[0] === coords[0] && element[1] === coords[1]);
-                if (find !=-1 && coords[0] > 0 && coords[0] < gridSize - barco.life){
-                    break
-                }
-                let newCoords = [coords[0]=++coords[0], coords[1]=++coords[1]]
-                console.log('valor de newCoords', newCoords)
+            let find = [];
+            let recibedCoords = [...coords];
+            player.positions.push(recibedCoords);
 
+            for (let i = 0; i < barco.life; i++) {
+                find = player.positions[i].findIndex(
+                    (element) =>
+                        element[0] === coords[0] && element[1] === coords[1]
+                );
+                if (
+                    find != -1 &&
+                    coords[0] > 0 &&
+                    coords[0] < gridSize - barco.life
+                ) {
+                    break;
+                }
+                let newCoords = [
+                    (coords[0] = ++coords[0]),
+                    (coords[1] = ++coords[1]),
+                ];
+                console.log('valor de newCoords', newCoords);
+                player.positions.push(newCoords);
+                console.log(
+                    'valor de player.positions tras for',
+                    player.positions
+                );
             }
-            console.log('en freeSpace, valor de find', find)
-            return find
+            player.positions.pop();
+            console.log('valor de player.positions tras for', player.positions);
+            return find;
         },
         testCoords(player, barco, coords, gridSize, playerGrid, find, a) {
             let array = [coords[0], coords[1]];
