@@ -33,8 +33,8 @@ console.log('                        By Javier Girón López')
     console.log()
 
     //MOSTRAR TABLERO COMPLETO JUGADOR B
-    printLine(`${playerB.name} Game Board`)
-    print_Grid(playerBGrid)
+    /*printLine(`${playerB.name} Game Board`)
+    print_Grid(playerBGrid)*/
 
    // 👀 METER BIEN EL ARRAY DE LAS POSICIONES
 //✅ JUEGO COMIENZA
