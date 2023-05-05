@@ -52,6 +52,12 @@ Archivo que contiene la lógica del desarrollo del juego. Exporta un objeto que 
 * **stillShootsRemaining** Método informativo que indica si algún jugador tiene aún disparos disponibles
 * **resolveDraw** Deshace el empate en caso de que las naves a flote de cada jugador sean diferentes
 
+LOS MÍOS 
+**placeShips** Dibuja los barcos de cada jugador en el tablero de juego. Se apoya en las siguientes funciones:
+* **ramdonCoords** Devuelve una coordenada aleatoria del tablero.
+* **testCoord** Comprueba que la coordenada otenida en ramdonCoords, donde será colocado el barco, está libre.
+* **freeSpace** Sirve para comprobar que el espacio horizontal o vertical (de forma aleatoria) donde será colocado el barco testeada por testCoords está vacío. Además, guarda la posición del barco.
+
 ### player.js
 
 Módulo que nos exporta una única función y ésta se encara de devolvernos un nuevo jugador. Las propiedades de este nuevo jugador son: identificadores (nombre); tableros (propio y contrario); contadores (disparos hechos, celdas de barcos enemigos); barcos propios y celdas disponibles (todas las celdas disponibles y las priorizadas). Los métodos son:

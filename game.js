@@ -96,7 +96,7 @@ export default {
                 coords[0] <= gridSize - barco.life &&
                 barco.life > player.positions.length
             );
-            //this.place(player, barco, coords, playerGrid);
+            this.place(player, barco, playerGrid);
         },
 
         //player.positions[this.pos].push(Object.assign([], this.array))
@@ -135,7 +135,7 @@ export default {
         testCoords(barco, coords, playerGrid, find, player) {
             let parit = paridad();
             let array = [coords[0], coords[1]];
-            barco.position.push([coords[0], coords[1]])
+            barco.position.push([coords[0], coords[1]]);
             let newCoords;
             if (parit == 'Par') {
                 for (let j = 0; j < barco.life; j++) {
@@ -144,15 +144,15 @@ export default {
                         playerGrid[array[1]][array[0]] != EMPTY
                     ) {
                         find = 0;
-                        player.positions=[]
-                        barco.positions=[]
+                        player.positions = [];
+                        barco.positions = [];
                         break;
                     }
                     ++array[0];
                     newCoords = [(coords[0] = ++coords[0]), coords[1]];
 
                     player.positions.push(newCoords);
-                    barco.position.push(newCoords)
+                    barco.position.push(newCoords);
                 }
             } else {
                 for (let j = 0; j < barco.life; j++) {
@@ -161,25 +161,27 @@ export default {
                         playerGrid[array[1]][array[0]] != EMPTY
                     ) {
                         find = 0;
-                        player.positions=[]
-                        barco.positions=[]
+                        player.positions = [];
+                        barco.positions = [];
                         break;
                     }
                     ++array[1];
                     newCoords = [coords[0], (coords[1] = ++coords[1])];
                     player.positions.push(newCoords);
-                    barco.position.push(newCoords)
+                    barco.position.push(newCoords);
                 }
             }
-            
+
             player.positions.pop();
-            barco.position.pop()
-            console.log(`La posición de ${barco.figure} es "${barco.position}"`)
+            barco.position.pop();
+            console.log(
+                `La posición de ${barco.figure} es "${barco.position}"`
+            );
             console.log('valor de player.positions tras for', player.positions);
 
             return find;
         },
-        pushCoords(player, coords, array) {
+        /*     pushCoords(player, coords, array) {
             //player.positions[this.pos].push(Object.assign([], this.array))
             //console.log(coords);
             //console.log(array)
@@ -234,16 +236,18 @@ export default {
                     player.ship0[3] = array;
             }
         },
+*/
 
-        place(player, barco, coords, gridSize, playerGrid, a) {
-            let array = [];
-
-            //Esto es lo que he añadido hoy
+        place(player, barco, playerGrid) {
+            //let array = [];
+            
+            /*Esto es lo que he añadido hoy
             let newPosition = [];
-            array = [];
+            array = [];*/
             for (let i = 0; i < barco.life; i++) {
-                playerGrid[coords[1]][coords[0]] = barco.figure;
-                array.push(Object.assign([], coords));
+                //console.log(barco.position[i][1])
+                playerGrid[barco.position[i][1]][barco.position[i][0]] = barco.figure;
+                /*array.push(Object.assign([], coords));
 
                 newPosition = player.positions.map(() => {
                     let newArray = player.positions.push(
@@ -258,8 +262,9 @@ export default {
                 } else {
                     ++coords[1];
                 }
-                this.push(player, coords, array);
+                this.push(player, coords, array);*/
             }
+            console.log(player)
         },
     },
 
