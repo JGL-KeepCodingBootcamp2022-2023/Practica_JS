@@ -57,6 +57,7 @@ LOS MÍOS
 * **ramdonCoords** Devuelve una coordenada aleatoria del tablero.
 * **testCoord** Comprueba que la coordenada otenida en ramdonCoords, donde será colocado el barco, está libre.
 * **freeSpace** Sirve para comprobar que el espacio horizontal o vertical (de forma aleatoria) donde será colocado el barco testeada por testCoords está vacío. Además, guarda la posición del barco.
+* **place** Dibuja el barco en el tablero de cada jugador.
 
 ### player.js
 

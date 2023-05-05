@@ -51,18 +51,18 @@ export default {
                         player.ships[i].PORTAAVIONES,
                         playerGrid
                     );
-                } else {
-                    /*else if (i == 1) {
+                } else if (i == 1) {
                     this.pos = i;
                     this.placeShips(player, player.ships[i].BUQUE, playerGrid);
                 } else if (i == 2 || i == 3) {
+                    //ERROR AQUÍ. SÓLO DIBUJA 1
                     this.pos = i;
                     this.placeShips(
                         player,
                         player.ships[i].SUBMARINO,
                         playerGrid
                     );
-                } else if (i == 4 || i == 5 || i == 6) {
+                } /*else if (i == 4 || i == 5 || i == 6) {
                     this.pos = i;
                     this.placeShips(
                         player,
@@ -72,8 +72,8 @@ export default {
                 } else {
                     this.pos = i;
                     this.placeShips(player, player.ships[i].LANCHA, playerGrid);
-                }*/
-                    console.log('probando ciclo for i=0');
+                }*/ else {
+                    console.log('probando ciclo for i=0, i=1');
                 }
             }
         },
@@ -144,14 +144,13 @@ export default {
                         playerGrid[array[1]][array[0]] != EMPTY
                     ) {
                         find = 0;
-                        player.positions = [];
+
                         barco.positions = [];
                         break;
                     }
                     ++array[0];
                     newCoords = [(coords[0] = ++coords[0]), coords[1]];
 
-                    player.positions.push(newCoords);
                     barco.position.push(newCoords);
                 }
             } else {
@@ -161,19 +160,19 @@ export default {
                         playerGrid[array[1]][array[0]] != EMPTY
                     ) {
                         find = 0;
-                        player.positions = [];
+
                         barco.positions = [];
                         break;
                     }
                     ++array[1];
                     newCoords = [coords[0], (coords[1] = ++coords[1])];
-                    player.positions.push(newCoords);
+
                     barco.position.push(newCoords);
                 }
             }
 
-            player.positions.pop();
             barco.position.pop();
+            player.positions.push([...barco.position]);
             console.log(
                 `La posición de ${barco.figure} es "${barco.position}"`
             );
