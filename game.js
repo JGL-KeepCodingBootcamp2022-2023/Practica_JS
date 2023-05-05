@@ -135,6 +135,7 @@ export default {
         testCoords(barco, coords, playerGrid, find, player) {
             let parit = paridad();
             let array = [coords[0], coords[1]];
+            barco.position.push([coords[0], coords[1]])
             let newCoords;
             if (parit == 'Par') {
                 for (let j = 0; j < barco.life; j++) {
@@ -143,12 +144,15 @@ export default {
                         playerGrid[array[1]][array[0]] != EMPTY
                     ) {
                         find = 0;
+                        player.positions=[]
+                        barco.positions=[]
                         break;
                     }
                     ++array[0];
                     newCoords = [(coords[0] = ++coords[0]), coords[1]];
 
                     player.positions.push(newCoords);
+                    barco.position.push(newCoords)
                 }
             } else {
                 for (let j = 0; j < barco.life; j++) {
@@ -157,15 +161,20 @@ export default {
                         playerGrid[array[1]][array[0]] != EMPTY
                     ) {
                         find = 0;
+                        player.positions=[]
+                        barco.positions=[]
                         break;
                     }
                     ++array[1];
                     newCoords = [coords[0], (coords[1] = ++coords[1])];
-console.log(barco)
                     player.positions.push(newCoords);
+                    barco.position.push(newCoords)
                 }
             }
+            
             player.positions.pop();
+            barco.position.pop()
+            console.log(`La posición de ${barco.figure} es "${barco.position}"`)
             console.log('valor de player.positions tras for', player.positions);
 
             return find;
