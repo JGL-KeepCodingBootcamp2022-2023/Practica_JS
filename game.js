@@ -137,6 +137,7 @@ export default {
             let array = [coords[0], coords[1]];
             barco.position.push([coords[0], coords[1]]);
             let newCoords;
+            let totalNewCoords = [];
             if (parit == 'Par') {
                 for (let j = 0; j < barco.life; j++) {
                     if (
@@ -144,13 +145,13 @@ export default {
                         playerGrid[array[1]][array[0]] != EMPTY
                     ) {
                         find = 0;
-
+                        totalNewCoords = []
                         barco.positions = [];
                         break;
                     }
                     ++array[0];
                     newCoords = [(coords[0] = ++coords[0]), coords[1]];
-
+                    totalNewCoords.push(newCoords)
                     barco.position.push(newCoords);
                 }
             } else {
@@ -160,19 +161,19 @@ export default {
                         playerGrid[array[1]][array[0]] != EMPTY
                     ) {
                         find = 0;
-
+                        totalNewCoords = []
                         barco.positions = [];
                         break;
                     }
                     ++array[1];
                     newCoords = [coords[0], (coords[1] = ++coords[1])];
-
+                    totalNewCoords.push(newCoords)
                     barco.position.push(newCoords);
                 }
             }
 
             barco.position.pop();
-            player.positions.push([...barco.position]);
+            player.positions.push(totalNewCoords);
             console.log(
                 `La posición de ${barco.figure} es "${barco.position}"`
             );
