@@ -239,32 +239,10 @@ export default {
 */
 
         place(player, barco, playerGrid) {
-            //let array = [];
-            
-            /*Esto es lo que he añadido hoy
-            let newPosition = [];
-            array = [];*/
             for (let i = 0; i < barco.life; i++) {
-                //console.log(barco.position[i][1])
-                playerGrid[barco.position[i][1]][barco.position[i][0]] = barco.figure;
-                /*array.push(Object.assign([], coords));
-
-                newPosition = player.positions.map(() => {
-                    let newArray = player.positions.push(
-                        Object.assign([], array)
-                    );
-                    return newArray;
-                });
-                this.positions = newPosition;
-                //
-                if (a == 'Par') {
-                    ++coords[0];
-                } else {
-                    ++coords[1];
-                }
-                this.push(player, coords, array);*/
+                playerGrid[barco.position[i][1]][barco.position[i][0]] =
+                    barco.figure;
             }
-            console.log(player)
         },
     },
 
