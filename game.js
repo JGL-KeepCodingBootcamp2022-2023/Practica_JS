@@ -80,28 +80,31 @@ export default {
         },
 
         placeShips(player, barco, playerGrid) {
-            let pass = false;
-            let find = 0;
-            let coords = '';
-            let parit = paridad();
-
+            let pass;
+            let find;
+            let coords;
             do {
+                //Reset variables al inicio de cada ciclo
+                pass = false;
+                find = 0;
+                coords = '';
+
                 //Obtenemos array de coordenadas y fija la primera del barco
                 coords = this.randomCoords(barco);
-                //Comprueba si está libre o no esa coordenada la primera vez que se ejecuta el juego
+                console.log('Coordenada inicial', coords);
+
+                //Comprueba si está libre o no esa coordenada para el primer barco (primera vez que se inicil el ciclo)
                 if (player.positions.length <= 0) {
+                    console.log('Se ejecuta el ciclo por primera vez');
                     find = this.firstFreeSpace(player, coords, find);
-                    console.log(
-                        'La primera vez player.positions',
-                        player.positions
-                    );
                 } else {
-                    //Comprueba si está libre o no esa coordenada
-                    console.log('Resto de veces');
+                    //Comprueba si está libre o no la coordenada para el resto de barcos
+                    console.log('Se ejecuta el ciclo el resto de veces');
                     find = this.freeSpace(player, coords, find);
                 }
                 pass = this.passValue(find, pass);
                 //Si está libre, testea todas las coordenadas para cada barco
+
                 pass = true
                     ? (find = this.testCoords(
                           barco,
@@ -121,10 +124,10 @@ export default {
             );
             //this.place(player, barco, playerGrid);
             pass = false;
-            console.log(
+            /*console.log(
                 'Estado de player.positions tras al final de placeShips',
                 player.positions
-            );
+            );*/
         },
 
         //player.positions[this.pos].push(Object.assign([], this.array))
@@ -154,7 +157,6 @@ export default {
                     player.positions.length = 0;
                 }
             }
-
             return find;
         },
 
@@ -169,58 +171,98 @@ export default {
             }
             return find;
         },
+        horizontal(barco, coords){
+            let horizontal = barco.life + coords[0];
+            console.log(horizontal)
+            if (horizontal > gridSize -1) {
+                return horizontal = false;
+            } else {
+                return horizontal = true;
+            }
+        },
+        vertical(barco, coords){
+            let vertical = barco.life + coords[1];
+            console.log(vertical)
+            if (vertical > gridSize -1) {
+                return vertical = false;
+            } else {
+                return vertical = true;
+            }
+        },
 
         testCoords(barco, coords, playerGrid, find, player, pass) {
-            let parit = paridad();
+            console.log('ESTOY DENTRO DE TESTCOORDS');
+            console.log('Vida del barco', barco.life);
+            let horizontal = this.horizontal(barco, coords)
+            let vertical = this.vertical(barco, coords)
+            //let parit = paridad(coords, barco);
+            if(horizontal == false && vertical == true){
+                console.log('DIBUJAR VERTICAL ++array[1]')
+                return (find = -1);
+                
+            }
+            else if(horizontal == true && vertical == false){
+
+                console.log('DIBUJAR HORIZONTAL ++array[0]')
+                return (find = -1);
+            }
+            else if(horizontal == true && vertical == true){
+                console.log('DIBUJAR ALEATORIO con paridad')
+                return (find = -1);
+            }
+            else{
+
+                return (find = 0);
+            }
+            /*
             let array = [coords[0], coords[1]];
             let newCoords;
             barco.position = [[...array]];
-            for (let j = 0; j < barco.life; j++) {
-                //Comprobar que la totalidad del barco no está dentro del tablero y que no está vacío
-                if (
-                    // Comprueba que el barco inicia dentro del tablero
-                    (array[0] || array[1]) < 0 ||
-                    (array[0] || array[1]) >= gridSize - 1 ||
-                    //Comprueba que el tamaño del barco entra en el tablero a partir de la coordenada inicial
-                    j + barco.life >= gridSize ||
-                    // Comprueba que empieza en una casilla vacía
-                    playerGrid[array[1]][array[0]] != EMPTY
-                ) {
-                    console.log('FUERA DE RANGO');
-                    find = 0;
-                    barco.position.length = 0;
-                    pass = false;
-                    break;
-                } else {
-                    if (parit == 'Par') {
+            console.log('parit = ', parit);
+            let initialTest = hV(array, barco, parit);
+            
+            // Comprueba que es una casilla vacía
+            console.log(playerGrid[array[1]][array[0]] == EMPTY)
+            if (playerGrid[array[1]][array[0]] == EMPTY) {
+                console.log('Casilla vacía')
+                for (let j = 0; j < barco.life; j++) {
+                    
+                    //Comprobar que la totalidad del barco no está dentro del tablero y que no está vacío
+                    if (initialTest == true && parit == true) {
+                        console.log('Debería dibujar barco horizontal');
                         ++array[0];
+                        console.log('Los arrays que obtiene', array[0])
                         newCoords = [(coords[0] = ++coords[0]), coords[1]];
-                        barco.position.push(newCoords);
-                        console.log(
-                            'barco.position en el ciclo',
-                            barco.position
-                        );
-                        pass = true;
-                        find = -1;
-                    } else {
+                    } else if (initialTest == true && parit == false) {
+                        console.log('Debería dibujar barco vertical');
                         ++array[1];
+                        console.log('Los arrays que obtiene', array[1])
                         newCoords = [coords[0], (coords[1] = ++coords[1])];
-                        barco.position.push(newCoords);
-                        console.log(
-                            'barco.position en el ciclo',
-                            barco.position
-                        );
-                        pass = true;
-                        find = -1;
+                    } else {
+                        console.log('FUERA DE RANGO');
+                        find = 0;
+                        barco.position.length = 0;
+                        pass = false;
+                      
+                        break;
                     }
-                }
-            }
+                    barco.position.push(newCoords);
+                    barco.position.pop();
+                    console.log('barco.position en el ciclo', barco.position);
+                    pass = true;
 
-            barco.position.pop();
-            console.log('barco.position tras freeSpace', barco.position);
-            player.positions.push([...barco.position]);
-            console.log('player.positions tras freeSpace', player.positions);
-            return find;
+
+                console.log('barco.position tras freeSpace', barco.position);
+                player.positions.push([...barco.position]);
+                console.log('player.positions tras freeSpace', player.positions);
+                    return (find = -1);
+                
+            } 
+        }else {
+                pass = false;
+                return (find = 0);
+            }
+            return find = -1*/
         },
 
         place(player, barco, playerGrid) {
@@ -472,9 +514,48 @@ function random(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
-let paridad = () => {
+/*const paridad = (array, barco) => {
     let a = random(0, gridSize);
-    let paridadName = '';
-    a % 2 == 0 ? (paridadName = 'Par') : (paridadName = 'Impar');
-    return paridadName;
-};
+    let paridad = '';
+    a % 2 == 0 ? (paridad = true) : (paridad = false);
+    if (paridad){
+        if (array[0] + barco.life >= gridSize) {
+            paridad = false
+        }    
+    }else {
+        if (array[1] + barco.life >= gridSize) {
+            paridad = true
+        }
+    }
+
+    return paridad;
+}
+
+
+const hV = (array, barco, paridad) => {
+    
+    if (paridad) {
+        
+        if (
+            // Comprueba que el barco inicia dentro del tablero
+            array[0] < 0 ||
+            array[0] >= gridSize ||
+            //Comprueba que el tamaño del barco entra en el tablero a partir de la coordenada inicial
+            array[0] + barco.life > gridSize - 1
+        ) {
+            return false;
+        } else {
+            return true;
+        }
+    } else {
+        if (
+            array[1] < 0 ||
+            array[1] >= gridSize ||
+            array[1] + barco.life > gridSize - 1
+        ) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+};*/
