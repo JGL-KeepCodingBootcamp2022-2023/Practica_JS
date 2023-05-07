@@ -195,7 +195,7 @@ export default {
             console.log('Vida del barco', barco.life);
             let horizontal = this.horizontal(barco, coords)
             let vertical = this.vertical(barco, coords)
-            //let parit = paridad(coords, barco);
+            let parit = paridad(coords, barco);
             if(horizontal == false && vertical == true){
                 console.log('DIBUJAR VERTICAL ++array[1]')
                 return (find = -1);
@@ -208,6 +208,12 @@ export default {
             }
             else if(horizontal == true && vertical == true){
                 console.log('DIBUJAR ALEATORIO con paridad')
+                if (parit) {
+                    console.log('DIBUJAR HORIZONTAL ++array[0]')
+                }
+                else{
+                    console.log('DIBUJAR VERTICAL ++array[1]')
+                }
                 return (find = -1);
             }
             else{
@@ -514,25 +520,15 @@ function random(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
-/*const paridad = (array, barco) => {
+const paridad = (array, barco) => {
     let a = random(0, gridSize);
     let paridad = '';
     a % 2 == 0 ? (paridad = true) : (paridad = false);
-    if (paridad){
-        if (array[0] + barco.life >= gridSize) {
-            paridad = false
-        }    
-    }else {
-        if (array[1] + barco.life >= gridSize) {
-            paridad = true
-        }
-    }
-
     return paridad;
 }
 
 
-const hV = (array, barco, paridad) => {
+/*const hV = (array, barco, paridad) => {
     
     if (paridad) {
         
