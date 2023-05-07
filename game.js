@@ -51,10 +51,10 @@ export default {
                         player.ships[i].PORTAAVIONES,
                         playerGrid
                     );
-                    } /*else if (i == 1) {
+                } else if (i == 1) {
                     this.pos = i;
                     this.placeShips(player, player.ships[i].BUQUE, playerGrid);
-                } else if (i == 2 || i == 3) {
+                } /*else if (i == 2 || i == 3) {
                     //ERROR AQUÍ. SÓLO DIBUJA 1
                     this.pos = i;
                     this.placeShips(
@@ -73,8 +73,7 @@ export default {
                     this.pos = i;
                     this.placeShips(player, player.ships[i].LANCHA, playerGrid);
                 
-                }*/
-                 else {
+                }*/ else {
                     console.log('probando ciclo for i=0');
                 }
             }
@@ -82,30 +81,43 @@ export default {
 
         placeShips(player, barco, playerGrid) {
             let pass = false;
-            let find = NaN;
+            let find = 0;
             let coords = '';
             let parit = paridad();
 
             do {
                 coords = this.randomCoords(barco); //Me devuelve array de coordenadas
                 //Comprueba si está libre o no esa coordenada
-                find = this.freeSpace(player, barco, coords, playerGrid, pass);
-                pass === true
-                    ? 
-                      (find = this.testCoords(
+                if (player.positions.length <= 0) {
+                    player.positions.push([...coords]);
+                }
+
+                find = this.freeSpace(player, coords, find);
+                //Si está libre, testea todas las coordenadas
+                pass = this.passValue(find, pass);
+                pass = true
+                    ? (find = this.testCoords(
                           barco,
                           coords,
                           playerGrid,
                           find,
-                          player
+                          player,
+                          pass
                       ))
                     : find === -1;
+
+                pass = this.passValue(find, pass);
             } while (
                 find !== -1 &&
                 coords[0] <= gridSize - barco.life &&
                 barco.life > player.positions.length
             );
-            //this.place(player, barco, playerGrid);
+            this.place(player, barco, playerGrid);
+            pass = false;
+            console.log(
+                'Estado de player.positions tras al final de placeShips',
+                player.positions
+            );
         },
 
         //player.positions[this.pos].push(Object.assign([], this.array))
@@ -115,145 +127,79 @@ export default {
             let x1 = random(0, max); //Obtengo un número aleatorio para el espacio máximo en el que puede colocarse este barco.
             let y1 = Math.floor(Math.random() * gridSize);
             let array = [x1, y1];
-            //console.log('En randomCoords', barco.figure);
-            //console.log('En randomCoords', array);
 
             return array;
         },
 
-        freeSpace(player, barco, coords, gridSize, pass) {
-            let find = NaN;
-            let recibedCoords = [...coords];
+        passValue(find, pass) {
+            find = -1 ? (pass = true) : (pass = false);
 
-            player.positions.push(recibedCoords);
-            console.log(
-                'player.positions en freeSpace inicio',
-                player.positions
-            );
+            return pass;
+        },
 
+        freeSpace(player, coords, find) {
             for (let i = 0; i < player.positions.length; i++) {
                 find = player.positions[i].findIndex(
                     (element) =>
                         element[0] === coords[0] && element[1] === coords[1]
                 );
-                find === -1 ? (pass = true) : (pass = false);
+                if ((find = -1)) {
+                }
             }
-            //console.log('En freeSpace final', barco.figure);
-            //console.log('En freeSpace final', player.positions);
-            //console.log(pass);
-            //console.log(find);
+            player.positions.pop();
             return find;
         },
 
-        testCoords(barco, coords, playerGrid, find, player) {
+        testCoords(barco, coords, playerGrid, find, player, pass) {
             let parit = paridad();
             let array = [coords[0], coords[1]];
-            barco.position.push([coords[0], coords[1]]);
             let newCoords;
-            let totalNewCoords = [];
-            /*if (parit == 'Par') {
+            barco.position = [[...array]];
+            if (parit == 'Par') {
                 for (let j = 0; j < barco.life; j++) {
+                    //Comprobar que la totalidad del barco no está dentro del tablero y que no está vacío
                     if (
-                        array[0] > gridSize - 1 ||
-                        playerGrid[array[1]][array[0]] != EMPTY
+                        array[0] < 0 || // Comprueba que el barco inicia dentro del tablero
+                        array[0] >= gridSize ||
+                        j + barco.life >= gridSize || //Comprueba que el barco finaliza dentro del tablero
+                        playerGrid[array[1]][array[0]] != EMPTY // Comprueba que empieza en una casilla vacía
                     ) {
                         find = 0;
-                        totalNewCoords = []
-                        barco.positions.split(0, barco.positions.length)
-                        console.log('Antes del brake, barco position',barco.position)
+                        barco.position = [];
+                        pass = false;
                         break;
                     }
                     ++array[0];
                     newCoords = [(coords[0] = ++coords[0]), coords[1]];
-                    totalNewCoords.push(newCoords)
-                    //barco.position.push(newCoords);
-                    console.log('Barco.positoin depues del for', barco.positions)
+                    barco.position.push(newCoords);
+                    console.log(barco.position);
+                    pass = true;
                 }
             } else {
                 for (let j = 0; j < barco.life; j++) {
                     if (
-                        array[1] > gridSize - 1 ||
+                        array[1] < 0 ||
+                        array[1] >= gridSize ||
+                        j + barco.life >= gridSize ||
                         playerGrid[array[1]][array[0]] != EMPTY
                     ) {
-                        //barco.positions.length = 0;
                         find = 0;
-                        totalNewCoords = []
-                        console.log('Antes del brake, barco position',barco.position)
+                        pass = false;
+                        barco.position = [];
                         break;
                     }
                     ++array[1];
                     newCoords = [coords[0], (coords[1] = ++coords[1])];
-                    totalNewCoords.push(newCoords)
-                    //barco.position.push(newCoords);
-                    console.log(barco.position)
+                    barco.position.push(newCoords);
+                    console.log(barco.position);
+                    pass = true;
                 }
             }
-            barco.position.push(totalNewCoords);
             barco.position.pop();
-
-            console.log(
-                `La posición de ${barco.figure} es "${barco.position}"`
-            );
-            //console.log('valor de player.positions tras for', player.positions);
-*/
+            player.positions.push(...barco.position)
+            console.log(barco.position);
             return find;
         },
-        /*     pushCoords(player, coords, array) {
-            //player.positions[this.pos].push(Object.assign([], this.array))
-            //console.log(coords);
-            //console.log(array)
-            switch (this.pos) {
-                case (this.pos = 1):
-                    //player.ships[1].BUQUE.position.push(Object.assign([], array));
-                    //player.ship1[3].push(array)
-                    player.ship1[3] = array;
-                    break;
-                case (this.pos = 2):
-                    //player.ships[2].SUBMARINO.position.push(Object.assign([], array));
-                    //player.ship2[3].push(array)
-                    player.ship2[3] = array;
-                    break;
-                case (this.pos = 3):
-                    //player.ships[3].SUBMARINO.position.push(Object.assign([], array));
-                    //player.ship3[3].push(array)
-                    player.ship3[3] = array;
-                    break;
-                case (this.pos = 4):
-                    //player.ships[4].CRUCERO.position.push(Object.assign([], array));
-                    //player.ship4[3].push(array)
-                    player.ship4[3] = array;
-                    break;
-                case (this.pos = 5):
-                    //player.ships[5].CRUCERO.position.push(Object.assign([], array));
-                    //player.ship5[3].push(array)
-                    player.ship5[3] = array;
-                    break;
-                case (this.pos = 6):
-                    //player.ships[6].CRUCERO.position.push(Object.assign([], array));
-                    //player.ship6[3].push(array)
-                    player.ship6[3] = array;
-                    break;
-                case (this.pos = 7):
-                    //player.ships[7].LANCHA.position.push(Object.assign([], array));
-                    player.ship7[3] = array;
-
-                    break;
-                case (this.pos = 8):
-                    //player.ships[8].LANCHA.position.push(Object.assign([], array));
-                    player.ship8[3] = array;
-
-                    break;
-                case (this.pos = 9):
-                    //player.ships[9].LANCHA.position.push(Object.assign([], array));
-                    player.ship9[3] = array;
-
-                    break;
-                default:
-                    //player.ships[0].PORTAAVIONES.position.push(Object.assign([], array));
-                    player.ship0[3] = array;
-            }
-        },
-*/
 
         place(player, barco, playerGrid) {
             for (let i = 0; i < barco.life; i++) {
