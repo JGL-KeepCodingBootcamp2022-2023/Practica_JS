@@ -61,19 +61,19 @@ export default {
                         player.ships[i].SUBMARINO,
                         playerGrid
                     );
-                } /*else if (i == 4 || i == 5 || i == 6) {
+                } else if (i == 4 || i == 5 || i == 6) {
                     this.pos = i;
                     this.placeShips(
                         player,
                         player.ships[i].CRUCERO,
                         playerGrid
                     );
-                } else {
+                } /*else {
                     this.pos = i;
                     this.placeShips(player, player.ships[i].LANCHA, playerGrid);
                 
                 }*/ else {
-                    console.log('probando ciclo for i=0 --> i=3');
+                    console.log('probando ciclo for i=0 --> i=6');
                 }
             }
         },
