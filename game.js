@@ -54,7 +54,7 @@ export default {
                 } else if (i == 1) {
                     this.pos = i;
                     this.placeShips(player, player.ships[i].BUQUE, playerGrid);
-                } /*else if (i == 2 || i == 3) {
+                } else if (i == 2 || i == 3) {
                     //ERROR AQUÍ. DIBUJA TODO COMO EL BUQUE CON 5 VIDAS
                     this.pos = i;
                     this.placeShips(
