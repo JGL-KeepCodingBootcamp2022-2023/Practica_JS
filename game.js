@@ -55,14 +55,14 @@ export default {
                     this.pos = i;
                     this.placeShips(player, player.ships[i].BUQUE, playerGrid);
                 } /*else if (i == 2 || i == 3) {
-                    //ERROR AQUÍ. SÓLO DIBUJA 1
+                    //ERROR AQUÍ. DIBUJA TODO COMO EL BUQUE CON 5 VIDAS
                     this.pos = i;
                     this.placeShips(
                         player,
                         player.ships[i].SUBMARINO,
                         playerGrid
                     );
-                } else if (i == 4 || i == 5 || i == 6) {
+                } /*else if (i == 4 || i == 5 || i == 6) {
                     this.pos = i;
                     this.placeShips(
                         player,
@@ -74,7 +74,7 @@ export default {
                     this.placeShips(player, player.ships[i].LANCHA, playerGrid);
                 
                 }*/ else {
-                    console.log('probando ciclo for i=0 i=1');
+                    console.log('probando ciclo for i=0 --> i=3');
                 }
             }
         },
@@ -83,7 +83,7 @@ export default {
             let horizontal = this.horizontal(barco, coords);
             let vetical = this.vertical(barco, coords);
             let parity = paridad(coords, barco);
-            console.log('Entro en testCoords Portaaviones')
+            console.log('Entro en testCoords Portaaviones');
             pass = this.testCoords(barco, coords, playerGrid, player, pass);
 
             return pass;
@@ -104,7 +104,8 @@ export default {
             //SON NECESARIAS FREESPACE Y FIRSTFREESPACE?
             let pass;
             //COLOCAR EL PORTAAVIONES
-            if ((barco.life = 5)) {
+            if (barco.life > 4) {
+                console.log('PRIMER BARCO');
                 //Obtenemos array de coordenadas y fija la primera del barco
 
                 console.log('Colocamos el ', barco.figure);
@@ -112,7 +113,13 @@ export default {
                 do {
                     let coords = this.randomCoords(barco);
                     console.log('Coordenadas obtenida', coords);
-                    pass = this.firstShip(player, barco, coords, playerGrid, pass);
+                    pass = this.firstShip(
+                        player,
+                        barco,
+                        coords,
+                        playerGrid,
+                        pass
+                    );
                 } while (pass == false);
             } else {
                 do {
@@ -128,7 +135,8 @@ export default {
                     pass = this.freeSpace(player, coords);
 
                     //Si está libre, testea todas las coordenadas para cada barco
-                    console.log('Entro en testCoords resto de barcos')
+                    console.log('Entro en testCoords resto de barcos');
+                    let find;
                     pass = true
                         ? (find = this.testCoords(
                               barco,
@@ -139,10 +147,10 @@ export default {
                           ))
                         : (pass = false);
                 } while (
-                    (pass =
-                        false ||
+                    (pass = false)
+                    /*||
                         coords[0] <= gridSize - barco.life ||
-                        barco.life > player.positions.length)
+                        barco.life > player.positions.length*/
                 );
                 //this.place(player, barco, playerGrid);
                 //pass = false;
@@ -234,7 +242,7 @@ export default {
         },
         testCoords(barco, coords, playerGrid, player, pass) {
             console.log('ESTOY DENTRO DE TESTCOORDS');
-console.log('Coordenadas', coords)
+            console.log('Coordenadas', coords);
             let horizontal = this.horizontal(barco, coords);
             let vetical = this.vertical(barco, coords);
             let parity = paridad(coords, barco);
@@ -260,8 +268,8 @@ console.log('Coordenadas', coords)
                 pass = false;
             }
             pass ? player.positions.push(...barco.position) : (pass = false);
-            console.log('pass en testCords', pass)
-            console.log('salgo de testCords')
+            console.log('pass en testCords', pass);
+            console.log('salgo de testCords');
             return pass;
         },
 
