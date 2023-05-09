@@ -55,7 +55,6 @@ export default {
                     this.pos = i;
                     this.placeShips(player, player.ships[i].BUQUE, playerGrid);
                 } else if (i == 2 || i == 3) {
-                    //ERROR AQUÍ. DIBUJA TODO COMO EL BUQUE CON 5 VIDAS
                     this.pos = i;
                     this.placeShips(
                         player,
@@ -79,10 +78,17 @@ export default {
             }
         },
 
+        paridad(array, barco) {
+            let a = random(0, gridSize);
+            let paridad = '';
+            a % 2 == 0 ? (paridad = true) : (paridad = false);
+            return paridad;
+        },
+
         firstShip(player, barco, coords, playerGrid, pass) {
             let horizontal = this.horizontal(barco, coords);
             let vetical = this.vertical(barco, coords);
-            let parity = paridad(coords, barco);
+            let parity = this.paridad(coords, barco);
             console.log('Entro en testCoords Portaaviones');
             pass = this.testCoords(barco, coords, playerGrid, player, pass);
 
@@ -124,6 +130,7 @@ export default {
             } else {
                 do {
                     console.log('Colocamos el ', barco.figure);
+                    console.log(barco.life)
                     //Reset variables al inicio de cada ciclo
                     pass = false;
 
@@ -136,18 +143,20 @@ export default {
 
                     //Si está libre, testea todas las coordenadas para cada barco
                     console.log('Entro en testCoords resto de barcos');
-                    let find;
+                    //let find;
                     pass = true
-                        ? (find = this.testCoords(
+                        ? (pass = this.testCoords(
                               barco,
                               coords,
                               playerGrid,
                               player,
                               pass
-                          ))
+                          )
+                          )
                         : (pass = false);
+                    console.log('pass al terminar testCoords y salirse', pass)
                 } while (
-                    (pass = false)
+                    (pass == false)
                     /*||
                         coords[0] <= gridSize - barco.life ||
                         barco.life > player.positions.length*/
@@ -245,7 +254,7 @@ export default {
             console.log('Coordenadas', coords);
             let horizontal = this.horizontal(barco, coords);
             let vetical = this.vertical(barco, coords);
-            let parity = paridad(coords, barco);
+            let parity = this.paridad(coords, barco);
             if (horizontal == true && vetical == true) {
                 parity
                     ? (pass = this.horizontalDraw(
@@ -524,12 +533,7 @@ function random(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
-const paridad = (array, barco) => {
-    let a = random(0, gridSize);
-    let paridad = '';
-    a % 2 == 0 ? (paridad = true) : (paridad = false);
-    return paridad;
-};
+
 
 /*const hV = (array, barco, paridad) => {
     
