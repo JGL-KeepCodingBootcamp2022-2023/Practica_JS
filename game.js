@@ -68,12 +68,9 @@ export default {
                         player.ships[i].CRUCERO,
                         playerGrid
                     );
-                } /*else {
+                } else {
                     this.pos = i;
                     this.placeShips(player, player.ships[i].LANCHA, playerGrid);
-                
-                }*/ else {
-                    console.log('probando ciclo for i=0 --> i=6');
                 }
             }
         },
@@ -130,7 +127,7 @@ export default {
             } else {
                 do {
                     console.log('Colocamos el ', barco.figure);
-                    console.log(barco.life)
+                    console.log(barco.life);
                     //Reset variables al inicio de cada ciclo
                     pass = false;
 
@@ -151,12 +148,11 @@ export default {
                               playerGrid,
                               player,
                               pass
-                          )
-                          )
+                          ))
                         : (pass = false);
-                    console.log('pass al terminar testCoords y salirse', pass)
+                    console.log('pass al terminar testCoords y salirse', pass);
                 } while (
-                    (pass == false)
+                    pass == false
                     /*||
                         coords[0] <= gridSize - barco.life ||
                         barco.life > player.positions.length*/
@@ -532,8 +528,6 @@ export default {
 function random(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
 }
-
-
 
 /*const hV = (array, barco, paridad) => {
     
