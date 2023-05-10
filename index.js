@@ -13,45 +13,18 @@ import {
 } from './data.js';
 import { EMPTY, gridSize, playerAGrid, playerBGrid } from './board.js';
 import { setUpGame } from './indexFunctions.js';
+import { printTitle } from './utils.js';
 
 //✅ TÍTULO
-printHeading('THE BATTTLESHIP SIMULATOR');
-console.log('                        By Javier Girón López');
+printTitle('THE BATTTLESHIP SIMULATOR', 'Javier Girón López');
 
 //✅SETUP DEL JUEGO
 setUpGame(playerA, playerAGrid);
 setUpGame(playerB, playerBGrid);
 
-/*
+// EL JUEGO COMIENZA
 
-    // ✅CREAR LOS BARCOS PARA LOS JUGADORES
-    game.setUpGame.shipsToPlayers(playerA)
-    game.setUpGame.shipsToPlayers(playerB)
-    //console.log(playerB.ships[0].PORTAAVIONES.life) // <-- Acceso a life Funcina
-    //console.log(playerB.ships[0].PORTAAVIONES.figure) // <-- Acceso a figure funciona
-    //console.log(playerA.ships)
-
-    //COLOCAR LOS BARCOS
-   
-    game.setUpGame.playerShip(playerA, playerAGrid)
-    
-    //MOSTRAR TABLERO COMPLETO JUGADOR A
-    printLine(`${playerA.name} Game Board`)
-    print_Grid(playerAGrid)
-    console.log()
-    
-    //MOSTRAR TABLERO COMPLETO JUGADOR B
-    game.setUpGame.playerShip(playerB, playerBGrid)
-    printLine(`${playerB.name} Game Board`)
-    print_Grid(playerBGrid)
-    console.log()
-*/
-
-//✅ JUEGO COMIENZA
-
-printHeading('THE BATTTLESHIP SIMULATOR STARTS');
-console.log();
-//game.start()
+game.start(10);
 //REPETICIÓN DE TURNOS 200 DISPAROS (100 POR JUGADOR)
 //👀 ESTÁ FALLANDO ALGO EN EL DIBUJO DE LOS TABLEROS Y EL FIGURIN.
 //👀 EL PRIMER FIGURIN FALLA PARA EL SHOOTER. NO LO MUESTRA.

@@ -37,26 +37,28 @@ El juego como tal está en `game.js`. Este juego `game.js` tiene a su vez 2 juga
 Finalmente la capa de presentación la delegamos a `showGame.js` que nos permite mostrar la ejecución de la simulación.
 
 ### index.js
-
+MIRAR
 Archivo principal que carga la dependencia del juego (`game.js`) y del visualizador del juego (`showGame.js`). 
 
 ### game.js
-
+MIRAR
 Archivo que contiene la lógica del desarrollo del juego. Exporta un objeto que contiene el array de jugadores, los barcos disponibles, las rondas, el ganador, y los métodos principales `setupGame` y `start`
 
-* **setupGame** Se encarga de generar los jugadores. Se apoya en `player.js`
-* **start** Se encarga de la mecánica del juego. Hace la alternancia entre jugadores, registra en un array los disparos para poder reproducir el juego y declara un ganador.
+* **setupGame** Se encarga de generar los jugadores. Se apoya en `player.js`, `utils.js`
+* **start** Se encarga de la mecánica del juego. Hace la alternancia entre jugadores, registra en un array los disparos para poder reproducir el juego. Necesita de un prámetro "shootsNumber" para definir el total de disparos de la partida.
 * **updatePlayersBoards** Se encarga de escribir en los tableros correspondientes el resultado del disparo
 * **registerShoot** Sirve para registrar el disparo
 * **isShipDrawn** Nos ayuda a comprobar si un barco está hundido, para luego poder mostrar por pantalla "y hundido"
 * **stillShootsRemaining** Método informativo que indica si algún jugador tiene aún disparos disponibles
 * **resolveDraw** Deshace el empate en caso de que las naves a flote de cada jugador sean diferentes
 
-LOS MÍOS 
+LOS MÍOS
+
+
+
 **placeShips** Dibuja los barcos de cada jugador en el tablero de juego. Se apoya en las siguientes funciones:
 * **ramdonCoords** Devuelve una coordenada aleatoria del tablero.
 * **testCoord** Comprueba que la coordenada otenida en ramdonCoords, donde será colocado el barco, está libre.
-* **freeSpace** Sirve para comprobar que el espacio horizontal o vertical (de forma aleatoria) donde será colocado el barco testeada por testCoords está vacío. Además, guarda la posición del barco.
 * **place** Dibuja el barco en el tablero de cada jugador.
 
 ### player.js
@@ -71,7 +73,7 @@ Módulo que nos exporta una única función y ésta se encara de devolvernos un 
 * **updateEnemyBoardCandidateCells** A partir de una coordenada, se generan unos candidatos. De esos candidatos, se añaden aquellos que aún no existen en el array de celdas candidatas a ser disparadas.
 
 ### board.js
-
+MIRAR
 Módulo para gestionar los tableros. Exporta 2 funciones a pesar de tener más de 2 (son de carácter interno y por eso no son exportadas).
 
 * **generateBoard** Genera un tablero que en este caso es un Array 2D
@@ -82,7 +84,7 @@ Módulo para gestionar los tableros. Exporta 2 funciones a pesar de tener más d
 * *_getMaximumsColAndRow_* Función auxiliar que devuelve los límites al comprobar si un barco cabe o no en el tablero.
 
 ### showGame.js
-
+MOSTRAR
 Módulo que exporta una única función que es la responsable de mostrar la ejecución del juego. Se apoya en `utils/printer.js` para mostrar por consola los resultados.
 
 Muestra primero los jugadores y sus barcos, luego recorre el registro de rondas y finalmente muestra el jugador vencedor, a la vez que saca también los tableros al final de la partida.
