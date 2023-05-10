@@ -294,16 +294,19 @@ export default {
     },
 
     toTestLog(shooter, shootCoord) {
+        console.log('Ya comprobaremos el disparo')
         //Compruebo si el disparo se ha realizado
-        find = shooter.shootsLog.findIndex((elemento) => {
+
+        /*find = shooter.shootsLog.findIndex((elemento) => {
             elemento[0] === shootCoord[0] && elemento[1] === shootCoord[1];
-        });
-        return find;
+        });*/
+
+        //return find;
     },
 
     toLog(shooter, shootCoord) {
         //Añadimos el disapro al registro de diparos de cada jugador
-        shooter.shootsLog.push(...shootCoord);
+        shooter.shootsLog.push([...shootCoord]);
         shooter.shoots++;
     },
 
@@ -465,18 +468,17 @@ export default {
             elemento[0] === shootCoord[0] && elemento[1] === shootCoord[1];
         });
     },
-    playerRound(shooter, enemy, countRound, turn) {
+    playerRound(shooter, enemy, playerRound, turn) {
         //PLAYER LIFE = player.positions.length --> donde vaya
-
+        playerRound = shooter.shootsLog.length
         let find = -1;
         let shootCoord;
         let icon;
 
-        printLine(`ROUND ${countRound}`);
-        printLine(`Round ${shooter.shoots} for ${shooter.name}`);
+        printLine(`Round ${playerRound} for ${shooter.name}`);
         //Para que sea tocado, empty y que esté en POSITIONS.
         //eliminar coordenada de player positions?
-        if (countRound != 0) {
+        if (playerRound != 0) {
             do {
                 shootCoord = this.toShoot(shooter);
 
@@ -488,18 +490,22 @@ export default {
         } else {
             shootCoord = this.toShoot(shooter);
         }
+
         //Resgitro del disparo
         this.toLog(shooter, shootCoord);
+        console.log('shootsLog: ', shooter.shootsLog)
+        shooter.shoots = shooter.shootsLog.length;
+        //playerRound = shooter.shootsLog.length;
+
         //Resultado del disparo
         icon = this.shootResults(enemy, shooter, turn)[0];
         turn = this.shootResults(enemy, shooter, turn)[1];
-
-        countRound++; //DEBE DE SER LA DEL SHOOTER
-
+        console.log(this.shooter.shoots)
         console.log(
             `Shoot #${this.shooter.shoots} pointing to ${String.fromCharCode(
                 this.shooter.shootCoord[0] + 65
             )}${this.shooter.shootCoord[1]}: ${icon}`
+
         );
 
         //this.mangeResults(enemy, shootCoord)
@@ -517,11 +523,13 @@ export default {
     },
 
     playing(dead, turn) {
-        let countRound = 0;
+        let playerRound = 0;
         dead = true;
+
+        printLine(`ROUND ${playerRound}`);
         
             let life = this.enemy.life;
-            turn = this.playerRound(this.shooter, this.enemy, countRound, turn);
+            turn = this.playerRound(this.shooter, this.enemy, playerRound, turn);
             //Cambio de roles de los jugadores
             this.toDecide(turn);
             console.log(
@@ -530,6 +538,7 @@ export default {
                 '. Enemy: ',
                 this.enemy.name
             );
+            turn = this.playerRound(this.shooter, this.enemy, playerRound, turn);
         
         return dead;
     },
