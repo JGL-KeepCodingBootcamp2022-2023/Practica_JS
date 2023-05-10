@@ -294,7 +294,7 @@ export default {
     },
 
     toTestLog(shooter, shootCoord) {
-        console.log('Ya comprobaremos el disparo')
+        console.log('Ya comprobaremos el disparo');
         //Compruebo si el disparo se ha realizado
 
         /*find = shooter.shootsLog.findIndex((elemento) => {
@@ -305,7 +305,7 @@ export default {
     },
 
     toLog(shooter, shootCoord) {
-        //Añadimos el disapro al registro de diparos de cada jugador
+        //Añadimos el disparo al registro de diparos de cada jugador
         shooter.shootsLog.push([...shootCoord]);
         shooter.shoots++;
     },
@@ -469,8 +469,7 @@ export default {
         });
     },
     playerRound(shooter, enemy, playerRound, turn) {
-        //PLAYER LIFE = player.positions.length --> donde vaya
-        playerRound = shooter.shootsLog.length
+        playerRound = shooter.shootsLog.length;
         let find = -1;
         let shootCoord;
         let icon;
@@ -493,19 +492,17 @@ export default {
 
         //Resgitro del disparo
         this.toLog(shooter, shootCoord);
-        console.log('shootsLog: ', shooter.shootsLog)
+        console.log('shootsLog: ', shooter.shootsLog);
         shooter.shoots = shooter.shootsLog.length;
-        //playerRound = shooter.shootsLog.length;
 
         //Resultado del disparo
         icon = this.shootResults(enemy, shooter, turn)[0];
         turn = this.shootResults(enemy, shooter, turn)[1];
-        console.log(this.shooter.shoots)
+        console.log(this.shooter.shoots);
         console.log(
             `Shoot #${this.shooter.shoots} pointing to ${String.fromCharCode(
                 this.shooter.shootCoord[0] + 65
             )}${this.shooter.shootCoord[1]}: ${icon}`
-
         );
 
         //this.mangeResults(enemy, shootCoord)
@@ -514,7 +511,6 @@ export default {
         return turn;
 
         //VOLVER A MIRAR
-        
 
         //buscar la coordenada en cada barco (forEach?) de enemy
         //Cuando lo encuentre, añadir eswa coord al impacto.
@@ -527,19 +523,35 @@ export default {
         dead = true;
 
         printLine(`ROUND ${playerRound}`);
-        
-            let life = this.enemy.life;
-            turn = this.playerRound(this.shooter, this.enemy, playerRound, turn);
-            //Cambio de roles de los jugadores
-            this.toDecide(turn);
-            console.log(
-                'Shooter: ',
-                this.shooter.name,
-                '. Enemy: ',
-                this.enemy.name
+
+        let life = this.enemy.life;
+        while (turn && this.enemy.life > 0) {
+            turn = this.playerRound(
+                this.shooter,
+                this.enemy,
+                playerRound,
+                turn
             );
-            turn = this.playerRound(this.shooter, this.enemy, playerRound, turn);
-        
+        }
+        //Cambio de roles de los jugadores
+        this.toDecide(turn);
+        console.log(
+            'Shooter: ',
+            this.shooter.name,
+            '. Enemy: ',
+            this.enemy.name
+        );
+        //Reseterar true
+        turn = true;
+        while (turn && this.enemy.life > 0) {
+            turn = this.playerRound(
+                this.shooter,
+                this.enemy,
+                playerRound,
+                turn
+            );
+        }
+
         return dead;
     },
 

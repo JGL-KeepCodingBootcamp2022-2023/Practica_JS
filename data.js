@@ -79,7 +79,7 @@ class PLAYER {
 export const playerA = new PLAYER(
     'Player A',
     playerAGrid,
-    2,
+    0,
     0,
     [],
     [], //Lo siguiente es nueva añadidura que puede que borrarse
@@ -94,7 +94,7 @@ export const playerA = new PLAYER(
     ['Lancha 2', '🛶  |', 1, [], []],
     ['Lancha 3', '🛶  |', 1, [], []]
 );
-export const playerB = new PLAYER('Player B', playerBGrid, 2, 0, [], []);
+export const playerB = new PLAYER('Player B', playerBGrid, 0, 0, [], []);
 
 export const FIGURES = [' 💧 |', ' 🔥 |'];
 
