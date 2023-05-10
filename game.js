@@ -294,7 +294,7 @@ export default {
     },
 
     toTestLog(shooter, shootCoord) {
-        console.log('Ya comprobaremos el disparo');
+        console.log('~~ Ya comprobaremos el disparo ~~');
         //Compruebo si el disparo se ha realizado
 
         /*find = shooter.shootsLog.findIndex((elemento) => {
@@ -462,6 +462,7 @@ export default {
 
         return [icon, turn];
     },
+
     mangeResults(enemy, shootCoord, turn) {
         //Encontrar el barco que tiene esta shootcoord
         let find = enemy.shootsLog.findIndex((elemento) => {
@@ -474,6 +475,7 @@ export default {
         let shootCoord;
         let icon;
 
+        console.log();
         printLine(`Round ${playerRound} for ${shooter.name}`);
         //Para que sea tocado, empty y que esté en POSITIONS.
         //eliminar coordenada de player positions?
@@ -498,7 +500,6 @@ export default {
         //Resultado del disparo
         icon = this.shootResults(enemy, shooter, turn)[0];
         turn = this.shootResults(enemy, shooter, turn)[1];
-        console.log(this.shooter.shoots);
         console.log(
             `Shoot #${this.shooter.shoots} pointing to ${String.fromCharCode(
                 this.shooter.shootCoord[0] + 65
@@ -506,7 +507,7 @@ export default {
         );
 
         //this.mangeResults(enemy, shootCoord)
-
+        console.log();
         console.log('TERMINA EL TURNO del jugador');
         return turn;
 
@@ -518,39 +519,32 @@ export default {
         //SI VIDA BARCO = 0 => INDICAR QUÉ BARCO HUNDIDO SE HA.
     },
 
+    toPlay() {
+        let turn = true;
+        while (turn && this.enemy.life > 0) {
+            turn = this.playerRound(
+                this.shooter,
+                this.enemy,
+                this.playerRound,
+                turn
+            );
+        }
+        return turn;
+    },
     playing(dead, turn) {
         let playerRound = 0;
         dead = true;
 
         printLine(`ROUND ${playerRound}`);
 
-        let life = this.enemy.life;
-        while (turn && this.enemy.life > 0) {
-            turn = this.playerRound(
-                this.shooter,
-                this.enemy,
-                playerRound,
-                turn
-            );
-        }
+        //ronda del jugador shooter
+        turn = this.toPlay();
+
         //Cambio de roles de los jugadores
         this.toDecide(turn);
-        console.log(
-            'Shooter: ',
-            this.shooter.name,
-            '. Enemy: ',
-            this.enemy.name
-        );
-        //Reseterar true
-        turn = true;
-        while (turn && this.enemy.life > 0) {
-            turn = this.playerRound(
-                this.shooter,
-                this.enemy,
-                playerRound,
-                turn
-            );
-        }
+
+        //ronda del nuevo shooter (jugador que antes del cambio de rol era enemy)
+        turn = this.toPlay();
 
         return dead;
     },
@@ -568,12 +562,7 @@ export default {
         printHeading('THE BATTTLESHIP SIMULATOR STARTS');
         // Empieza con el jugador A
         this.toDecide(turn);
-        console.log(
-            'Shooter: ',
-            this.shooter.name,
-            '. Enemy: ',
-            this.enemy.name
-        );
+
         while (dead == false && this.totalShoots < 10) {
             //PLAYING ES LA RONDA COMPLETA
             dead = this.playing(dead, turn);
