@@ -74,6 +74,7 @@ export default {
                     this.placeShips(player, player.ships[i].LANCHA, playerGrid);
                 }
             }
+            player.life = player.positions.length;
         },
 
         paridad(array, barco) {
@@ -277,8 +278,8 @@ export default {
             this.shooter = playerA;
             this.enemy = playerB;
         } else {
-            this.shooter = playerA;
-            this.enemy = playerB;
+            this.shooter = playerB;
+            this.enemy = playerA;
         }
 
         return this.shooter, this.enemy;
@@ -287,11 +288,12 @@ export default {
     toShoot(shooter) {
         let x = random(0, gridSize - 1);
         let y = random(0, gridSize - 1);
-        let shooterShootCoord = [x, y];
-        shooter.shootCoord = [...shooterShootCoord]; //Asigna el disparo a la propiedad shootCoord del jugador que dipara
+        let shootCoord = [x, y];
+        shooter.shootCoord = [...shootCoord]; //Asigna el disparo a la propiedad shootCoord del jugador que dipara
+        return shootCoord;
     },
 
-    toTestLog(shooter, shootCoord, find) {
+    toTestLog(shooter, shootCoord) {
         //Compruebo si el disparo se ha realizado
         find = shooter.shootsLog.findIndex((elemento) => {
             elemento[0] === shootCoord[0] && elemento[1] === shootCoord[1];
@@ -301,7 +303,7 @@ export default {
 
     toLog(shooter, shootCoord) {
         //Añadimos el disapro al registro de diparos de cada jugador
-        shooter.shootsLog.push(Object.assign([], shootCoord));
+        shooter.shootsLog.push(...shootCoord);
         shooter.shoots++;
     },
 
@@ -408,16 +410,16 @@ export default {
             enemy.grid[shooter.shootCoord[1]][shooter.shootCoord[0]] =
                 FIGURES[1];
             enemy.life--;
-            this.figurin = '🔥';
+            this.icon = '🔥';
             this.ship(enemy); //TODO Ver qué barco ha tocado y quitarle una vida
             turn = true;
         } else {
             enemy.grid[shooter.shootCoord[1]][shooter.shootCoord[0]] =
                 FIGURES[0];
-            this.figurin = '💧';
+            this.icon = '💧';
             turn = false;
         }
-        return this.figurin;
+        return this.icon;
     },
 
     TestLife(enemy, dead) {
@@ -438,51 +440,97 @@ export default {
             //función next player
         }
     }*/
-    shootResults(enemy, shooter) {
+    shootResults(enemy, shooter, turn) {
         // Devuelve el dibujo de Agua o Tocado
-        let figurin;
-        enemy.grid[shooter.shootCoord[1]][shooter.shootCoord[0]] == EMPTY
-            ? (figurin = FIGURES[0])
-            : (figurin = FIGURES[1]);
-        figurin = figurin.substring(0, figurin.length - 1);
+        let icon;
+        let find;
 
-        return figurin;
+        if (
+            enemy.grid[shooter.shootCoord[1]][shooter.shootCoord[0]] == EMPTY &&
+            find != -1
+        ) {
+            icon = FIGURES[0];
+            turn = false;
+        } else {
+            icon = FIGURES[1];
+            turn = true;
+        }
+        icon = icon.substring(0, icon.length - 1);
+
+        return [icon, turn];
     },
-    round(shooter, enemy, countRound) {
+    mangeResults(enemy, shootCoord, turn) {
+        //Encontrar el barco que tiene esta shootcoord
+        let find = enemy.shootsLog.findIndex((elemento) => {
+            elemento[0] === shootCoord[0] && elemento[1] === shootCoord[1];
+        });
+    },
+    playerRound(shooter, enemy, countRound, turn) {
+        //PLAYER LIFE = player.positions.length --> donde vaya
+
         let find = -1;
-        let shoot = [];
-        let figurin;
+        let shootCoord;
+        let icon;
+
         printLine(`ROUND ${countRound}`);
         printLine(`Round ${shooter.shoots} for ${shooter.name}`);
+        //Para que sea tocado, empty y que esté en POSITIONS.
+        //eliminar coordenada de player positions?
+        if (countRound != 0) {
+            do {
+                shootCoord = this.toShoot(shooter);
 
-        do {
-            if (countRound == 0) {
-                this.toShoot(shooter);
-                console.log(shooter.shootCoord);
-            } else {
-                this.toShoot(shooter);
+                console.log('Coordenada del disparo: ', shootCoord);
+
                 //Comprueba si el jugador ya ha realizado el disparo
-                find = this.toTestLog(shooter, shooter.shootCoord);
-                console.log(shooter.shootCoord);
-            }
-            figurin = this.shootResults(enemy, shooter);
-        } while (find != -1);
+                find = this.toTestLog(shooter, shootCoord);
+            } while (find == -1);
+        } else {
+            shootCoord = this.toShoot(shooter);
+        }
+        //Resgitro del disparo
+        this.toLog(shooter, shootCoord);
+        //Resultado del disparo
+        icon = this.shootResults(enemy, shooter, turn)[0];
+        turn = this.shootResults(enemy, shooter, turn)[1];
+
+        countRound++; //DEBE DE SER LA DEL SHOOTER
 
         console.log(
             `Shoot #${this.shooter.shoots} pointing to ${String.fromCharCode(
                 this.shooter.shootCoord[0] + 65
-            )}${this.shooter.shootCoord[1]}: ${figurin}`
+            )}${this.shooter.shootCoord[1]}: ${icon}`
         );
-        //this.toLog(shooter, shooter.shootCoord)
+
+        //this.mangeResults(enemy, shootCoord)
+
+        console.log('TERMINA EL TURNO del jugador');
+        return turn;
+
+        //VOLVER A MIRAR
+        
+
+        //buscar la coordenada en cada barco (forEach?) de enemy
+        //Cuando lo encuentre, añadir eswa coord al impacto.
+        //Vida del barco el barco.positions.length - barco.impacts.length
+        //SI VIDA BARCO = 0 => INDICAR QUÉ BARCO HUNDIDO SE HA.
     },
 
-    playing(dead) {
+    playing(dead, turn) {
         let countRound = 0;
         dead = true;
-        do {
+        
             let life = this.enemy.life;
-            this.round(this.shooter, this.enemy, countRound);
-        } while (dead == false);
+            turn = this.playerRound(this.shooter, this.enemy, countRound, turn);
+            //Cambio de roles de los jugadores
+            this.toDecide(turn);
+            console.log(
+                'Shooter: ',
+                this.shooter.name,
+                '. Enemy: ',
+                this.enemy.name
+            );
+        
         return dead;
     },
 
@@ -491,7 +539,7 @@ export default {
         let enemy = '';
         let dead = false;
 
-        let figurin = '';
+        let icon = '';
         let life = 0;
         let life1 = 1;
         let turn = true;
@@ -506,11 +554,11 @@ export default {
             this.enemy.name
         );
         while (dead == false && this.totalShoots < 10) {
-            dead = this.playing(dead);
+            //PLAYING ES LA RONDA COMPLETA
+            dead = this.playing(dead, turn);
             /*do {
-                /*this.round(this.shooter, this.enemy, countRound);
-                /*console.log(`Shoot #${this.shooter.shoots} pointing to ${String.fromCharCode(this.shooter.shootCoord[0] + 65)}${this.shooter.shootCoord[1]}: ${figurin}`)
-                figurin = this.toSeeEnemyGrid(this.shooter, this.enemy, this.figurin, turn)             // Miro el disparo en el tablero del enemigo
+                /*console.log(`Shoot #${this.shooter.shoots} pointing to ${String.fromCharCode(this.shooter.shootCoord[0] + 65)}${this.shooter.shootCoord[1]}: ${icon}`)
+                icon = this.toSeeEnemyGrid(this.shooter, this.enemy, this.icon, turn)             // Miro el disparo en el tablero del enemigo
                 console.log()
                 printLine('Own board')
                 print_Grid(this.shooter.grid)
