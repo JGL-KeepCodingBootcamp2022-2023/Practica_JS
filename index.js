@@ -16,7 +16,7 @@ import { setUpGame } from './indexFunctions.js';
 import { printTitle } from './utils.js';
 
 //✅ TÍTULO
-printTitle('THE BATTTLESHIP SIMULATOR', 'Javier Girón López');
+printTitle('THE BATTTLESHIP SIMULATOR');
 
 //✅SETUP DEL JUEGO
 setUpGame(playerA, playerAGrid);
@@ -25,6 +25,7 @@ setUpGame(playerB, playerBGrid);
 // EL JUEGO COMIENZA
 
 game.start(10);
+
 //REPETICIÓN DE TURNOS 200 DISPAROS (100 POR JUGADOR)
 //👀 ESTÁ FALLANDO ALGO EN EL DIBUJO DE LOS TABLEROS Y EL FIGURIN.
 //👀 EL PRIMER FIGURIN FALLA PARA EL SHOOTER. NO LO MUESTRA.

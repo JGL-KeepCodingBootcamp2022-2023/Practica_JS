@@ -11,12 +11,13 @@ import {
 import * as board from './board.js';
 import { gridSize, EMPTY, playerAGrid, playerBGrid } from './board.js';
 import usePrinter from './printer.js';
-import { random } from './utils.js';
+import { random, toDead } from './utils.js';
 const { printHeading, printLine, print_Grid } = usePrinter();
+
 
 export default {
     rondas: 0,
-    totalShoots: 0,
+
     setUpGame: {
         // funciones de inicio del juego
         pos: 0,
@@ -531,20 +532,21 @@ export default {
         }
         return turn;
     },
+
     playing(dead, turn) {
         let playerRound = 0;
         dead = true;
 
-        printLine(`ROUND ${playerRound}`);
-
         //ronda del jugador shooter
         turn = this.toPlay();
+        dead = toDead()
 
         //Cambio de roles de los jugadores
         this.toDecide(turn);
 
         //ronda del nuevo shooter (jugador que antes del cambio de rol era enemy)
         turn = this.toPlay();
+        dead = toDead()
 
         return dead;
     },
@@ -553,7 +555,7 @@ export default {
         let shooter = '';
         let enemy = '';
         let dead = false;
-
+        let round = 0;
         let icon = '';
         let life = 0;
         let life1 = 1;
@@ -563,10 +565,23 @@ export default {
         // Empieza con el jugador A
         this.toDecide(turn);
 
-        while (dead == false && this.totalShoots < 10) {
+        while (dead == false && playerA.shoots < 5 && playerB.shoots < 5) {
             //PLAYING ES LA RONDA COMPLETA
+            printLine(`ROUND ${round}`);
+
             dead = this.playing(dead, turn);
-            /*do {
+            round++;
+
+            console.log('playerA.life; ', playerA.life)
+            console.log('playerA.life :', playerB.life)
+
+            console.log('Disparos A: ', playerA.shoots)
+            console.log('Disparos B: ', playerB.shoots)
+        }
+        /*do {
+
+                console.log(playerA.life)
+                console.log(playerB.life)
                 /*console.log(`Shoot #${this.shooter.shoots} pointing to ${String.fromCharCode(this.shooter.shootCoord[0] + 65)}${this.shooter.shootCoord[1]}: ${icon}`)
                 icon = this.toSeeEnemyGrid(this.shooter, this.enemy, this.icon, turn)             // Miro el disparo en el tablero del enemigo
                 console.log()
@@ -583,7 +598,6 @@ export default {
                 countRound++        //MODIFICAR PARA EL TOTAL Y PARA CADA JUGADOR
                 life1 = this.enemy.life
             } while ((dead = false));*/
-        }
     },
 
     toWin() {
