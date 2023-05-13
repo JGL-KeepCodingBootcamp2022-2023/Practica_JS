@@ -1,13 +1,16 @@
-function verticalDraw (barco, array){
-    let totalCoords = [[...array]]
-    let newCoords
-    for (let j = 0; j < barco; j++) {
-        newCoords = [array[0], (array[1] = ++array[1])];
-        totalCoords.push(newCoords)
-    }
-    return totalCoords
-}
+let enemy = {
+    vida: 9,
+    shootsLog: [
+        [0, 0],
+        [2, 8],
+        [6, 3],
+        [5, 6],
+        [5, 8],
+    ],
+};
 
-let barco = 5
-let array = [0,0]
-console.log(verticalDraw (barco, array))
+let shootCoord = [6,3];
+
+let find = enemy.shootsLog.findIndex((el) => el[0] === shootCoord[0] && el[1] === shootCoord[1]);
+
+console.log(find)

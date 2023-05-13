@@ -14,7 +14,6 @@ import usePrinter from './printer.js';
 import { random, toDead } from './utils.js';
 const { printHeading, printLine, print_Grid } = usePrinter();
 
-
 export default {
     rondas: 0,
 
@@ -282,7 +281,6 @@ export default {
             this.shooter = playerB;
             this.enemy = playerA;
         }
-
         return this.shooter, this.enemy;
     },
 
@@ -295,20 +293,19 @@ export default {
     },
 
     toTestLog(shooter, shootCoord) {
-        console.log('~~ Ya comprobaremos el disparo ~~');
+        console.log('~~ Ya comprobando el disparo ~~');
         //Compruebo si el disparo se ha realizado
-
-        /*find = shooter.shootsLog.findIndex((elemento) => {
-            elemento[0] === shootCoord[0] && elemento[1] === shootCoord[1];
-        });*/
-
-        //return find;
-    },
-
-    toLog(shooter, shootCoord) {
-        //Añadimos el disparo al registro de diparos de cada jugador
-        shooter.shootsLog.push([...shootCoord]);
-        shooter.shoots++;
+        let shooterLog = [...shooter.shootsLog];
+        let find = shooterLog.findIndex(
+            (el) => el[0] === shootCoord[0] && el[1] === shootCoord[1]
+        );
+        if (find == -1) {
+            console.log('nuevo ShootLog: ', shootCoord);
+        } else {
+            //Repite disparo
+            console.log('Hay que repetir el disparo');
+        }
+        return find;
     },
 
     ship(shooter, enemy) {
@@ -426,15 +423,6 @@ export default {
         return this.icon;
     },
 
-    TestLife(enemy, dead) {
-        if (this.enemy.life == 0) {
-            this.dead = true;
-        } else {
-            this.dead = false;
-        }
-        return this.dead;
-    },
-
     /*touchedAndSunk(barco){
         barco.life--
         if(barco.life == 0) {
@@ -444,43 +432,47 @@ export default {
             //función next player
         }
     }*/
-    shootResults(enemy, shooter, turn) {
+    shootResults(enemy, shooter) {
         // Devuelve el dibujo de Agua o Tocado
         let icon;
         let find;
 
         if (
             enemy.grid[shooter.shootCoord[1]][shooter.shootCoord[0]] == EMPTY &&
-            find != -1
+            find == -1
         ) {
             icon = FIGURES[0];
-            turn = false;
+            //turn = false;
+            this.turn = false;
         } else {
             icon = FIGURES[1];
-            turn = true;
+            //turn = true;
+            this.turn = true;
         }
         icon = icon.substring(0, icon.length - 1);
-
-        return [icon, turn];
+        //console.log('Esto es this.turn: ', this.turn)
+        return icon;
     },
 
     mangeResults(enemy, shootCoord, turn) {
         //Encontrar el barco que tiene esta shootcoord
-        let find = enemy.shootsLog.findIndex((elemento) => {
-            elemento[0] === shootCoord[0] && elemento[1] === shootCoord[1];
+        let finding = enemy.shootsLog.findIndex((el) => {
+            el[0] == shootCoord[0] && elemento[1] == shootCoord[1];
+            console.log(finding);
         });
     },
-    playerRound(shooter, enemy, playerRound, turn) {
-        playerRound = shooter.shootsLog.length;
+    playerRound(shooter, enemy, playerRounds) {
+        playerRounds = shooter.shootsLog.length;
         let find = -1;
         let shootCoord;
         let icon;
 
         console.log();
-        printLine(`Round ${playerRound} for ${shooter.name}`);
-        //Para que sea tocado, empty y que esté en POSITIONS.
-        //eliminar coordenada de player positions?
-        if (playerRound != 0) {
+        printLine(`Round ${playerRounds} for ${shooter.name}`);
+
+        //eliminar coordenada de player positions
+
+        /*if (playerRounds != 0) {
             do {
                 shootCoord = this.toShoot(shooter);
 
@@ -493,14 +485,17 @@ export default {
             shootCoord = this.toShoot(shooter);
         }
 
-        //Resgitro del disparo
-        this.toLog(shooter, shootCoord);
-        console.log('shootsLog: ', shooter.shootsLog);
+        //Resgitro del disparo y actualizo los disparos realizados  
+        shooter.shootsLog.push([...shootCoord]);
         shooter.shoots = shooter.shootsLog.length;
+        
+        console.log('shootsLog: ', shooter.shootsLog);
 
         //Resultado del disparo
-        icon = this.shootResults(enemy, shooter, turn)[0];
-        turn = this.shootResults(enemy, shooter, turn)[1];
+        icon = this.shootResults(enemy, shooter)[0];
+        //turn = this.shootResults(enemy, shooter, turn)[1];
+
+        console.log('turn tras shootresults: ',this.turn)
         console.log(
             `Shoot #${this.shooter.shoots} pointing to ${String.fromCharCode(
                 this.shooter.shootCoord[0] + 65
@@ -510,45 +505,64 @@ export default {
         //this.mangeResults(enemy, shootCoord)
         console.log();
         console.log('TERMINA EL TURNO del jugador');
-        return turn;
+        return this.turn;
 
         //VOLVER A MIRAR
 
         //buscar la coordenada en cada barco (forEach?) de enemy
         //Cuando lo encuentre, añadir eswa coord al impacto.
         //Vida del barco el barco.positions.length - barco.impacts.length
-        //SI VIDA BARCO = 0 => INDICAR QUÉ BARCO HUNDIDO SE HA.
+        //SI VIDA BARCO = 0 => INDICAR QUÉ BARCO HUNDIDO SE HA.*/
+        console.log(this.turn);
+        return (this.turn = false);
     },
 
-    toPlay() {
-        let turn = true;
-        while (turn && this.enemy.life > 0) {
-            turn = this.playerRound(
+    /*toPlay() {
+        this.turn = true;
+        console.log('antes de entrar en toPlay ciclo while; turn Vale: ', this.turn)
+        while (this.turn = true /&& this.enemy.life > 0) {
+            console.log('al entrar en toPlay; turn Vale: ', this.turn)
+            this.turn = this.playerRound(
                 this.shooter,
                 this.enemy,
-                this.playerRound,
-                turn
-            );
+                this.playerRounds,
+                //this.turn
+                );
+                console.log('antes de salir en toPlay ciclo while; turn Vale: ', this.turn)
         }
+ 
         return turn;
-    },
+    },*/
 
     playing(dead, turn) {
-        let playerRound = 0;
+        let playerRounds = 0;
         dead = true;
 
+        console.log('Juega: ', this.shooter.name);
         //ronda del jugador shooter
-        turn = this.toPlay();
-        dead = toDead()
+        //turn = this.toPlay();
+        turn = false;
+        dead = toDead();
 
         //Cambio de roles de los jugadores
         this.toDecide(turn);
 
+        console.log();
+        console.log('~~ CAMBIO DE TURNO ~~');
+        console.log('Juega: ', this.shooter.name);
         //ronda del nuevo shooter (jugador que antes del cambio de rol era enemy)
-        turn = this.toPlay();
-        dead = toDead()
+        //turn = this.toPlay();
+        turn = true;
+        dead = toDead();
 
-        return dead;
+        //Cambio de roles de los jugadores para empezar nueva Ronda Completa de juego
+        this.toDecide(turn);
+
+        console.log();
+        console.log('~~ CAMBIO DE TURNO ~~');
+        console.log('Juega: ', this.shooter.name);
+
+        return (dead = true);
     },
 
     start(shootsNumber) {
@@ -565,19 +579,20 @@ export default {
         // Empieza con el jugador A
         this.toDecide(turn);
 
-        while (dead == false && playerA.shoots < 5 && playerB.shoots < 5) {
+        do {
+            //NO SE ESTÁ CUMPLIENDO LOS DISPAROS DE LOS JUGADORES
             //PLAYING ES LA RONDA COMPLETA
             printLine(`ROUND ${round}`);
 
             dead = this.playing(dead, turn);
             round++;
 
-            console.log('playerA.life; ', playerA.life)
-            console.log('playerA.life :', playerB.life)
+            console.log('playerA.life; ', playerA.life);
+            console.log('playerA.life :', playerB.life);
 
-            console.log('Disparos A: ', playerA.shoots)
-            console.log('Disparos B: ', playerB.shoots)
-        }
+            console.log('Disparos A: ', playerA.shoots);
+            console.log('Disparos B: ', playerB.shoots);
+        } while ((dead = false && playerA.shoots < 5 && playerB.shoots < 5));
         /*do {
 
                 console.log(playerA.life)
@@ -591,7 +606,6 @@ export default {
                 console.log()
                 printLine('Enemy board')
                 print_Grid(this.enemy.grid, true)
-                dead = this.TestLife(this.enemy, this.dead)
                 console.log(`La vida de ${this.shooter.name} es de ${this.shooter.life}`) //Borar
                 console.log(`La vida de ${this.enemy.name} es de ${this.enemy.life}`) //Borrar
                 this.totalShoots++
