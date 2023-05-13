@@ -459,9 +459,14 @@ export default {
         return [icon, (find = finding)];
     },
 
-    mangeResults(enemy, shootCoord, turn) {
-        //Encontrar el barco que tiene esta shootcoord
+    mangeResults(shootCoord, find) {
+        //Elimina shootCoord de positions en el enemigo
         console.log('entramos en manegeRresults');
+        console.log(find);
+        console.log(this.enemy.positions);
+
+        this.enemy.positions.splice(find, 1);
+        console.log(this.enemy.positions);
         /*let finding = enemy.shootsLog.findIndex((el) => {
             el[0] == shootCoord[0] && elemento[1] == shootCoord[1];
             console.log(finding);
@@ -503,10 +508,9 @@ export default {
             )}${this.shooter.shootCoord[1]}: ${icon}`
         );
         if (find != -1) {
-            this.mangeResults(shootCoord);
+            this.mangeResults(shootCoord, find);
         }
-        console.log();
-        console.log('TERMINA EL TURNO del jugador');
+
         return this.turn;
 
         //VOLVER A MIRAR
@@ -562,14 +566,18 @@ export default {
     },
 
     start(shootsNumber) {
-        let shooter = '';
-        let enemy = '';
+        let shooter;
+        let enemy
         let dead = false;
         let round = 0;
-        let icon = '';
+        let icon
         let life = 0;
         let life1 = 1;
         let turn = true;
+        playerA.life = playerA.positions.length
+        playerB.life = playerB.positions.length
+        console.log('playerA.life; ', playerA.life);
+        console.log('playerB.life :', playerB.life);
 
         printHeading('THE BATTTLESHIP SIMULATOR STARTS');
         // Empieza con el jugador A
@@ -584,7 +592,7 @@ export default {
             round++;
 
             console.log('playerA.life; ', playerA.life);
-            console.log('playerA.life :', playerB.life);
+            console.log('playerB.life :', playerB.life);
 
             console.log('Disparos A: ', playerA.shoots);
             console.log('Disparos B: ', playerB.shoots);
