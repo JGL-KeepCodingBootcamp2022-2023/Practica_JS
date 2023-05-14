@@ -2,8 +2,11 @@ import {
     playerA,
     playerB,
     LANCHA,
-    CRUCERO,
-    SUBMARINO,
+    CRUCERO1,
+    CRUCERO2,
+    CRUCERO3,
+    SUBMARINO1,
+    SUBMARINO2,
     BUQUE,
     PORTAAVIONES,
     FIGURES,
@@ -30,11 +33,11 @@ export default {
             (player.ships = [
                 { id: 'Portaaviones', PORTAAVIONES },
                 { id: 'Buque', BUQUE },
-                { id: 'Submarino 1', SUBMARINO },
-                { id: 'Submarino 2', SUBMARINO },
-                { id: 'Crucero 1', CRUCERO },
-                { id: 'Crucero 2', CRUCERO },
-                { id: 'Crucero 3', CRUCERO },
+                { id: 'Submarino 1', SUBMARINO1 },
+                { id: 'Submarino 2', SUBMARINO2 },
+                { id: 'Crucero 1', CRUCERO1 },
+                { id: 'Crucero 2', CRUCERO2 },
+                { id: 'Crucero 3', CRUCERO3 },
                 { id: 'Lancha 1', LANCHA: JSON.parse(JSON.stringify(LANCHA)) },
                 { id: 'Lancha 2', LANCHA: JSON.parse(JSON.stringify(LANCHA)) },
                 { id: 'Lancha 3', LANCHA: JSON.parse(JSON.stringify(LANCHA)) },
@@ -55,16 +58,36 @@ export default {
 
                 } else if (i == 1) {
                     this.placeShips(player, player.ships[i].BUQUE, playerGrid);
-                } else if (i == 2 || i == 3) {
+                } else if (i == 2) {
+                    console.log(player.ships[i].id)
                     this.placeShips(
                         player,
-                        player.ships[i].SUBMARINO,
+                        player.ships[i].SUBMARINO1,
                         playerGrid
                     );
-                } else if (i == 4 || i == 5 || i == 6) {
+                } else if (i == 3) {
+                    console.log(player.ships[i].id)
                     this.placeShips(
                         player,
-                        player.ships[i].CRUCERO,
+                        player.ships[i].SUBMARINO2,
+                        playerGrid
+                    );
+                } else if (i == 4) {
+                    this.placeShips(
+                        player,
+                        player.ships[i].CRUCERO1,
+                        playerGrid
+                    );
+                } else if (i == 5) {
+                    this.placeShips(
+                        player,
+                        player.ships[i].CRUCERO2,
+                        playerGrid
+                    );
+                } else if (i == 6) {
+                    this.placeShips(
+                        player,
+                        player.ships[i].CRUCERO3,
                         playerGrid
                     );
                 } else {
@@ -104,6 +127,7 @@ export default {
         },
 
         placeShips(player, barco, playerGrid) {
+                console.log(barco)
             let pass;
             //COLOCAR EL PORTAAVIONES
             if (barco.life > 4) {
@@ -587,11 +611,7 @@ export default {
         let life = 0;
         let life1 = 1;
         let turn = true;
-        playerA.life = playerA.positions.length;
-        playerB.life = playerB.positions.length;
-        console.log('playerA.life; ', playerA.life);
-        console.log('playerB.life :', playerB.life);
-
+        
         printHeading('THE BATTTLESHIP SIMULATOR STARTS');
         // Empieza con el jugador A
         this.toDecide(turn);

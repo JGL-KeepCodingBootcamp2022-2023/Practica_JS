@@ -12,8 +12,14 @@ class TYPESHIP {
 
 export const LANCHA = new TYPESHIP('🛶  |', 1, [], []);
 export const CRUCERO = new TYPESHIP('🚤  |', 2, [], []);
+export const CRUCERO1 = new TYPESHIP('🚤  |', 2, [], []);
+export const CRUCERO2 = new TYPESHIP('🚤  |', 2, [], []);
+export const CRUCERO3= new TYPESHIP('🚤  |', 2, [], []);
 export const SUBMARINO = new TYPESHIP(' 🛳  |', 3, [], []);
+export const SUBMARINO1 = new TYPESHIP(' 🛳  |', 3, [], []);
+export const SUBMARINO2 = new TYPESHIP(' 🛳  |', 3, [], []);
 export const BUQUE = new TYPESHIP(' 🛥  |', 4, [], []);
+
 export const PORTAAVIONES = new TYPESHIP('🚢  |', 5, [], []);
 
 class PLAYER {
