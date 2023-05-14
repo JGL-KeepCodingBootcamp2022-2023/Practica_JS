@@ -44,33 +44,30 @@ export default {
 
         playerShip(player, playerGrid) {
             let i = 0;
+
             for (i = 0; i < 10; i++) {
                 if (i == 0) {
-                    this.pos = i;
                     this.placeShips(
                         player,
                         player.ships[i].PORTAAVIONES,
                         playerGrid
                     );
+
                 } else if (i == 1) {
-                    this.pos = i;
                     this.placeShips(player, player.ships[i].BUQUE, playerGrid);
                 } else if (i == 2 || i == 3) {
-                    this.pos = i;
                     this.placeShips(
                         player,
                         player.ships[i].SUBMARINO,
                         playerGrid
                     );
                 } else if (i == 4 || i == 5 || i == 6) {
-                    this.pos = i;
                     this.placeShips(
                         player,
                         player.ships[i].CRUCERO,
                         playerGrid
                     );
                 } else {
-                    this.pos = i;
                     this.placeShips(player, player.ships[i].LANCHA, playerGrid);
                 }
             }
@@ -460,35 +457,39 @@ export default {
     },
 
     mangeResults(shootCoord, find) {
-        let shipFound
-        
-        
+        let shipFound;
+
         //Elimina shootCoord de positions en el enemigo y recalcula la vida del enemigo
         console.log('entramos en manegeRresults');
         this.enemy.positions.splice(find, 1);
-        this.enemy.life = this.enemy.positions.length
+        this.enemy.life = this.enemy.positions.length;
 
-
-        for (let i=0; i<this.enemy.ships.length; i++) {
-            
-            let keyValue= Object.values(this.enemy.ships[i])[1].position
-            let life= Object.values(this.enemy.ships[i])[1].life
-            let finding=keyValue.findIndex((el) => el[0] === shootCoord[0] && el[1] === shootCoord[1])
-            console.log(`Finding es ${finding}`)
-            if (finding != -1) {{
-                shipFound = this.enemy.ships[i].id
-                console.log('He encontrado el barco. Es:', shipFound)
-                console.log(`Las posiciones de ${shipFound} son: ${keyValue}`)
-                console.log(`La vida de ${shipFound} es: ${life}`)
-                //Elimina la coordenada de ese barco
-                keyValue.splice(finding, 1)
-                console.log(`Las nuevas posiciones de ${shipFound} son: ${keyValue}`)
-                console.log(`La nueva vida de ${shipFound} es: ${life}`)
-                break
-            }}         
-
+        for (let i = 0; i < this.enemy.ships.length; i++) {
+            let keyValue = Object.values(this.enemy.ships[i])[1].position;
+            let life = Object.values(this.enemy.ships[i])[1].life;
+            let finding = keyValue.findIndex(
+                (el) => el[0] === shootCoord[0] && el[1] === shootCoord[1]
+            );
+            console.log(`Finding es ${finding}`);
+            if (finding != -1) {
+                {
+                    shipFound = this.enemy.ships[i].id;
+                    console.log('He encontrado el barco. Es:', shipFound);
+                    console.log(
+                        `Las posiciones de ${shipFound} son: ${keyValue}`
+                    );
+                    console.log(`La vida de ${shipFound} es: ${life}`);
+                    //Elimina la coordenada de ese barco
+                    keyValue.splice(finding, 1);
+                    console.log(
+                        `Las nuevas posiciones de ${shipFound} son: ${keyValue}`
+                    );
+                    life = keyValue.length
+                    console.log(`La nueva vida de ${shipFound} es: ${life}`);
+                    break;
+                }
+            }
         }
-        
     },
     playerRound() {
         this.playerRounds = this.shooter.shootsLog.length;
@@ -585,15 +586,15 @@ export default {
 
     start(shootsNumber) {
         let shooter;
-        let enemy
+        let enemy;
         let dead = false;
         let round = 0;
-        let icon
+        let icon;
         let life = 0;
         let life1 = 1;
         let turn = true;
-        playerA.life = playerA.positions.length
-        playerB.life = playerB.positions.length
+        playerA.life = playerA.positions.length;
+        playerB.life = playerB.positions.length;
         console.log('playerA.life; ', playerA.life);
         console.log('playerB.life :', playerB.life);
 
