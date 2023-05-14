@@ -420,15 +420,14 @@ export default {
         return this.icon;
     },
 
-    /*touchedAndSunk(barco){
-        barco.life--
-        if(barco.life == 0) {
-            console.log(`The ship ${barco.id} has been sunk. Well done!!`)
+    touchedAndSunk(life, shipFound){
+
+        if(life <= 0) {
+            console.log(`The ${shipFound} has been sunk. Well done!!`)
+        }else{ //Eliminar esto
+            console.log('Tocado, pero no hundido')
         }
-        else {
-            //función next player
-        }
-    }*/
+    }, 
     showResults(shootCoord, find) {
         // Devuelve el dibujo de Agua si falla o Tocado si acierta en un barco enemigo.
         //Doble comprobación: Si la casilla enemiga está vacía y si la coordenada de disparo no coincide con ninguna coordenada de barco enemigo
@@ -458,6 +457,8 @@ export default {
 
     mangeResults(shootCoord, find) {
         let shipFound;
+        let shipPositionValues
+        let life
 
         //Elimina shootCoord de positions en el enemigo y recalcula la vida del enemigo
         console.log('entramos en manegeRresults');
@@ -465,27 +466,20 @@ export default {
         this.enemy.life = this.enemy.positions.length;
 
         for (let i = 0; i < this.enemy.ships.length; i++) {
-            let keyValue = Object.values(this.enemy.ships[i])[1].position;
-            let life = Object.values(this.enemy.ships[i])[1].life;
-            let finding = keyValue.findIndex(
+            shipPositionValues = Object.values(this.enemy.ships[i])[1].position;
+            life = Object.values(this.enemy.ships[i])[1].life;
+            let finding = shipPositionValues.findIndex(
                 (el) => el[0] === shootCoord[0] && el[1] === shootCoord[1]
             );
             console.log(`Finding es ${finding}`);
             if (finding != -1) {
                 {
                     shipFound = this.enemy.ships[i].id;
-                    console.log('He encontrado el barco. Es:', shipFound);
-                    console.log(
-                        `Las posiciones de ${shipFound} son: ${keyValue}`
-                    );
-                    console.log(`La vida de ${shipFound} es: ${life}`);
-                    //Elimina la coordenada de ese barco
-                    keyValue.splice(finding, 1);
-                    console.log(
-                        `Las nuevas posiciones de ${shipFound} son: ${keyValue}`
-                    );
-                    life = keyValue.length
-                    console.log(`La nueva vida de ${shipFound} es: ${life}`);
+                    //Elimina la coordenada de ese barco y ajusta la vida del barco
+                    shipPositionValues.splice(finding, 1);
+                    life = shipPositionValues.length
+                    //Si el barco es hundido, mensaje de barco hundido
+                    this.touchedAndSunk(life, shipFound)
                     break;
                 }
             }
