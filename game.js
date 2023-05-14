@@ -460,17 +460,35 @@ export default {
     },
 
     mangeResults(shootCoord, find) {
-        //Elimina shootCoord de positions en el enemigo
+        let shipFound
+        
+        
+        //Elimina shootCoord de positions en el enemigo y recalcula la vida del enemigo
         console.log('entramos en manegeRresults');
-        console.log(find);
-        console.log(this.enemy.positions);
-
         this.enemy.positions.splice(find, 1);
-        console.log(this.enemy.positions);
-        /*let finding = enemy.shootsLog.findIndex((el) => {
-            el[0] == shootCoord[0] && elemento[1] == shootCoord[1];
-            console.log(finding);
-        });*/
+        this.enemy.life = this.enemy.positions.length
+
+
+        for (let i=0; i<this.enemy.ships.length; i++) {
+            
+            let keyValue= Object.values(this.enemy.ships[i])[1].position
+            let life= Object.values(this.enemy.ships[i])[1].life
+            let finding=keyValue.findIndex((el) => el[0] === shootCoord[0] && el[1] === shootCoord[1])
+            console.log(`Finding es ${finding}`)
+            if (finding != -1) {{
+                shipFound = this.enemy.ships[i].id
+                console.log('He encontrado el barco. Es:', shipFound)
+                console.log(`Las posiciones de ${shipFound} son: ${keyValue}`)
+                console.log(`La vida de ${shipFound} es: ${life}`)
+                //Elimina la coordenada de ese barco
+                keyValue.splice(finding, 1)
+                console.log(`Las nuevas posiciones de ${shipFound} son: ${keyValue}`)
+                console.log(`La nueva vida de ${shipFound} es: ${life}`)
+                break
+            }}         
+
+        }
+        
     },
     playerRound() {
         this.playerRounds = this.shooter.shootsLog.length;

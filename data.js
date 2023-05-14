@@ -32,7 +32,7 @@ class PLAYER {
         shoots,
         shootCoord,
         shootsLog,
-        ship0,
+        /*ship0,
         ship1,
         ship2,
         ship3,
@@ -41,7 +41,7 @@ class PLAYER {
         ship6,
         ship7,
         ship8,
-        ship9
+        ship9*/
     ) {
         this.name = name;
         this.grid = grid;
@@ -49,7 +49,7 @@ class PLAYER {
         this.shoots = shoots;
         this.shootCoord = shootCoord;
         this.shootsLog = shootsLog;
-        this.ship0 = ship0;
+        /*this.ship0 = ship0;
         this.ship1 = ship1;
         this.ship2 = ship2;
         this.ship3 = ship3;
@@ -58,7 +58,7 @@ class PLAYER {
         this.ship6 = ship6;
         this.ship7 = ship7;
         this.ship8 = ship8;
-        this.ship9 = ship9;
+        this.ship9 = ship9;*/
     }
     //Métodos que necesita cada jugador
 
