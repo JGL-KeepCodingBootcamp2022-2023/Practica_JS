@@ -576,12 +576,13 @@ export default {
     },
 
     toPlay(change, dead) {
+        change = 0;
         console.log('Esto es change en to Play entes ciclo doWhile: ', change);
         do {
             change = this.playerRound(change);
             console.log('Esto es change en ciclo doWhile: ', change);
             dead = toDead();
-        } while ((change = false));
+        } while ((change === false));
         console.log(
             'Esto es change en tras ciclo dowhile dentro de toPlay: ',
             change
