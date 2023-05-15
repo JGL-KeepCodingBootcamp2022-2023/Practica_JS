@@ -55,41 +55,54 @@ export default {
                         player.ships[i].PORTAAVIONES,
                         playerGrid
                     );
-
                 } else if (i == 1) {
                     this.placeShips(player, player.ships[i].BUQUE, playerGrid);
                 } else if (i == 2) {
-                    console.log(player.ships[i].id)
+                    console.log(player.name, player.ships[i].id);
                     this.placeShips(
                         player,
                         player.ships[i].SUBMARINO1,
                         playerGrid
                     );
+                    console.log(
+                        player.name,
+                        player.ships[i].SUBMARINO1.position
+                    );
                 } else if (i == 3) {
-                    console.log(player.ships[i].id)
+                    console.log(player.name, player.ships[i].id);
                     this.placeShips(
                         player,
                         player.ships[i].SUBMARINO2,
                         playerGrid
                     );
+                    console.log(
+                        player.name,
+                        player.ships[i].SUBMARINO2.position
+                    );
                 } else if (i == 4) {
+                    console.log(player.name, player.ships[i].id);
                     this.placeShips(
                         player,
                         player.ships[i].CRUCERO1,
                         playerGrid
                     );
+                    console.log(player.name, player.ships[i].CRUCERO1.position);
                 } else if (i == 5) {
+                    console.log(player.name, player.ships[i].id);
                     this.placeShips(
                         player,
                         player.ships[i].CRUCERO2,
                         playerGrid
                     );
+                    console.log(player.name, player.ships[i].CRUCERO2.position);
                 } else if (i == 6) {
+                    console.log(player.name, player.ships[i].id);
                     this.placeShips(
                         player,
                         player.ships[i].CRUCERO3,
                         playerGrid
                     );
+                    console.log(player.name, player.ships[i].CRUCERO3.position);
                 } else {
                     this.placeShips(player, player.ships[i].LANCHA, playerGrid);
                 }
@@ -127,7 +140,6 @@ export default {
         },
 
         placeShips(player, barco, playerGrid) {
-                console.log(barco)
             let pass;
             //COLOCAR EL PORTAAVIONES
             if (barco.life > 4) {
@@ -444,14 +456,14 @@ export default {
         return this.icon;
     },
 
-    touchedAndSunk(life, shipFound){
-
-        if(life <= 0) {
-            console.log(`The ${shipFound} has been sunk. Well done!!`)
-        }else{ //Eliminar esto
-            console.log('Tocado, pero no hundido')
+    touchedAndSunk(life, shipFound) {
+        if (life <= 0) {
+            console.log(`The ${shipFound} has been sunk. Well done!!`);
+        } else {
+            //Eliminar esto
+            console.log(`Tocado ${shipFound}, pero no hundido`);
         }
-    }, 
+    },
     showResults(shootCoord, find) {
         // Devuelve el dibujo de Agua si falla o Tocado si acierta en un barco enemigo.
         //Doble comprobación: Si la casilla enemiga está vacía y si la coordenada de disparo no coincide con ninguna coordenada de barco enemigo
@@ -481,8 +493,9 @@ export default {
 
     mangeResults(shootCoord, find) {
         let shipFound;
-        let shipPositionValues
-        let life
+        let shipPositionValues;
+        let life;
+        let impacts;
 
         //Elimina shootCoord de positions en el enemigo y recalcula la vida del enemigo
         console.log('entramos en manegeRresults');
@@ -492,18 +505,22 @@ export default {
         for (let i = 0; i < this.enemy.ships.length; i++) {
             shipPositionValues = Object.values(this.enemy.ships[i])[1].position;
             life = Object.values(this.enemy.ships[i])[1].life;
+            impacts = Object.values(this.enemy.ships[i])[1].impacts;
             let finding = shipPositionValues.findIndex(
-                (el) => el[0] === shootCoord[0] && el[1] === shootCoord[1]
+                (el) => el[0] == shootCoord[0] && el[1] == shootCoord[1]
             );
             console.log(`Finding es ${finding}`);
             if (finding != -1) {
                 {
                     shipFound = this.enemy.ships[i].id;
-                    //Elimina la coordenada de ese barco y ajusta la vida del barco
-                    shipPositionValues.splice(finding, 1);
-                    life = shipPositionValues.length
+                    //Añade coordenada del impacto y ajusta la vida del barco.
+                    impacts.push(shootCoord)
+                    //shipPositionValues.splice(finding, 1);
+                    life = shipPositionValues.length - impacts.length;
                     //Si el barco es hundido, mensaje de barco hundido
-                    this.touchedAndSunk(life, shipFound)
+                    this.touchedAndSunk(life, shipFound);
+                    console.log('impactos: ', impacts)
+                    console.log('Vida del barco: ', life)
                     break;
                 }
             }
@@ -611,7 +628,7 @@ export default {
         let life = 0;
         let life1 = 1;
         let turn = true;
-        
+
         printHeading('THE BATTTLESHIP SIMULATOR STARTS');
         // Empieza con el jugador A
         this.toDecide(turn);
