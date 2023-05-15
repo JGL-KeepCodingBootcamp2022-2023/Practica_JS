@@ -539,7 +539,7 @@ export default {
 
         if (this.playerRounds != 0) {
             console.log('YA HAY DISPAROS');
-            //shootCoord = this.toShoot();
+            shootCoord = this.toShoot();
             //console.log('el nuevo disparo es: ', shootCoord);
         } else {
             console.log('MI PRIMER DISPARO!!');
@@ -620,7 +620,6 @@ export default {
         this.toDecide(turn);
 
         do {
-            //NO SE ESTÁ CUMPLIENDO LOS DISPAROS DE LOS JUGADORES
             //PLAYING ES LA RONDA COMPLETA
             printLine(`ROUND ${round}`);
 
