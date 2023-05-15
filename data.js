@@ -31,7 +31,6 @@ export const SUBMARINO = new TYPESHIP(' 🛳  |', 3, [], []);
 export const SUBMARINO1 = new TYPESHIP(' 🛳  |', 3, [], []);
 export const SUBMARINO2 = new TYPESHIP(' 🛳  |', 3, [], []);
 export const BUQUE = new TYPESHIP(' 🛥  |', 4, [], []);
-
 export const PORTAAVIONES = new TYPESHIP('🚢  |', 5, [], []);
 
 

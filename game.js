@@ -31,16 +31,16 @@ export default {
 
         shipsToPlayers(player) {
             (player.ships = [
-                { id: 'Portaaviones', PORTAAVIONES },
-                { id: 'Buque', BUQUE },
-                { id: 'Submarino 1', SUBMARINO1 },
+                { id: 'Aircraft carrier', PORTAAVIONES },
+                { id: 'Battleship', BUQUE },
+                { id: 'Submarine 1', SUBMARINO1 },
                 { id: 'Submarino 2', SUBMARINO2 },
-                { id: 'Crucero 1', CRUCERO1 },
-                { id: 'Crucero 2', CRUCERO2 },
-                { id: 'Crucero 3', CRUCERO3 },
-                { id: 'Lancha 1', LANCHA: JSON.parse(JSON.stringify(LANCHA)) },
-                { id: 'Lancha 2', LANCHA: JSON.parse(JSON.stringify(LANCHA)) },
-                { id: 'Lancha 3', LANCHA: JSON.parse(JSON.stringify(LANCHA)) },
+                { id: 'Submarine 1', CRUCERO1 },
+                { id: 'Cruise 2', CRUCERO2 },
+                { id: 'Cruise 3', CRUCERO3 },
+                { id: 'Boat 1', LANCHA: JSON.parse(JSON.stringify(LANCHA)) },
+                { id: 'Boat 2', LANCHA: JSON.parse(JSON.stringify(LANCHA)) },
+                { id: 'Boat 3', LANCHA: JSON.parse(JSON.stringify(LANCHA)) },
             ]),
                 (player.positions = []);
         },
@@ -458,7 +458,7 @@ export default {
 
     touchedAndSunk(life, shipFound) {
         if (life <= 0) {
-            console.log(`The ${shipFound} has been sunk. Well done!!`);
+            console.log(`The ship ${shipFound} has been sunk. Well done!!`);
         } else {
             //Eliminar esto
             console.log(`Tocado ${shipFound}, pero no hundido`);
@@ -491,7 +491,7 @@ export default {
         return [icon, (find = finding)];
     },
 
-    mangeResults(shootCoord, find) {
+    manageResults(shootCoord, find) {
         let shipFound;
         let shipPositionValues;
         let life;
@@ -514,19 +514,19 @@ export default {
                 {
                     shipFound = this.enemy.ships[i].id;
                     //Añade coordenada del impacto y ajusta la vida del barco.
-                    impacts.push(shootCoord)
+                    impacts.push(shootCoord);
                     //shipPositionValues.splice(finding, 1);
                     life = shipPositionValues.length - impacts.length;
                     //Si el barco es hundido, mensaje de barco hundido
                     this.touchedAndSunk(life, shipFound);
-                    console.log('impactos: ', impacts)
-                    console.log('Vida del barco: ', life)
+                    console.log('impactos: ', impacts);
+                    console.log('Vida del barco: ', life);
                     break;
                 }
             }
         }
     },
-    playerRound() {
+    playerRound(change) {
         this.playerRounds = this.shooter.shootsLog.length;
         let find;
         let shootCoord;
@@ -542,7 +542,7 @@ export default {
         } else {
             console.log('MI PRIMER DISPARO!!');
             shootCoord = this.toShoot();
-            console.log('el diapro es: ', shootCoord);
+            console.log('el disparo es: ', shootCoord);
         }
 
         //Resgitro el disparo y actualizo los disparos realizados
@@ -561,60 +561,59 @@ export default {
                 this.shooter.shootCoord[0] + 65
             )}${this.shooter.shootCoord[1]}: ${icon}`
         );
-        if (find != -1) {
-            this.mangeResults(shootCoord, find);
+
+        console.log('ESTO ES FIN EN PLAYERGROUND: ', find);
+        if (find !== -1) {
+            this.manageResults(shootCoord, find);
+            change = false;
+            console.log(
+                'Esto es change en tras maneResults caundo impacta: ',
+                change
+            );
         }
-
-        return this.turn;
-
-        //VOLVER A MIRAR
-
-        //buscar la coordenada en cada barco (forEach?) de enemy
-        //Cuando lo encuentre, añadir eswa coord al impacto.
-        //Vida del barco el barco.positions.length - barco.impacts.length
-        //SI VIDA BARCO = 0 => INDICAR QUÉ BARCO HUNDIDO SE HA.*/
-
-        //return (this.turn = false);
+        console.log('Esto es change antes de retornar playerRound: ', change);
+        return change;
     },
 
-    toPlay() {
-        this.playerRound();
-        /*while (this.turn = true && this.enemy.life > 0) {
-            this.turn = this.playerRound(
-                this.shooter,
-                this.enemy,
-                this.playerRounds,
-                //this.turn
-                );
-                console.log('antes de salir en toPlay ciclo while; turn Vale: ', this.turn)
-        }*/
-
-        //return turn;
+    toPlay(change, dead) {
+        console.log('Esto es change en to Play entes ciclo doWhile: ', change);
+        do {
+            change = this.playerRound(change);
+            console.log('Esto es change en ciclo doWhile: ', change);
+            dead = toDead();
+        } while ((change = false));
+        console.log(
+            'Esto es change en tras ciclo dowhile dentro de toPlay: ',
+            change
+        );
+        return change;
     },
 
     playing(dead, turn) {
         let playerRounds = 0;
-
+        let change = true;
         //ronda del jugador shooter
-        turn = this.toPlay();
-        dead = toDead();
+        do {
+            change = this.toPlay(change, dead);
+            console.log('Esto es change en playing tras toPlay: ', change);
+            dead = toDead();
 
-        //Cambio de roles de los jugadores
-        this.toDecide(turn);
+            //Cambio de roles de los jugadores
+            this.toDecide((turn = false));
 
-        console.log();
-        console.log('~~ CAMBIO DE TURNO ~~');
+            console.log();
+            console.log('~~ CAMBIO DE TURNO ~~');
 
-        //ronda del nuevo shooter (jugador que antes del cambio de rol era enemy)
-        turn = this.toPlay();
-        turn = true;
-        // dead = toDead();
+            //ronda del nuevo shooter (jugador que antes del cambio de rol era enemy)
+            turn = this.toPlay(change, dead);
+            dead = toDead();
 
-        //Cambio de roles de los jugadores para empezar nueva Ronda Completa de juego
-        this.toDecide(turn);
+            //Cambio de roles de los jugadores para empezar nueva Ronda Completa de juego
+            this.toDecide((turn = true));
 
-        console.log();
-        console.log('~~ CAMBIO DE TURNO ~~');
+            console.log();
+            console.log('~~ CAMBIO DE TURNO ~~');
+        } while (this.enemy.life > 22 && this.shooter.life > 22);
 
         return (dead = true);
     },
