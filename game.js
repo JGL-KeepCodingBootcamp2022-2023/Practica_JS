@@ -539,6 +539,8 @@ export default {
 
         if (this.playerRounds != 0) {
             console.log('YA HAY DISPAROS');
+            //shootCoord = this.toShoot();
+            //console.log('el nuevo disparo es: ', shootCoord);
         } else {
             console.log('MI PRIMER DISPARO!!');
             shootCoord = this.toShoot();
@@ -562,31 +564,21 @@ export default {
             )}${this.shooter.shootCoord[1]}: ${icon}`
         );
 
-        console.log('ESTO ES FIN EN PLAYERGROUND: ', find);
         if (find !== -1) {
             this.manageResults(shootCoord, find);
             change = false;
-            console.log(
-                'Esto es change en tras maneResults caundo impacta: ',
-                change
-            );
         }
-        console.log('Esto es change antes de retornar playerRound: ', change);
+
         return change;
     },
 
     toPlay(change, dead) {
-        change = 0;
-        console.log('Esto es change en to Play entes ciclo doWhile: ', change);
         do {
             change = this.playerRound(change);
-            console.log('Esto es change en ciclo doWhile: ', change);
+
             dead = toDead();
-        } while ((change === false));
-        console.log(
-            'Esto es change en tras ciclo dowhile dentro de toPlay: ',
-            change
-        );
+        } while (change === false);
+
         return change;
     },
 
@@ -594,39 +586,33 @@ export default {
         let playerRounds = 0;
         let change = true;
         //ronda del jugador shooter
-        do {
-            change = this.toPlay(change, dead);
-            console.log('Esto es change en playing tras toPlay: ', change);
-            dead = toDead();
 
-            //Cambio de roles de los jugadores
-            this.toDecide((turn = false));
+        change = this.toPlay(change, dead);
 
-            console.log();
-            console.log('~~ CAMBIO DE TURNO ~~');
+        dead = toDead();
 
-            //ronda del nuevo shooter (jugador que antes del cambio de rol era enemy)
-            turn = this.toPlay(change, dead);
-            dead = toDead();
+        //Cambio de roles de los jugadores
+        this.toDecide((turn = false));
 
-            //Cambio de roles de los jugadores para empezar nueva Ronda Completa de juego
-            this.toDecide((turn = true));
+        console.log();
+        console.log('~~ CAMBIO DE TURNO ~~');
 
-            console.log();
-            console.log('~~ CAMBIO DE TURNO ~~');
-        } while (this.enemy.life > 22 && this.shooter.life > 22);
+        //ronda del nuevo shooter (jugador que antes del cambio de rol era enemy)
+        turn = this.toPlay(change, dead);
+        dead = toDead();
 
-        return (dead = true);
+        //Cambio de roles de los jugadores para empezar nueva Ronda Completa de juego
+        this.toDecide((turn = true));
+
+        console.log();
+        console.log('~~ CAMBIO DE TURNO Y FIN RONDA ~~');
+
+        return dead;
     },
 
     start(shootsNumber) {
-        let shooter;
-        let enemy;
         let dead = false;
         let round = 0;
-        let icon;
-        let life = 0;
-        let life1 = 1;
         let turn = true;
 
         printHeading('THE BATTTLESHIP SIMULATOR STARTS');
@@ -646,14 +632,9 @@ export default {
 
             console.log('Disparos A: ', playerA.shoots);
             console.log('Disparos B: ', playerB.shoots);
-        } while ((dead = false && playerA.shoots < 5 && playerB.shoots < 5));
+        } while (dead === false && playerA.shoots <= 5 && playerB.shoots <= 5);
         /*do {
 
-                console.log(playerA.life)
-                console.log(playerB.life)
-                /*console.log(`Shoot #${this.shooter.shoots} pointing to ${String.fromCharCode(this.shooter.shootCoord[0] + 65)}${this.shooter.shootCoord[1]}: ${icon}`)
-                icon = this.toSeeEnemyGrid(this.shooter, this.enemy, this.icon, turn)             // Miro el disparo en el tablero del enemigo
-                console.log()
                 printLine('Own board')
                 print_Grid(this.shooter.grid)
                 
