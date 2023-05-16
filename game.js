@@ -468,21 +468,21 @@ export default {
         // Devuelve el dibujo de Agua si falla o Tocado si acierta en un barco enemigo.
         //Doble comprobación: Si la casilla enemiga está vacía y si la coordenada de disparo no coincide con ninguna coordenada de barco enemigo
         let icon;
-        /*let finding = this.enemy.positions.findIndex(
+        let finding = this.enemy.positions.findIndex(
             (el) => el[0] === shootCoord[0] && el[1] === shootCoord[1]
-        );*/
+        );
         if (
             this.enemy.grid[this.shooter.shootCoord[1]][
                 this.shooter.shootCoord[0]
             ] == EMPTY &&
-            finding == -1
+            finding === -1
         ) {
             icon = FIGURES[0];
-
+            this.change = true;
             this.turn = false;
         } else {
             icon = FIGURES[1];
-
+            this.change = false;
             this.turn = true;
         }
 
@@ -506,11 +506,12 @@ export default {
             shipPositionValues = Object.values(this.enemy.ships[i])[1].position;
             life = Object.values(this.enemy.ships[i])[1].life;
             impacts = Object.values(this.enemy.ships[i])[1].impacts;
-            let finding = shipPositionValues.findIndex(
+            find = shipPositionValues.findIndex(
                 (el) => el[0] == shootCoord[0] && el[1] == shootCoord[1]
             );
-            console.log(`Finding es ${finding}`);
-            if (finding != -1) {
+
+            console.log(`Finding es ${find}`);
+            if (find != -1) {
                 shipFound = this.enemy.ships[i].id;
                 //Añade coordenada del impacto y ajusta la vida del barco.
                 impacts.push(shootCoord);
@@ -521,9 +522,10 @@ export default {
                 console.log('impactos: ', impacts);
                 console.log('Vida del barco: ', life);
                 break;
-            } else {
-                throw 'Error, no se encuentra el barco impactado';
             }
+        }
+        if (find === -1) {
+            throw 'Error, no se encuentra el barco impactado';
         }
     },
     playerRound(change) {
@@ -535,12 +537,10 @@ export default {
         console.log();
         printLine(`Round ${this.playerRounds} for ${this.shooter.name}`);
 
-        //eliminar coordenada de player positions
-
         if (this.playerRounds != 0) {
             console.log('YA HAY DISPAROS');
             shootCoord = this.toShoot();
-            //console.log('el nuevo disparo es: ', shootCoord);
+            console.log('el nuevo disparo es: ', shootCoord);
         } else {
             console.log('MI PRIMER DISPARO!!');
             shootCoord = this.toShoot();
@@ -555,8 +555,8 @@ export default {
 
         //Resultado del disparo
 
-        icon = this.showResults(shootCoord)[0];
-        find = this.showResults(shootCoord)[1];
+        icon = this.showResults(shootCoord, find)[0];
+        find = this.showResults(shootCoord, find)[1];
 
         console.log(
             `Shoot #${this.shooter.shoots} pointing to ${String.fromCharCode(
@@ -564,11 +564,12 @@ export default {
             )}${this.shooter.shootCoord[1]}: ${icon}`
         );
 
+        console.log(find);
         if (find !== -1) {
             this.manageResults(shootCoord, find);
             change = false;
-        }
-
+        }else{change = true}
+        console.log('Esto es change en Player round: ', change);
         return change;
     },
 
