@@ -499,10 +499,14 @@ export default {
 
         //Elimina shootCoord de positions en el enemigo y recalcula la vida del enemigo
         console.log('entramos en manegeRresults');
+        
+        console.log(`Posiciones barco enemigo ${this.enemy.name}: `, this.enemy.positions)
         this.enemy.positions.splice(find, 1);
         this.enemy.life = this.enemy.positions.length;
 
         for (let i = 0; i < this.enemy.ships.length; i++) {
+            console.log(`Posiciones barco enemigo ${this.enemy.name}: `, Object.values(this.enemy.ships[i])[1].position)
+
             shipPositionValues = Object.values(this.enemy.ships[i])[1].position;
             life = Object.values(this.enemy.ships[i])[1].life;
             impacts = Object.values(this.enemy.ships[i])[1].impacts;
@@ -568,7 +572,9 @@ export default {
         if (find !== -1) {
             this.manageResults(shootCoord, find);
             change = false;
-        }else{change = true}
+        } else {
+            change = true;
+        }
         console.log('Esto es change en Player round: ', change);
         return change;
     },
@@ -652,13 +658,13 @@ export default {
     toWin() {
         switch (this.totalShoots <= 200) {
             case playerA.life > playerB.life:
-                return playerA.name;
-                break;
-            case playerA.life < playerB.life:
                 return playerB.name;
                 break;
+            case playerA.life < playerB.life:
+                return playerA.name;
+                break;
             default:
-                return "Sorry, there isn't any winner. Try again.";
+                return "Sorry, this is a tie!! there isn't any winner. Try again.";
         }
     },
 };
