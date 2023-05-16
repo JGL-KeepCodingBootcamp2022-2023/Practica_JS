@@ -21,6 +21,7 @@ export default function usePrinter() {
     }
     function printLine(text) {
         const pad = '='.repeat(text.length)
+        console.log()
         console.log(text)
         console.log(`${pad}`)
     }

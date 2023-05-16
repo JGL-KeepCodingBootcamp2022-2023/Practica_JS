@@ -332,7 +332,7 @@ export default {
         if (enemy.grid[shooter.shootCoord[1]][shooter.shootCoord[0]] != EMPTY) {
             enemy.grid[shooter.shootCoord[1]][shooter.shootCoord[0]] =
                 FIGURES[1];
-
+            console.log(enemy.grid);
             this.icon = '🔥';
             turn = true;
         } else {
@@ -395,16 +395,25 @@ export default {
                 (el) => el[0] == shootCoord[0] && el[1] == shootCoord[1]
             );
 
-            if (find != -1) {
+            if (
+                find != -1 &&
+                this.enemy.grid[shootCoord[1]][shootCoord[0]] != EMPTY
+            ) {
                 shipFound = this.enemy.ships[i].id;
                 //Añade coordenada del impacto y ajusta la vida del barco.
                 impacts.push(shootCoord);
+                //Dibuja icono Tocado en grada enemiga
+                this.enemy.grid[shootCoord[1]][shootCoord[0]] =
+                    FIGURES[1];
                 //shipPositionValues.splice(finding, 1);
                 life = shipPositionValues.length - impacts.length;
                 //Si el barco es hundido, mensaje de barco hundido
                 this.touchedAndSunk(life, shipFound);
 
                 break;
+            } else {
+                this.enemy.grid[shootCoord[1]][shootCoord[0]] =
+                    FIGURES[0];
             }
         }
         if (find === -1) {
@@ -470,28 +479,27 @@ export default {
 
         dead = toDead();
 
-        console.log()
-        printLine('Own board')
-        print_Grid(this.shooter.grid)
-        
-        console.log()
-        printLine('Enemy board')
-        print_Grid(this.enemy.grid, true)
+        printLine('Own board');
+        print_Grid(this.shooter.grid);
+
+        printLine('Enemy board');
+        print_Grid(this.enemy.grid, true);
 
         //Cambio de roles de los jugadores
         this.toDecide((turn = false));
-                printLine('Own board')
-                print_Grid(this.shooter.grid)
-                
-                console.log()
-                printLine('Enemy board')
-                print_Grid(this.enemy.grid, true)
+
         console.log();
         console.log('~~ CAMBIO DE TURNO ~~');
 
         //ronda del nuevo shooter (jugador que antes del cambio de rol era enemy)
         turn = this.toPlay(change, dead);
         dead = toDead();
+
+        printLine('Own board');
+        print_Grid(this.shooter.grid);
+
+        printLine('Enemy board');
+        print_Grid(this.enemy.grid, true);
 
         //Cambio de roles de los jugadores para empezar nueva Ronda Completa de juego
         this.toDecide((turn = true));
@@ -547,7 +555,8 @@ export default {
 
             console.log('Disparos A: ', playerA.shoots);
             console.log('Disparos B: ', playerB.shoots);
-        } while (dead === false && playerA.shoots <=9 && playerB.shoots <=9);
+        } while (dead === false && playerA.shoots <= 5 && playerB.shoots <= 5);
+        console.log(playerB.grid);
         /*do {
 
                 printLine('Own board')
