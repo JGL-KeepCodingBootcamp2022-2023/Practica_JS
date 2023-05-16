@@ -25,3 +25,7 @@ export const setUpGame = (player, playerGrid) => {
     print_Grid(playerGrid);
     console.log();
 };
+
+export const theGame = (shootsNumber) =>{
+    game.theGame.start(shootsNumber)
+}

@@ -12,8 +12,8 @@ import {
     PORTAAVIONES,
 } from './data.js';
 import { EMPTY, gridSize, playerAGrid, playerBGrid } from './board.js';
-import { setUpGame } from './indexFunctions.js';
-import { printTitle } from './utils.js';
+import { setUpGame, theGame } from './indexFunctions.js';
+import { printTitle, toWin } from './utils.js';
 
 //✅ TÍTULO
 printTitle('THE BATTTLESHIP SIMULATOR');
@@ -24,12 +24,12 @@ setUpGame(playerB, playerBGrid);
 
 // EL JUEGO COMIENZA
 
-game.start(10);
+theGame(5);
 
 //✅ JUEGO TERMINA
 printHeading('THE BATTTLESHIP SIMULATOR HAS ENDED');
 //console.log( playerA.shootsLog, playerA.shoots)
 //console.log( playerB.shootsLog, playerB.shoots)
-printHeading(`THE WINNER IS: ${game.toWin()}`);
+printHeading(`THE WINNER IS: ${toWin()}`);
 
 //✅ MOSTRAR TABLEROS FINALES

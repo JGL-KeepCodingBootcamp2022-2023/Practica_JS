@@ -20,3 +20,17 @@ export const toDead = () => {
 
     return dead;
 };
+
+export const toWin = () => {
+    let totalShoots = playerA.shoots + playerB.shoots;
+    switch (totalShoots <= 200) {
+        case playerA.life > playerB.life:
+            return playerB.name;
+            break;
+        case playerA.life < playerB.life:
+            return playerA.name;
+            break;
+        default:
+            return "Sorry, this is a tie!! There isn't any winner. Try again.";
+    }
+};
