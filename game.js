@@ -31,13 +31,31 @@ export default {
 
         shipsToPlayers(player) {
             (player.ships = [
-                { id: 'Aircraft carrier', PORTAAVIONES: JSON.parse(JSON.stringify(PORTAAVIONES))},
-                { id: 'Battleship', BUQUE: JSON.parse(JSON.stringify(BUQUE))},
-                { id: 'Submarine 1', SUBMARINO1: JSON.parse(JSON.stringify(SUBMARINO1))},
-                { id: 'Submarino 2', SUBMARINO2: JSON.parse(JSON.stringify(SUBMARINO2))},
-                { id: 'Submarine 1', CRUCERO1: JSON.parse(JSON.stringify(CRUCERO1))},
-                { id: 'Cruise 2', CRUCERO2: JSON.parse(JSON.stringify(CRUCERO2))},
-                { id: 'Cruise 3', CRUCERO3: JSON.parse(JSON.stringify(CRUCERO3))},
+                {
+                    id: 'Aircraft carrier',
+                    PORTAAVIONES: JSON.parse(JSON.stringify(PORTAAVIONES)),
+                },
+                { id: 'Battleship', BUQUE: JSON.parse(JSON.stringify(BUQUE)) },
+                {
+                    id: 'Submarine 1',
+                    SUBMARINO1: JSON.parse(JSON.stringify(SUBMARINO1)),
+                },
+                {
+                    id: 'Submarino 2',
+                    SUBMARINO2: JSON.parse(JSON.stringify(SUBMARINO2)),
+                },
+                {
+                    id: 'Submarine 1',
+                    CRUCERO1: JSON.parse(JSON.stringify(CRUCERO1)),
+                },
+                {
+                    id: 'Cruise 2',
+                    CRUCERO2: JSON.parse(JSON.stringify(CRUCERO2)),
+                },
+                {
+                    id: 'Cruise 3',
+                    CRUCERO3: JSON.parse(JSON.stringify(CRUCERO3)),
+                },
                 { id: 'Boat 1', LANCHA: JSON.parse(JSON.stringify(LANCHA)) },
                 { id: 'Boat 2', LANCHA: JSON.parse(JSON.stringify(LANCHA)) },
                 { id: 'Boat 3', LANCHA: JSON.parse(JSON.stringify(LANCHA)) },
@@ -92,7 +110,6 @@ export default {
                 }
             }
             player.life = player.positions.length;
-
         },
 
         paridad() {
@@ -165,7 +182,6 @@ export default {
             }
 
             this.place(player, barco, playerGrid);
-            
         },
 
         randomCoords(barco) {
@@ -283,15 +299,6 @@ export default {
         },
     },
 
-    /*theShooterIs(shooter, enemy, turn) {
-        if (turn === false) {
-            let change = shooter;
-            this.shooter = enemy;
-            this.enemy = change;
-        }
-        return this.shooter, this.enemy;
-    },*/
-
     toDecide(turn) {
         if (turn === true) {
             this.shooter = playerA;
@@ -312,126 +319,21 @@ export default {
     },
 
     toTestLog(shooter, shootCoord) {
-
         //Compruebo si el disparo se ha realizado
         let shooterLog = [...shooter.shootsLog];
         let find = shooterLog.findIndex(
             (el) => el[0] === shootCoord[0] && el[1] === shootCoord[1]
         );
-        if (find === -1) {
-            console.log('nuevo ShootLog: ', shootCoord);
-        } else {
-            //Repite disparo
-            console.log('Hay que repetir el disparo');
-        }
         return find;
     },
-
-    /*ship(shooter, enemy) {
-        //life position 2 --> NO FUNCIONA PORQUE ESTÁ MIRANDO EN SHOOTLOG, NO EN POSICIONES BARCOS
-        let touched = this.enemy.shootsLog.findIndex((elemento) => {
-            elemento[0] === this.shooter.shootCoord[0] &&
-                elemento[1] === this.shooter.shootCoord[1];
-        });
-        console.log(`Posición a buscar en es ${touched}`);
-        switch (touched) {
-            case touched == 0 ||
-                touched == 1 ||
-                touched == 2 ||
-                touched == 3 ||
-                touched == 4:
-                this.enemy.ship0[2]--;
-                if (this.enemy.ship0[2] != 0) {
-                    console.log(`Enemy ${this.enemy.ship0[0]} touched!`);
-                } else {
-                    console.log(
-                        `Enemy ${this.enemy.ship0[0]} touched & drawn!`
-                    );
-                }
-                break;
-            case touched == 5 || touched == 6 || touched == 7 || touched == 8:
-                this.enemy.ship1[2]--;
-                if (this.enemy.ship1[2] != 0) {
-                    console.log(`Enemy ${this.enemy.ship1[0]} touched!`);
-                } else {
-                    console.log(
-                        `Enemy ${this.enemy.ship1[0]} touched & drawn!`
-                    );
-                }
-                break;
-            case touched == 9 || touched == 10 || touched == 11:
-                this.this.enemy.ship2[2]--;
-                if (this.enemy.ship2[2] != 0) {
-                    console.log(`Enemy ${this.enemy.ship2[0]} touched!`);
-                } else {
-                    console.log(
-                        `Enemy ${this.enemy.ship2[0]} touched & drawn!`
-                    );
-                }
-                break;
-            case touched == 12 || touched == 13 || touched == 14:
-                this.enemy.ship3[2]--;
-                if (enemy.ship3[2] != 0) {
-                    console.log(`Enemy ${this.enemy.ship3[0]} touched!`);
-                } else {
-                    console.log(
-                        `Enemy ${this.enemy.ship3[0]} touched & drawn!`
-                    );
-                }
-                break;
-            case touched == 15 || touched == 16:
-                this.enemy.ship4[2]--;
-                if (this.enemy.ship4[2] != 0) {
-                    console.log(`Enemy ${this.enemy.ship4[0]} touched!`);
-                } else {
-                    console.log(
-                        `Enemy ${this.enemy.ship4[0]} touched & drawn!`
-                    );
-                }
-                break;
-            case touched == 17 || touched == 18:
-                this.enemy.ship5[2]--;
-                if (this.enemy.ship5[2] != 0) {
-                    console.log(`Enemy ${this.enemy.ship5[0]} touched!`);
-                } else {
-                    console.log(
-                        `Enemy ${this.enemy.ship5[0]} touched & drawn!`
-                    );
-                }
-                break;
-            case touched == 19 || touched == 20:
-                this.enemy.ship6[2]--;
-                if (this.enemy.ship6[2] != 0) {
-                    console.log(`Enemy ${this.enemy.ship6[0]} touched!`);
-                } else {
-                    console.log(
-                        `Enemy ${this.enemy.ship6[0]} touched & drawn!`
-                    );
-                }
-                break;
-            case touched == 21:
-                this.enemy.ship7[2]--;
-                console.log(`Enemy ${this.enemy.ship7[0]} touched & drawn!`);
-                break;
-            case touched == 22:
-                this.enemy.ship8[2]--;
-                console.log(`Enemy ${this.enemy.ship8[0]} touched & drawn!`);
-                break;
-            case touched == 23:
-                this.enemy.ship9[2]--;
-                console.log(`Enemy ${this.enemy.ship9[0]} touched & drawn!`);
-                break;
-        }
-    },*/
 
     toSeeEnemyGrid(shooter, enemy, turn) {
         turn = false;
         if (enemy.grid[shooter.shootCoord[1]][shooter.shootCoord[0]] != EMPTY) {
             enemy.grid[shooter.shootCoord[1]][shooter.shootCoord[0]] =
                 FIGURES[1];
-            enemy.life--;
+
             this.icon = '🔥';
-            this.ship(enemy); //TODO Ver qué barco ha tocado y quitarle una vida
             turn = true;
         } else {
             enemy.grid[shooter.shootCoord[1]][shooter.shootCoord[0]] =
@@ -439,14 +341,14 @@ export default {
             this.icon = '💧';
             turn = false;
         }
-        return this.icon;
+        //return this.icon;
     },
 
     touchedAndSunk(life, shipFound) {
         if (life <= 0) {
-            console.log()
+            console.log();
             console.log(`The ship ${shipFound} has been sunk. Well done!!`);
-        } 
+        }
     },
     showResults(shootCoord, find) {
         // Devuelve Agua si falla o Tocado si acierta en un barco enemigo.
@@ -486,7 +388,6 @@ export default {
         this.enemy.life = this.enemy.positions.length;
 
         for (let i = 0; i < this.enemy.ships.length; i++) {
-
             shipPositionValues = Object.values(this.enemy.ships[i])[1].position;
             life = Object.values(this.enemy.ships[i])[1].life;
             impacts = Object.values(this.enemy.ships[i])[1].impacts;
@@ -520,20 +421,14 @@ export default {
         printLine(`Round ${this.playerRounds} for ${this.shooter.name}`);
 
         if (this.playerRounds != 0) {
-
             shootCoord = this.toShoot();
-
         } else {
-
             shootCoord = this.toShoot();
-
         }
 
         //Resgitro el disparo y actualizo los disparos realizados
         this.shooter.shootsLog.push([...shootCoord]);
         this.shooter.shoots = this.shooter.shootsLog.length;
-
- 
 
         //Resultado del disparo
 
@@ -545,7 +440,6 @@ export default {
                 this.shooter.shootCoord[0] + 65
             )}${this.shooter.shootCoord[1]}: ${icon}`
         );
-
 
         if (find !== -1) {
             this.manageResults(shootCoord, find);
