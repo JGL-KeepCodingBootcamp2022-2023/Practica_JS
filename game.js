@@ -332,7 +332,7 @@ export default {
         let find = shooterLog.findIndex(
             (el) => el[0] === shootCoord[0] && el[1] === shootCoord[1]
         );
-        if (find == -1) {
+        if (find === -1) {
             console.log('nuevo ShootLog: ', shootCoord);
         } else {
             //Repite disparo
@@ -468,9 +468,9 @@ export default {
         // Devuelve el dibujo de Agua si falla o Tocado si acierta en un barco enemigo.
         //Doble comprobación: Si la casilla enemiga está vacía y si la coordenada de disparo no coincide con ninguna coordenada de barco enemigo
         let icon;
-        let finding = this.enemy.positions.findIndex(
+        /*let finding = this.enemy.positions.findIndex(
             (el) => el[0] === shootCoord[0] && el[1] === shootCoord[1]
-        );
+        );*/
         if (
             this.enemy.grid[this.shooter.shootCoord[1]][
                 this.shooter.shootCoord[0]
@@ -511,18 +511,18 @@ export default {
             );
             console.log(`Finding es ${finding}`);
             if (finding != -1) {
-                {
-                    shipFound = this.enemy.ships[i].id;
-                    //Añade coordenada del impacto y ajusta la vida del barco.
-                    impacts.push(shootCoord);
-                    //shipPositionValues.splice(finding, 1);
-                    life = shipPositionValues.length - impacts.length;
-                    //Si el barco es hundido, mensaje de barco hundido
-                    this.touchedAndSunk(life, shipFound);
-                    console.log('impactos: ', impacts);
-                    console.log('Vida del barco: ', life);
-                    break;
-                }
+                shipFound = this.enemy.ships[i].id;
+                //Añade coordenada del impacto y ajusta la vida del barco.
+                impacts.push(shootCoord);
+                //shipPositionValues.splice(finding, 1);
+                life = shipPositionValues.length - impacts.length;
+                //Si el barco es hundido, mensaje de barco hundido
+                this.touchedAndSunk(life, shipFound);
+                console.log('impactos: ', impacts);
+                console.log('Vida del barco: ', life);
+                break;
+            } else {
+                throw 'Error, no se encuentra el barco impactado';
             }
         }
     },
