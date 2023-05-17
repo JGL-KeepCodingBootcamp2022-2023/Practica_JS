@@ -387,9 +387,9 @@ export default {
             let life;
             let impacts;
 
-            //Elimina shootCoord de positions en el enemigo y recalcula la vida del enemigo
-            this.enemy.positions.splice(find, 1);
-            this.enemy.life = this.enemy.positions.length;
+            //New enemy life
+            //this.enemy.positions.splice(find, 1);
+            this.enemy.life--; //= this.enemy.positions.length;
 
             for (let i = 0; i < this.enemy.ships.length; i++) {
                 shipPositionValues = Object.values(this.enemy.ships[i])[1]
@@ -416,78 +416,76 @@ export default {
 
                     break;
                 }
-
-                //NO ESTOY MUY SEGURO DE ESTO
-                if (this.shooter.shoots >= this.totalShoots) {
-                    this.dead = true;
-                }
             }
         },
-        playerRound(change, shootsNumber) {
+        playerRound(change, shootsNumber, dead) {
             this.playerRounds = this.shooter.shootsLog.length;
+            let finding;
             let find;
             let shootCoord;
             let icon;
 
             if (this.shooter.shoots < shootsNumber) {
-            printLine(`Round ${this.playerRounds} for ${this.shooter.name}`);
+                printLine(
+                    `Round ${this.playerRounds} for ${this.shooter.name}`
+                );
 
-            if (this.playerRounds != 0) {
-                shootCoord = this.toShoot();
+                if (this.playerRounds != 0) {
+                    do {
+                        shootCoord = this.toShoot();
+                        finding = this.toTestLog(this.shooter, shootCoord);
+                    } while (finding == -1);
+                } else {
+                    shootCoord = this.toShoot();
+                }
+
+                //Resgitro el disparo y actualizo los disparos realizados
+                this.shooter.shootsLog.push([...shootCoord]);
+                this.shooter.shoots = this.shooter.shootsLog.length;
+
+                //Resultado del disparo
+
+                icon = this.showResults(shootCoord, find)[0];
+                find = this.showResults(shootCoord, find)[1];
+
+                console.log(
+                    `Shoot #${
+                        this.shooter.shoots
+                    } pointing to ${String.fromCharCode(
+                        this.shooter.shootCoord[0] + 65
+                    )}${this.shooter.shootCoord[1]}: ${icon}`
+                );
+
+                if (find !== -1) {
+                    this.manageResults(shootCoord, find);
+                    change = false;
+                } else {
+                    //Dibuja Agua en tablero enemigo
+                    this.enemy.grid[shootCoord[1]][shootCoord[0]] = FIGURES[0];
+                    change = true;
+                }
             } else {
-                shootCoord = this.toShoot();
+                dead = true;
             }
-
-            //Resgitro el disparo y actualizo los disparos realizados
-            this.shooter.shootsLog.push([...shootCoord]);
-            this.shooter.shoots = this.shooter.shootsLog.length;
-
-            //Resultado del disparo
-
-            icon = this.showResults(shootCoord, find)[0];
-            find = this.showResults(shootCoord, find)[1];
-
-            console.log(
-                `Shoot #${
-                    this.shooter.shoots
-                } pointing to ${String.fromCharCode(
-                    this.shooter.shootCoord[0] + 65
-                )}${this.shooter.shootCoord[1]}: ${icon}`
-            );
-
-            if (find !== -1) {
-                this.manageResults(shootCoord, find);
-                change = false;
-            } else {
-                //Dibuja Agua en tablero enemigo
-                this.enemy.grid[shootCoord[1]][shootCoord[0]] = FIGURES[0];
-                change = true;
-            }
-        }else{change = true}
             return change;
         },
 
         toPlay(change, dead, shootsNumber) {
-            console.log(this.shooter.shoots)
-            console.log(shootsNumber)
-            console.log(this.shooter.shoots <= shootsNumber)
+            console.log(this.shooter.shoots);
+            console.log(shootsNumber);
+            console.log(this.shooter.shoots <= shootsNumber);
 
-            if (this.shooter.shoots < shootsNumber) {
-                do {
-                    change = this.playerRound(change, shootsNumber);
+            do {
+                change = this.playerRound(change, shootsNumber, dead);
 
-                    dead = toDead();
+                dead = toDead(shootsNumber);
 
-                    printLine('Own board');
-                    print_Grid(this.shooter.grid);
+                printLine('Own board');
+                print_Grid(this.shooter.grid);
 
-                    printLine('Enemy board');
-                    print_Grid(this.enemy.grid, true);
-                } while (change === false);
-            } else {
-                //dead = true
-                throw 'Error. No se cumple la condición en toPlay';
-            }
+                printLine('Enemy board');
+                print_Grid(this.enemy.grid, true);
+            } while (change === false && dead === false);
 
             return change;
         },
@@ -499,6 +497,7 @@ export default {
             //Player A round
 
             this.toPlay(change, dead, shootsNumber);
+            dead = toDead(shootsNumber);
 
             //Change players
             this.toDecide((turn = false));
@@ -508,6 +507,7 @@ export default {
 
             //Player B round
             this.toPlay(change, dead, shootsNumber);
+            dead = toDead(shootsNumber);
 
             console.log();
             console.log('~~ FIN RONDA ~~');
@@ -535,19 +535,7 @@ export default {
 
                 console.log('Disparos A: ', playerA.shoots);
                 console.log('Disparos B: ', playerB.shoots);
-
-                if (
-                    playerA.shoots == shootsNumber ||
-                    playerB.shoots == shootsNumber
-                ) {
-                    dead = true
-                    
-                }
-            } while (
-                dead === false &&
-                playerA.shoots <= shootsNumber &&
-                playerB.shoots <= shootsNumber
-            );
+            } while (dead === false);
         },
     },
 };

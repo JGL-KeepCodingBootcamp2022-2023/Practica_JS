@@ -24,7 +24,7 @@ setUpGame(playerB, playerBGrid);
 
 // EL JUEGO COMIENZA
 
-theGame(5);
+theGame(10);
 
 //✅ JUEGO TERMINA
 printHeading('THE BATTTLESHIP SIMULATOR HAS ENDED');

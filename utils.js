@@ -13,10 +13,13 @@ export const printTitle = (tittle) => {
     console.log();
 };
 
-export const toDead = () => {
+export const toDead = (shootsNumber) => {
     let dead;
-
-    playerA.life <= 0 || playerB.life <= 0 ? (dead = true) : (dead = false);
+    if (playerA.shoots + playerB.shoots == shootsNumber) {
+        dead = true;
+    } else {
+        playerA.life <= 0 || playerB.life <= 0 ? (dead = true) : (dead = false);
+    }
 
     return dead;
 };
