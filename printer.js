@@ -6,12 +6,6 @@ export default function usePrinter() {
     const LINEAINFERIOR = ['  _________', '______', '______', '______', '______', '______', '______', '______', '______', '___'];
     const LINEAINFERIOR1 = [' |\t   ', '     ', '     ', '     ', '     ', '     ', '     ', '     ', '     ', '     ', '     |'];
     const LINEAINFERIOR2 = [' |_________', '_____', '_____', '_____', '_____', '_____', '_____', '_____', '_____', '_____','_____|'];
-    //Probar a eliminar estas cuatro de abajo
-    const LINEA_TITULO = '==================================================='
-    const SEMILINEA1 = '========='
-    const SEMILINEA2 = '================='
-    const SEMILINEA3 = '================'
-
 
     function printHeading(text) {
         const pad = '='.repeat(text.length)

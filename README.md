@@ -104,3 +104,29 @@ Módulo que contiene los diferentes barcos
 ### data/settings.js
 
 Módulo de configuración con dimensiones del tablero, casillas, número de jugadores, barcos disponibles...
+
+
+/*
+Battleship
+Battleship es un juego clásico de hundir la flota, donde dos jugadores se enfrentan en un tablero con barcos ocultos. El objetivo es adivinar las posiciones de los barcos del oponente y hundirlos antes de que él hunda los tuyos.
+
+Este script de javascript te permite jugar a battleship en la terminal usando node. Puedes elegir el número de disparos que tienes por turno, así como el tamaño del tablero y el número y tipo de barcos.
+
+Cómo iniciar el script
+Para iniciar el script, necesitas tener instalado node en tu ordenador. Luego, abre la terminal y navega hasta la carpeta donde está el script. Ejecuta el siguiente comando:
+
+node index.js
+Copiar
+El script te pedirá que introduzcas el número de disparos por turno, el tamaño del tablero y el número y tipo de barcos. Después, se iniciará el juego y podrás ver tu tablero y el del oponente. Para disparar, introduce las coordenadas en formato fila-columna, por ejemplo A1 o C5. El script te indicará si has acertado o fallado, y actualizará los tableros. El juego termina cuando uno de los jugadores hunde todos los barcos del otro.
+
+Descripción de las funciones
+El script contiene las siguientes funciones:
+
+NOMBRE_FUNCION1: Esta función se encarga de crear el tablero vacío con el tamaño indicado por el usuario. Devuelve una matriz bidimensional con los valores " " (espacio en blanco) para representar las casillas vacías.
+NOMBRE_FUNCION2: Esta función se encarga de colocar los barcos en el tablero de forma aleatoria. Recibe como parámetros la matriz del tablero, el número y tipo de barcos, y un booleano que indica si es el tablero del jugador o del oponente. Devuelve la matriz del tablero con los valores “B” para representar las casillas con barcos.
+NOMBRE_FUNCION3: Esta función se encarga de mostrar los tableros en la terminal. Recibe como parámetros las matrices de los tableros del jugador y del oponente. Imprime en la terminal los tableros con los valores " " para las casillas vacías, “B” para las casillas con barcos (solo en el tablero del jugador), “X” para las casillas con barcos hundidos y “O” para las casillas falladas.
+NOMBRE_FUNCION4: Esta función se encarga de validar la entrada del usuario al disparar. Recibe como parámetro la cadena introducida por el usuario. Comprueba que la cadena tenga dos caracteres, que el primero sea una letra mayúscula entre A y la última letra del alfabeto según el tamaño del tablero, y que el segundo sea un número entre 1 y el tamaño del tablero. Devuelve un booleano que indica si la entrada es válida o no.
+NOMBRE_FUNCION5: Esta función se encarga de disparar al tablero del oponente. Recibe como parámetros la cadena introducida por el usuario, la matriz del tablero del oponente y el número de disparos restantes. Convierte la cadena en coordenadas numéricas y comprueba si hay un barco en esa casilla. Si hay un barco, cambia el valor de la casilla a “X” y resta uno al número de disparos restantes. Si no hay un barco, cambia el valor de la casilla a “O”. Devuelve la matriz del tablero del oponente modificada y el número de disparos restantes actualizado.
+
+NOMBRE_FUNCION6: Esta función se encarga de disparar al tablero del jugador. Recibe como parámetros la matriz del tablero del jugador y el número de disparos por turno. Genera coordenadas aleatorias y comprueba si hay un barco en esa casilla. Si hay un barco, cambia el valor de la casilla a “X” y resta uno al número de disparos por turno. Si no hay un barco, cambia el valor de la casilla a “O”. Repite este proceso hasta que se agoten los disparos por turno o se hundan todos los barcos del jugador. Devuelve la matriz del tablero del jugador modificada.
+*/

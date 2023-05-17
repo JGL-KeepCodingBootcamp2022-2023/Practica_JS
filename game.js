@@ -416,6 +416,11 @@ export default {
 
                     break;
                 }
+
+                //NO ESTOY MUY SEGURO DE ESTO
+                if (this.shooter.shoots >= this.totalShoots) {
+                    this.dead = true;
+                }
             }
         },
         playerRound(change) {
@@ -424,7 +429,6 @@ export default {
             let shootCoord;
             let icon;
 
-            console.log();
             printLine(`Round ${this.playerRounds} for ${this.shooter.name}`);
 
             if (this.playerRounds != 0) {
@@ -481,24 +485,19 @@ export default {
         playing(dead, turn) {
             let playerRounds = 0;
             let change = true;
-            //ronda del jugador shooter
 
-            change = this.toPlay(change, dead);
+            //Player A round
 
-            dead = toDead();
+            this.toPlay(change, dead);
 
-            //Cambio de roles de los jugadores
+            //Change players
             this.toDecide((turn = false));
 
             console.log();
             console.log('~~ CAMBIO DE JUGADOR ~~');
 
-            //ronda del nuevo shooter (jugador que antes del cambio de rol era enemy)
-            turn = this.toPlay(change, dead);
-            dead = toDead();
-
-            //Cambio de roles de los jugadores para empezar nueva Ronda Completa de juego
-            this.toDecide((turn = true));
+            //Player B round
+            this.toPlay(change, dead);
 
             console.log();
             console.log('~~ FIN RONDA ~~');
@@ -509,38 +508,13 @@ export default {
         start(shootsNumber) {
             let dead = false;
             let round = 0;
-            let turn = true;
+            let turn;
 
             printHeading('THE BATTTLESHIP SIMULATOR STARTS');
 
-            /*console.log('Posiciones barcos A: ', playerA.positions)
-        console.log('Posiciones barcos B: ', playerB.positions)
-
-        console.log(playerA.name, playerA.ships[0].id);
-        console.log(playerA.name, playerA.ships[0].PORTAAVIONES.position);
-        console.log(playerA.name, playerA.ships[1].id);
-        console.log(playerA.name, playerA.ships[1].BUQUE.position);
-        console.log(playerA.name, playerA.ships[2].id);
-        console.log(playerA.name, playerA.ships[2].SUBMARINO1.position);
-        console.log(playerA.name, playerA.ships[3].id);
-        console.log(playerA.name, playerA.ships[3].SUBMARINO2.position);
-        console.log(playerA.name, playerA.ships[4].id);
-        console.log(playerA.name, playerA.ships[4].CRUCERO1.position);
-        console.log(playerA.name, playerA.ships[5].id);
-        console.log(playerA.name, playerA.ships[5].CRUCERO2.position);
-        console.log(playerA.name, playerA.ships[6].id);
-        console.log(playerA.name, playerA.ships[6].CRUCERO3.position);
-        console.log(playerA.name, playerA.ships[7].id);
-        console.log(playerA.name, playerA.ships[7].LANCHA.position);
-        console.log(playerA.name, playerA.ships[8].id);
-        console.log(playerA.name, playerA.ships[8].LANCHA.position);
-        console.log(playerA.name, playerA.ships[9].id);
-        console.log(playerA.name, playerA.ships[9].LANCHA.position);*/
-            // Empieza con el jugador A
-            this.toDecide(turn);
-
             do {
-                //PLAYING ES LA RONDA COMPLETA
+                //Obligo a empezar al jugador A
+                this.toDecide((turn = true));
                 printLine(`ROUND ${round}`);
 
                 dead = this.playing(dead, turn);
