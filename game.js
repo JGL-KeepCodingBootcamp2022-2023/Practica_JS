@@ -423,12 +423,13 @@ export default {
                 }
             }
         },
-        playerRound(change) {
+        playerRound(change, shootsNumber) {
             this.playerRounds = this.shooter.shootsLog.length;
             let find;
             let shootCoord;
             let icon;
 
+            if (this.shooter.shoots < shootsNumber) {
             printLine(`Round ${this.playerRounds} for ${this.shooter.name}`);
 
             if (this.playerRounds != 0) {
@@ -462,33 +463,42 @@ export default {
                 this.enemy.grid[shootCoord[1]][shootCoord[0]] = FIGURES[0];
                 change = true;
             }
+        }else{change = true}
+            return change;
+        },
+
+        toPlay(change, dead, shootsNumber) {
+            console.log(this.shooter.shoots)
+            console.log(shootsNumber)
+            console.log(this.shooter.shoots <= shootsNumber)
+
+            if (this.shooter.shoots < shootsNumber) {
+                do {
+                    change = this.playerRound(change, shootsNumber);
+
+                    dead = toDead();
+
+                    printLine('Own board');
+                    print_Grid(this.shooter.grid);
+
+                    printLine('Enemy board');
+                    print_Grid(this.enemy.grid, true);
+                } while (change === false);
+            } else {
+                //dead = true
+                throw 'Error. No se cumple la condición en toPlay';
+            }
 
             return change;
         },
 
-        toPlay(change, dead) {
-            do {
-                change = this.playerRound(change);
-
-                dead = toDead();
-
-                printLine('Own board');
-                print_Grid(this.shooter.grid);
-
-                printLine('Enemy board');
-                print_Grid(this.enemy.grid, true);
-            } while (change === false);
-
-            return change;
-        },
-
-        playing(dead, turn) {
+        playing(dead, turn, shootsNumber) {
             let playerRounds = 0;
             let change = true;
 
             //Player A round
 
-            this.toPlay(change, dead);
+            this.toPlay(change, dead, shootsNumber);
 
             //Change players
             this.toDecide((turn = false));
@@ -497,7 +507,7 @@ export default {
             console.log('~~ CAMBIO DE JUGADOR ~~');
 
             //Player B round
-            this.toPlay(change, dead);
+            this.toPlay(change, dead, shootsNumber);
 
             console.log();
             console.log('~~ FIN RONDA ~~');
@@ -517,7 +527,7 @@ export default {
                 this.toDecide((turn = true));
                 printLine(`ROUND ${round}`);
 
-                dead = this.playing(dead, turn);
+                dead = this.playing(dead, turn, shootsNumber);
                 round++;
 
                 console.log('playerA.life; ', playerA.life);
@@ -525,6 +535,14 @@ export default {
 
                 console.log('Disparos A: ', playerA.shoots);
                 console.log('Disparos B: ', playerB.shoots);
+
+                if (
+                    playerA.shoots == shootsNumber ||
+                    playerB.shoots == shootsNumber
+                ) {
+                    dead = true
+                    
+                }
             } while (
                 dead === false &&
                 playerA.shoots <= shootsNumber &&
