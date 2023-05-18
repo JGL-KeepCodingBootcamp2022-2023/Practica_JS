@@ -1,6 +1,7 @@
 import usePrinter from './printer.js';
 const { printHeading, printLine, print_Grid } = usePrinter();
 import { playerA, playerB } from './data.js';
+import { gridSize } from './board.js';
 
 export const random = (min, max) => {
     return Math.floor(Math.random() * (max - min + 1) + min);
@@ -24,16 +25,44 @@ export const toDead = (shootsNumber) => {
     return dead;
 };
 
-export const toWin = () => {
+export const toWin = (gridSize) => {
     let totalShoots = playerA.shoots + playerB.shoots;
-    switch (totalShoots <= 200) {
+    switch (totalShoots <= gridSize ** 2) {
         case playerA.life > playerB.life:
-            return playerA.name;
-            break;
+            if (playerB.life == 0) {
+                return playerA.name + ' by KO!!!';
+            } else {
+                return playerA.name;
+            }
+
         case playerA.life < playerB.life:
-            return playerB.name;
-            break;
+            if (playerA.life == 0) {
+                return playerB.name + ' by KO!!!';
+            } else {
+                return playerB.name;
+            }
         default:
             return "Sorry, this is a tie!! There isn't any winner. Try again.";
+    }
+};
+
+export const showResults = () => {
+    let shipsAfloat = playerA.ships.length - playerA.sunkenShips;
+    if (playerA.life > 0 && playerB.life > 0) {
+    
+        console.log()
+        printHeading('FINAL RESULTS')
+
+        printLine(`${playerA.name} results`)
+        console.log();
+        console.log(`${playerA.name} has ${shipsAfloat} ships afloat`);
+        console.log();
+        print_Grid(playerA.grid)
+
+        printLine(`${playerB.name} results`)
+        console.log();
+        console.log(`${playerB.name} has ${shipsAfloat} ships afloat`);
+        print_Grid(playerB.grid)
+        console.log()
     }
 };

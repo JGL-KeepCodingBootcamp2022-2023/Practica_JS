@@ -13,7 +13,7 @@ import {
 } from './data.js';
 import { EMPTY, gridSize, playerAGrid, playerBGrid } from './board.js';
 import { setUpGame, theGame } from './indexFunctions.js';
-import { printTitle, toWin } from './utils.js';
+import { printTitle, showResults, toWin } from './utils.js';
 
 //✅ TÍTULO
 printTitle('THE BATTTLESHIP SIMULATOR');
@@ -24,12 +24,14 @@ setUpGame(playerB, playerBGrid);
 
 // EL JUEGO COMIENZA
 
-theGame(10);
+theGame(50); //Shoots per player
 
 //✅ JUEGO TERMINA
+
 printHeading('THE BATTTLESHIP SIMULATOR HAS ENDED');
-//console.log( playerA.shootsLog, playerA.shoots)
-//console.log( playerB.shootsLog, playerB.shoots)
-printHeading(`THE WINNER IS: ${toWin()}`);
+printHeading(`THE WINNER IS: ${toWin(gridSize)}`);
+
+showResults()   //SE ESTÁN PISANDO LOS VALORES DE CADA JUGADOR
+
 
 //✅ MOSTRAR TABLEROS FINALES

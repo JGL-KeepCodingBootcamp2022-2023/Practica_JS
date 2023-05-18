@@ -345,16 +345,19 @@ export default {
                 this.icon = '💧';
                 turn = false;
             }
-            //return this.icon;
+
         },
 
         touchedAndSunk(life, shipFound) {
             if (life <= 0) {
+                this.enemy.sunkenShips++;
+
                 console.log();
                 console.log(`The ship ${shipFound} has been sunk. Well done!!`);
             }
         },
-        showResults(shootCoord, find) {
+
+        showShootResults(shootCoord, find) {
             // Devuelve Agua si falla o Tocado si acierta en un barco enemigo.
             //Doble comprobación: Si la casilla enemiga está vacía y si la coordenada de disparo no coincide con ninguna coordenada de barco enemigo
             let icon;
@@ -437,7 +440,14 @@ export default {
                         console.log('Resto e disparos');
                         shootCoord = this.toShoot();
                         finding = this.toTestLog(this.shooter, shootCoord);
-                        console.log(finding);
+
+                        //Show player's remaining shoots
+                        console.log(
+                            `Remaining ${this.shooter.name} shots: ${
+                                Math.trunc(shootsNumber / 2) -
+                                this.shooter.shoots
+                            }`
+                        );
                     } while (finding != -1);
                 } else {
                     console.log('Primer disparo');
@@ -450,8 +460,8 @@ export default {
 
                 //Resultado del disparo
 
-                icon = this.showResults(shootCoord, find)[0];
-                find = this.showResults(shootCoord, find)[1];
+                icon = this.showShootResults(shootCoord, find)[0];
+                find = this.showShootResults(shootCoord, find)[1];
 
                 console.log(
                     `Shoot #${
@@ -506,11 +516,13 @@ export default {
             }
             console.log('Esto es deade después de jugar el jugador A: ', dead);
             if (
-                (dead === false && playerA.shoots + playerB.shoots < shootsNumber)
+                dead === false &&
+                playerA.shoots + playerB.shoots < shootsNumber
             ) {
                 //Change players
                 this.toDecide((turn = false));
 
+                //ELIMINAR ESTOS DOS DE ABAJO
                 console.log();
                 console.log('~~ CAMBIO DE JUGADOR ~~');
                 //PLAYER B JUEGA SI playerA.shoots + playerB.shoots < shootsNumber
@@ -532,6 +544,12 @@ export default {
             let round = 0;
             let turn;
 
+            if (shootsNumber > gridSize * 20) {
+                throw Error(
+                    "Sorry, you can't shoot more times than there are squares on the board."
+                );
+            }
+
             printHeading('THE BATTTLESHIP SIMULATOR STARTS');
 
             do {
@@ -542,6 +560,7 @@ export default {
                 dead = this.playing(dead, turn, shootsNumber);
                 round++;
 
+                    //ELIMINAR ESTOS 4 DE ABAJO
                 console.log('playerA.life; ', playerA.life);
                 console.log('playerB.life :', playerB.life);
 

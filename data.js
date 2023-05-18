@@ -1,17 +1,18 @@
 import { playerAGrid, playerBGrid } from './board.js';
 
 class PLAYER {
-    constructor(name, grid, life, shoots, shootCoord, shootsLog) {
+    constructor(name, grid, life, shoots, shootCoord, shootsLog, sunkenShips) {
         this.name = name;
         this.grid = grid;
         this.life = life;
         this.shoots = shoots;
         this.shootCoord = shootCoord;
         this.shootsLog = shootsLog;
+        this.sunkenShips = sunkenShips
     }
 }
-export const playerA = new PLAYER('Player A', playerAGrid, 0, 0, [], []);
-export const playerB = new PLAYER('Player B', playerBGrid, 0, 0, [], []);
+export const playerA = new PLAYER('Player A', playerAGrid, 0, 0, [], [], 0);
+export const playerB = new PLAYER('Player B', playerBGrid, 0, 0, [], [], 0);
 
 class TYPESHIP {
     constructor(figure, life, position, impacts) {
