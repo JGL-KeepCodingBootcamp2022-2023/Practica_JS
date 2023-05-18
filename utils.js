@@ -28,10 +28,10 @@ export const toWin = () => {
     let totalShoots = playerA.shoots + playerB.shoots;
     switch (totalShoots <= 200) {
         case playerA.life > playerB.life:
-            return playerB.name;
+            return playerA.name;
             break;
         case playerA.life < playerB.life:
-            return playerA.name;
+            return playerB.name;
             break;
         default:
             return "Sorry, this is a tie!! There isn't any winner. Try again.";

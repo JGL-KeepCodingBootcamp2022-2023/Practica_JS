@@ -320,7 +320,7 @@ export default {
         },
 
         toTestLog(shooter, shootCoord) {
-            //Compruebo si el disparo se ha realizado
+            //Comprueba si el disparo se ha realizado
             let shooterLog = [...shooter.shootsLog];
             let find = shooterLog.findIndex(
                 (el) => el[0] === shootCoord[0] && el[1] === shootCoord[1]
@@ -419,23 +419,28 @@ export default {
             }
         },
         playerRound(change, shootsNumber, dead) {
+            console.log('Entro en payerRound');
             this.playerRounds = this.shooter.shootsLog.length;
             let finding;
             let find;
             let shootCoord;
             let icon;
+            let totalShoots = playerA.shoots + playerB.shoots;
 
-            if (this.shooter.shoots < shootsNumber) {
+            if (totalShoots < shootsNumber) {
                 printLine(
                     `Round ${this.playerRounds} for ${this.shooter.name}`
                 );
 
                 if (this.playerRounds != 0) {
                     do {
+                        console.log('Resto e disparos');
                         shootCoord = this.toShoot();
                         finding = this.toTestLog(this.shooter, shootCoord);
-                    } while (finding == -1);
+                        console.log(finding);
+                    } while (finding != -1);
                 } else {
+                    console.log('Primer disparo');
                     shootCoord = this.toShoot();
                 }
 
@@ -471,10 +476,6 @@ export default {
         },
 
         toPlay(change, dead, shootsNumber) {
-            console.log(this.shooter.shoots);
-            console.log(shootsNumber);
-            console.log(this.shooter.shoots <= shootsNumber);
-
             do {
                 change = this.playerRound(change, shootsNumber, dead);
 
@@ -491,23 +492,34 @@ export default {
         },
 
         playing(dead, turn, shootsNumber) {
+            //PLAYER A JUEGA SI playerA.shoots < shootsNumber
             let playerRounds = 0;
             let change = true;
 
             //Player A round
-
-            this.toPlay(change, dead, shootsNumber);
             dead = toDead(shootsNumber);
+            if (dead == false && playerA.shoots < shootsNumber) {
+                this.toPlay(change, dead, shootsNumber);
+                dead = toDead(shootsNumber);
+            } else {
+                dead = true;
+            }
+            console.log('Esto es deade después de jugar el jugador A: ', dead);
+            if (
+                (dead === false && playerA.shoots + playerB.shoots < shootsNumber)
+            ) {
+                //Change players
+                this.toDecide((turn = false));
 
-            //Change players
-            this.toDecide((turn = false));
-
-            console.log();
-            console.log('~~ CAMBIO DE JUGADOR ~~');
-
-            //Player B round
-            this.toPlay(change, dead, shootsNumber);
-            dead = toDead(shootsNumber);
+                console.log();
+                console.log('~~ CAMBIO DE JUGADOR ~~');
+                //PLAYER B JUEGA SI playerA.shoots + playerB.shoots < shootsNumber
+                //Player B round
+                this.toPlay(change, dead, shootsNumber);
+                dead = toDead(shootsNumber);
+            } else {
+                dead = true;
+            }
 
             console.log();
             console.log('~~ FIN RONDA ~~');
