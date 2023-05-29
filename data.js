@@ -34,9 +34,5 @@ export const SUBMARINO2 = new TYPESHIP(' 🛳  |', 3, [], []);
 export const BUQUE = new TYPESHIP(' 🛥  |', 4, [], []);
 export const PORTAAVIONES = new TYPESHIP('🚢  |', 5, [], []);
 
-
 export const FIGURES = [' 💧 |', ' 🔥 |'];
 
-//console.log(PORTAAVIONES.figure)
-
-//console.log(playerA.ship9[2])

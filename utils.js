@@ -55,9 +55,10 @@ export const toWin = (gridSize) => {
 };
 
 export const showResults = () => {
+
     let shipsAfloatA = playerA.ships.length - playerA.sunkenShips;
     let shipsAfloatB = playerB.ships.length - playerB.sunkenShips;
-    if (playerA.life > 0 && playerB.life > 0) {
+    if (playerA.life > 0 || playerB.life > 0) {
         console.log();
         printHeading('FINAL RESULTS');
 

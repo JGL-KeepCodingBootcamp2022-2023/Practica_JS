@@ -1,4 +1,4 @@
-//LAS IMPORTACIONES
+//IMPORTES
 import usePrinter from './printer.js';
 const { printHeading, printLine, print_Grid } = usePrinter();
 import game from './game.js';
@@ -15,22 +15,21 @@ import { EMPTY, gridSize, playerAGrid, playerBGrid } from './board.js';
 import { setUpGame, theGame } from './indexFunctions.js';
 import { printTitle, showResults, toWin } from './utils.js';
 
-//✅ TÍTULO
+//TITTLE
 printTitle('THE BATTTLESHIP SIMULATOR');
 
-//✅SETUP DEL JUEGO
+// GAME SETUP
 setUpGame(playerA, playerAGrid);
 setUpGame(playerB, playerBGrid);
 
-// EL JUEGO COMIENZA
+// THE GAME STARTS
 
 theGame(100); //Shoots per player
 
-//✅ JUEGO TERMINA
+//THE GAME ENDS
 
 printHeading('THE BATTTLESHIP SIMULATOR HAS ENDED');
 printHeading(`THE WINNER IS: ${toWin(gridSize)}!!!`);
 
+//SHOW FINAL RESULTS
 showResults();
-
-//✅ MOSTRAR TABLEROS FINALES
