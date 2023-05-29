@@ -27,7 +27,7 @@ export const toDead = (shootsNumber) => {
 
 export const toWin = (gridSize) => {
     let totalShoots = playerA.shoots + playerB.shoots;
-    switch (totalShoots <= gridSize ** 2) {
+    switch (totalShoots <= gridSize * 20) {
         case playerA.life > playerB.life:
             if (playerB.life == 0) {
                 return playerA.name + ' by KO!!!';

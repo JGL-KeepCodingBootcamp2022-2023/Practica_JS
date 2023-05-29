@@ -21,13 +21,13 @@ export default {
     rondas: 0,
 
     setUpGame: {
-        // funciones de inicio del juego
+        // Start-up functions of the game
         pos: 0,
         createBoards() {
             board.create_Grid(size), board.create_Headers(size);
         },
 
-        // ✅ Crear barcos para los jugadores
+        // Creating ships for the players
 
         shipsToPlayers(player) {
             (player.ships = [
@@ -143,10 +143,9 @@ export default {
 
         placeShips(player, barco, playerGrid) {
             let pass;
-            //COLOCAR EL PORTAAVIONES
+            //POSITIONING THE AIRCRAFT CARRIER
             if (barco.life > 4) {
                 do {
-                    //Obtenemos array de coordenadas y fija la primera del barco
                     let coords = this.randomCoords(barco);
 
                     pass = this.firstShip(
@@ -159,15 +158,15 @@ export default {
                 } while (pass == false);
             } else {
                 do {
-                    //Reset variables al inicio de cada ciclo
+                    //Variable reset at the start of each cycle
                     pass = false;
                     let coords = this.randomCoords(barco);
 
-                    //Comprueba si está libre o no la coordenada
+                    //Checks whether the coordinate is free or not.
 
                     pass = this.freeSpace(player, coords);
 
-                    //Si está libre, testea todas las coordenadas para cada barco
+                    //If free, test all coordinates for each ship.
 
                     pass = true
                         ? (pass = this.testCoords(
@@ -186,7 +185,7 @@ export default {
 
         randomCoords(barco) {
             let max = gridSize - barco.life;
-            let x1 = random(0, max); //Obtengo un número aleatorio para el espacio máximo en el que puede colocarse este barco.
+            let x1 = random(0, max); //I get a random number for the maximum space in which this ship can be placed.
             let y1 = Math.floor(Math.random() * gridSize);
             let coords = [x1, y1];
 
@@ -315,12 +314,12 @@ export default {
             let x = random(0, gridSize - 1);
             let y = random(0, gridSize - 1);
             let shootCoord = [x, y];
-            this.shooter.shootCoord = [...shootCoord]; //Asigna el disparo a la propiedad shootCoord del jugador que dipara
+            this.shooter.shootCoord = [...shootCoord]; //Assigns the shot to the shooting player's shootCoord property.
             return shootCoord;
         },
 
         toTestLog(shooter, shootCoord) {
-            //Comprueba si el disparo se ha realizado
+            //Checks if the shot has been fired
             let shooterLog = [...shooter.shootsLog];
             let find = shooterLog.findIndex(
                 (el) => el[0] === shootCoord[0] && el[1] === shootCoord[1]
@@ -352,13 +351,15 @@ export default {
                 this.enemy.sunkenShips++;
 
                 console.log();
-                console.log(`The ship ${shipFound} has been sunk. Well done!!`);
+                console.log(
+                    `The ship '${shipFound}' has been sunk. Well done!!`
+                );
             }
         },
 
         showShootResults(shootCoord, find) {
-            // Devuelve Agua si falla o Tocado si acierta en un barco enemigo.
-            //Doble comprobación: Si la casilla enemiga está vacía y si la coordenada de disparo no coincide con ninguna coordenada de barco enemigo
+            // Return Water if it misses or Touch if it hits an enemy ship.
+            
             let icon;
             let finding = this.enemy.positions.findIndex(
                 (el) => el[0] === shootCoord[0] && el[1] === shootCoord[1]
@@ -389,7 +390,7 @@ export default {
             let life;
             let impacts;
 
-            this.enemy.life--; 
+            this.enemy.life--;
 
             for (let i = 0; i < this.enemy.ships.length; i++) {
                 shipPositionValues = Object.values(this.enemy.ships[i])[1]
@@ -405,13 +406,13 @@ export default {
                     this.enemy.grid[shootCoord[1]][shootCoord[0]] != EMPTY
                 ) {
                     shipFound = this.enemy.ships[i].id;
-                    //Añade coordenada del impacto y ajusta la vida del barco.
+                    //Add impact coordinates and adjust ship's life.
                     impacts.push(shootCoord);
-                    //Dibuja icono Tocado en grada enemiga
+                    //Draw icon touched on enemy board
                     this.enemy.grid[shootCoord[1]][shootCoord[0]] = FIGURES[1];
-                    //shipPositionValues.splice(finding, 1);
+
                     life = shipPositionValues.length - impacts.length;
-                    //Si el barco es hundido, mensaje de barco hundido
+
                     this.touchedAndSunk(life, shipFound);
 
                     break;
@@ -419,13 +420,11 @@ export default {
             }
         },
         playerRound(change, shootsNumber, dead) {
-            console.log('Entro en payerRound');//
             this.playerRounds = this.shooter.shootsLog.length;
             let finding;
             let find;
             let shootCoord;
             let icon;
-            //let totalShoots = playerA.shoots + playerB.shoots;
 
             if (this.shooter.shoots < shootsNumber) {
                 printLine(
@@ -434,28 +433,25 @@ export default {
 
                 if (this.playerRounds != 0) {
                     do {
-                        console.log('Resto e disparos');
                         shootCoord = this.toShoot();
                         finding = this.toTestLog(this.shooter, shootCoord);
 
-                        //Show player's remaining shoots
-                        console.log(
-                            `Remaining ${this.shooter.name} shots: ${
-                                shootsNumber  -
-                                this.shooter.shoots
-                            }`
-                        );
                     } while (finding != -1);
+                    //Show player's remaining shoots
+                    console.log(
+                        `Remaining ${this.shooter.name} shots: ${
+                            shootsNumber - this.shooter.shoots
+                        }`
+                    );
                 } else {
-                    console.log('Primer disparo'); //
                     shootCoord = this.toShoot();
                 }
 
-                //Resgitro el disparo y actualizo los disparos realizados
+                //Reset the shot and update the shots fired.
                 this.shooter.shootsLog.push([...shootCoord]);
                 this.shooter.shoots = this.shooter.shootsLog.length;
 
-                //Resultado del disparo
+                //Result of the shot
 
                 icon = this.showShootResults(shootCoord, find)[0];
                 find = this.showShootResults(shootCoord, find)[1];
@@ -472,7 +468,7 @@ export default {
                     this.manageResults(shootCoord, find);
                     change = false;
                 } else {
-                    //Dibuja Agua en tablero enemigo
+                    //Draw Water icon on enemy board
                     this.enemy.grid[shootCoord[1]][shootCoord[0]] = FIGURES[0];
                     change = true;
                 }
@@ -488,10 +484,10 @@ export default {
 
                 dead = toDead(shootsNumber);
 
-                printLine('Own board' + this.shooter.name);
+                printLine(`Own board`);
                 print_Grid(this.shooter.grid);
 
-                printLine('Enemy board' + this.enemy.name);
+                printLine(`Enemy board:  ${this.enemy.name}`);
                 print_Grid(this.enemy.grid, true);
             } while (change === false && dead === false);
 
@@ -499,7 +495,6 @@ export default {
         },
 
         playing(dead, turn, shootsNumber) {
-            //PLAYER A JUEGA SI playerA.shoots < shootsNumber
             let playerRounds = 0;
             let change = true;
 
@@ -511,27 +506,17 @@ export default {
             } else {
                 dead = true;
             }
-            console.log('Esto es dead después de jugar el jugador A: ', dead);
-            if (
-                dead === false &&
-                playerB.shoots < shootsNumber
-            ) {
+
+            if (dead === false && playerB.shoots < shootsNumber) {
                 //Change players
                 this.toDecide((turn = false));
 
-                //ELIMINAR ESTOS DOS DE ABAJO
-                console.log();
-                console.log('~~ CAMBIO DE JUGADOR ~~');
-                //PLAYER B JUEGA SI playerA.shoots  < shootsNumber
                 //Player B round
                 this.toPlay(change, dead, shootsNumber);
                 dead = toDead(shootsNumber);
             } else {
                 dead = true;
             }
-
-            console.log();
-            console.log('~~ FIN RONDA ~~');
 
             return dead;
         },
@@ -550,19 +535,13 @@ export default {
             printHeading('THE BATTTLESHIP SIMULATOR STARTS');
 
             do {
-                //Obligo a empezar al jugador A
+                //I force player A to start
                 this.toDecide((turn = true));
                 printLine(`ROUND ${round}`);
 
                 dead = this.playing(dead, turn, shootsNumber);
                 round++;
 
-                //ELIMINAR ESTOS 4 DE ABAJO
-                console.log('playerA.life; ', playerA.life);
-                console.log('playerB.life :', playerB.life);
-
-                console.log('Disparos A: ', playerA.shoots);
-                console.log('Disparos B: ', playerB.shoots);
             } while (dead === false);
         },
     },

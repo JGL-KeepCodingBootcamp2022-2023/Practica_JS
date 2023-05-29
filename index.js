@@ -24,7 +24,7 @@ setUpGame(playerB, playerBGrid);
 
 // EL JUEGO COMIENZA
 
-theGame(50); //Shoots per player
+theGame(100); //Shoots per player
 
 //✅ JUEGO TERMINA
 
