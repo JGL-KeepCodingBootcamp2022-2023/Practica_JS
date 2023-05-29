@@ -1,4 +1,4 @@
-//IMPORTES
+//IMPORTS
 import usePrinter from './printer.js';
 const { printHeading, printLine, print_Grid } = usePrinter();
 import game from './game.js';

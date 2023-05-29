@@ -8,7 +8,7 @@ class PLAYER {
         this.shoots = shoots;
         this.shootCoord = shootCoord;
         this.shootsLog = shootsLog;
-        this.sunkenShips = sunkenShips
+        this.sunkenShips = sunkenShips;
     }
 }
 export const playerA = new PLAYER('Player A', playerAGrid, 0, 0, [], [], 0);
@@ -35,4 +35,3 @@ export const BUQUE = new TYPESHIP(' 🛥  |', 4, [], []);
 export const PORTAAVIONES = new TYPESHIP('🚢  |', 5, [], []);
 
 export const FIGURES = [' 💧 |', ' 🔥 |'];
-
