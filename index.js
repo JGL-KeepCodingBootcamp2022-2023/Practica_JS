@@ -29,9 +29,8 @@ theGame(50); //Shoots per player
 //✅ JUEGO TERMINA
 
 printHeading('THE BATTTLESHIP SIMULATOR HAS ENDED');
-printHeading(`THE WINNER IS: ${toWin(gridSize)}`);
+printHeading(`THE WINNER IS: ${toWin(gridSize)}!!!`);
 
-showResults()   //SE ESTÁN PISANDO LOS VALORES DE CADA JUGADOR
-
+showResults();
 
 //✅ MOSTRAR TABLEROS FINALES

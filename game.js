@@ -345,7 +345,6 @@ export default {
                 this.icon = '💧';
                 turn = false;
             }
-
         },
 
         touchedAndSunk(life, shipFound) {
@@ -390,9 +389,7 @@ export default {
             let life;
             let impacts;
 
-            //New enemy life
-            //this.enemy.positions.splice(find, 1);
-            this.enemy.life--; //= this.enemy.positions.length;
+            this.enemy.life--; 
 
             for (let i = 0; i < this.enemy.ships.length; i++) {
                 shipPositionValues = Object.values(this.enemy.ships[i])[1]
@@ -422,15 +419,15 @@ export default {
             }
         },
         playerRound(change, shootsNumber, dead) {
-            console.log('Entro en payerRound');
+            console.log('Entro en payerRound');//
             this.playerRounds = this.shooter.shootsLog.length;
             let finding;
             let find;
             let shootCoord;
             let icon;
-            let totalShoots = playerA.shoots + playerB.shoots;
+            //let totalShoots = playerA.shoots + playerB.shoots;
 
-            if (totalShoots < shootsNumber) {
+            if (this.shooter.shoots < shootsNumber) {
                 printLine(
                     `Round ${this.playerRounds} for ${this.shooter.name}`
                 );
@@ -444,13 +441,13 @@ export default {
                         //Show player's remaining shoots
                         console.log(
                             `Remaining ${this.shooter.name} shots: ${
-                                Math.trunc(shootsNumber / 2) -
+                                shootsNumber  -
                                 this.shooter.shoots
                             }`
                         );
                     } while (finding != -1);
                 } else {
-                    console.log('Primer disparo');
+                    console.log('Primer disparo'); //
                     shootCoord = this.toShoot();
                 }
 
@@ -491,10 +488,10 @@ export default {
 
                 dead = toDead(shootsNumber);
 
-                printLine('Own board');
+                printLine('Own board' + this.shooter.name);
                 print_Grid(this.shooter.grid);
 
-                printLine('Enemy board');
+                printLine('Enemy board' + this.enemy.name);
                 print_Grid(this.enemy.grid, true);
             } while (change === false && dead === false);
 
@@ -514,10 +511,10 @@ export default {
             } else {
                 dead = true;
             }
-            console.log('Esto es deade después de jugar el jugador A: ', dead);
+            console.log('Esto es dead después de jugar el jugador A: ', dead);
             if (
                 dead === false &&
-                playerA.shoots + playerB.shoots < shootsNumber
+                playerB.shoots < shootsNumber
             ) {
                 //Change players
                 this.toDecide((turn = false));
@@ -525,7 +522,7 @@ export default {
                 //ELIMINAR ESTOS DOS DE ABAJO
                 console.log();
                 console.log('~~ CAMBIO DE JUGADOR ~~');
-                //PLAYER B JUEGA SI playerA.shoots + playerB.shoots < shootsNumber
+                //PLAYER B JUEGA SI playerA.shoots  < shootsNumber
                 //Player B round
                 this.toPlay(change, dead, shootsNumber);
                 dead = toDead(shootsNumber);
@@ -544,7 +541,7 @@ export default {
             let round = 0;
             let turn;
 
-            if (shootsNumber > gridSize * 20) {
+            if (shootsNumber > gridSize * 10) {
                 throw Error(
                     "Sorry, you can't shoot more times than there are squares on the board."
                 );
@@ -560,7 +557,7 @@ export default {
                 dead = this.playing(dead, turn, shootsNumber);
                 round++;
 
-                    //ELIMINAR ESTOS 4 DE ABAJO
+                //ELIMINAR ESTOS 4 DE ABAJO
                 console.log('playerA.life; ', playerA.life);
                 console.log('playerB.life :', playerB.life);
 

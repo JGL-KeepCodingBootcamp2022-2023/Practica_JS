@@ -16,7 +16,7 @@ export const printTitle = (tittle) => {
 
 export const toDead = (shootsNumber) => {
     let dead;
-    if (playerA.shoots + playerB.shoots == shootsNumber) {
+    if (playerA.shoots == shootsNumber|| playerB.shoots == shootsNumber) {
         dead = true;
     } else {
         playerA.life <= 0 || playerB.life <= 0 ? (dead = true) : (dead = false);
@@ -41,28 +41,36 @@ export const toWin = (gridSize) => {
             } else {
                 return playerB.name;
             }
+        case playerA.life == playerB.life:
+            if (playerA.sunkenShips < playerB.sunkenShips) {
+                return playerA.name;
+            } else if (playerB.sunkenShips < playerA.sunkenShips) {
+                return playerB.name;
+            } else {
+                break;
+            }
         default:
             return "Sorry, this is a tie!! There isn't any winner. Try again.";
     }
 };
 
 export const showResults = () => {
-    let shipsAfloat = playerA.ships.length - playerA.sunkenShips;
+    let shipsAfloatA = playerA.ships.length - playerA.sunkenShips;
+    let shipsAfloatB = playerB.ships.length - playerB.sunkenShips;
     if (playerA.life > 0 && playerB.life > 0) {
-    
-        console.log()
-        printHeading('FINAL RESULTS')
+        console.log();
+        printHeading('FINAL RESULTS');
 
-        printLine(`${playerA.name} results`)
+        printLine(`${playerA.name} results`);
         console.log();
-        console.log(`${playerA.name} has ${shipsAfloat} ships afloat`);
+        console.log(`${playerA.name} has ${shipsAfloatA} ships afloat`);
         console.log();
-        print_Grid(playerA.grid)
+        print_Grid(playerA.grid);
 
-        printLine(`${playerB.name} results`)
+        printLine(`${playerB.name} results`);
         console.log();
-        console.log(`${playerB.name} has ${shipsAfloat} ships afloat`);
-        print_Grid(playerB.grid)
-        console.log()
+        console.log(`${playerB.name} has ${shipsAfloatB} ships afloat`);
+        print_Grid(playerB.grid);
+        console.log();
     }
 };

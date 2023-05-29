@@ -9,6 +9,7 @@ export default function usePrinter() {
 
     function printHeading(text) {
         const pad = '='.repeat(text.length)
+        console.log()
         console.log(`==========${pad}==========`)
         console.log(`========= ${text} =========`)
         console.log(`==========${pad}==========`)
