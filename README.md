@@ -8,7 +8,7 @@ En esta simulación se lleva a cabo una partida aleatoria a este juego en la que
 
 Este script de javascript te permite jugar a battleship en la terminal usando node. Puedes elegir el número de disparos que tienes por jugador.
 
-Se crea un tablero de 10x10 mediante un array bidimensdional y en él se distribuyen los 10 barcos de la flota de cada jugador. Cada jugador constará de dos tableros, el suyo propio, y uno en blanco del enemigo. Los barcos de que consta cada jugador son:
+Se crea un tablero de 10x10 mediante un array bidimensional y en él se distribuyen los 10 barcos de la flota de cada jugador. Cada jugador constará de dos tableros, el suyo propio, y uno en blanco del enemigo. Los barcos de que consta cada jugador son:
 
 * 1 portaaviones (5 casillas)
 * 1 buque (4 casillas)
@@ -41,7 +41,7 @@ El juego como tal está en el archivo `game.js`. Este juego `game.js` tiene a su
 
 ### index.js
 
-Archivo principal que carga las dependencias del juego (`game.js`), los datos de los jugadores y del resto de funciones .
+Archivo principal que carga las dependencias del juego (`game.js`), los datos de los jugadores y del resto de funciones.
 
 Se podrán definir los disparos a realizar para cada jugador en la línea 19, en la función `theGame()`.
 
@@ -54,24 +54,24 @@ Archivo que contiene la lógica del desarrollo del juego. Exporta un objeto que 
 
 * **setupGame** Se encarga de generar los jugadores. Se apoya en `data.js`, `board.js` y `utils.js`. Registra las coordenadas de cada barco.
     **shipsToPlayers** Añade los barcos basándose en la clase a cada jugador.
-    **playerShips** Coloca los barcos de cada jugador y almacena sus posiciones con la función placeShips.
+    **playerShips** Coloca los barcos de cada jugador y almacena sus posiciones con la función `placeShips()`.
     **placeShips** Dibuja los barcos de cada jugador en el tablero de juego. Se apoya en las siguientes funciones:
         **place** Dibuja el barco en el tablero de cada jugador.
         **ramdonCoords** Devuelve una coordenada aleatoria del tablero.
-        **testCoord** Comprueba que la coordenada otenida en ramdonCoords, donde será colocado el barco, está libre. Llamará a jorozontalDraw o verticalDraw segúnel resultado de paridad.
+        **testCoord** Comprueba que la coordenada obtenida en ramdonCoords, donde será colocado el barco, está libre. Llamará a horozontalDraw o verticalDraw según el resultado de paridad.
         **paridad** Decide si el barco irá en posición horizontal o vertical.
         **freeSpace** Comprueba que no existen posiciones guardadas en el registro de posiciones de barcos del jugador.
-        **passValue** Devuelve pass para determinar si pasa o no el test pass para colocar el barco.
-        **horizontal / horizontalDraw** Se encargan de gestionar la ubicación horizontal del barco, dibujarlo y añadir las posicoines del mismo al registro de posiciones de los barcos.
-        **varical / verticalDraw** Se encargan de gestionar la ubicación vertical del barco, dibujarlo y añadir las posicoines del mismo al registro de posiciones de los barcos.
+        **passValue** Devuelve "pass" para determinar la colocación el barco.
+        **horizontal / horizontalDraw** Se encargan de gestionar la ubicación horizontal del barco, dibujarlo y añadir las posiciones del mismo al registro de posiciones de los barcos.
+        **varical / verticalDraw** Se encargan de gestionar la ubicación vertical del barco, dibujarlo y añadir las posiciones del mismo al registro de posiciones de los barcos.
 
 
 * **start** Se apoya en `data.js`, `board.js` y `utils.js` principalmente, aunque también usa `printers.js` para los textos de título. Se encarga de iniciar la mecánica del juego. Muestra los textos iniciales de partida y controla la supervivencia de cada jugador:
     * **paying** Controla la mecánica de cada ronda. Llama a `toPlay()` para realizar un disparo de un jugador para luego llamar a `toDecide()` para cambiar de jugador y que éste juegue.
     * **toPlay** Llamando a la función de `playerRound()` y controlando la presentación de datos en pantalla tras las rondas de cada jugador.
     * **playerRound** Controla cada ronda del jugador devolviendo si el contrario ha sobrevivido al disparo y repitiendo el disparo si éste ha impactado.
-    * **toShoot** Obtiene un valor aleatori para x e y y los guarda en un array [x, y], que es la coordenada del diparo de la variable shootCoord.
-    * **toTestLog** Comprueba que el disparo no se ha relizado anteriormente devolviendo el valor de la variable find.
+    * **toShoot** Obtiene un valor aleatorio para "x" e "y", almacenándolos en un array [x, y], que es la coordenada del disparo de la variable shootCoord.
+    * **toTestLog** Comprueba que el disparo no se ha realizado anteriormente devolviendo el valor de la variable find.
     * **toSeeEnemyGrid** "Mira" en el tablero enemigo. Si en la coordenada shootCoord (recibida como parámetro) la casilla está vacía, dibuja "agua" y si contiene un barco, dibuja "tocado".
     * **showShootResults** Se encarga de escribir en los tableros correspondientes el resultado del disparo.
     * **manageResults** Maneja el resultado del disparo.
@@ -81,8 +81,8 @@ Archivo que contiene la lógica del desarrollo del juego. Exporta un objeto que 
 
 ### data.js
 
-Módulo con las clases PLAYER y TYPESHIP que nos exporta los jugadores y los tipos de barcos respectivamente. Las propiedades de los jugadores son: nombre, tablero, vida, disparos hechos, coordenada del disparo, coordenadas de todos los diparos y barcos hundidos.
-Tambiñen exporta un array con los tipos de resultado tras un disparo, "gua" y "tocado".
+Módulo con las clases PLAYER y TYPESHIP que nos exporta los jugadores y los tipos de barcos respectivamente. Las propiedades de los jugadores son: nombre, tablero, vida, disparos hechos, coordenada del disparo, coordenadas de todos los disparos y barcos hundidos.
+También exporta un array con los tipos de resultado tras un disparo, "agua" y "tocado".
 
 ### board.js
 
@@ -93,7 +93,7 @@ Módulo para gestionar los tableros. También exporta la "casilla vacía" y el t
 ### utils/printer.js
 
 Módulo auxiliar muestra los textos y tableros en pantalla:
-    **printHeading** Imprime en pantalla los títilos de juego.
+    **printHeading** Imprime en pantalla los títulos de juego.
     **printLine** Imprime una línea.
     **print_Grid** Dibuja el tablero de cada jugador en función de si es el shooter (lo muestra completo) o si es enemy (muestra sólo el resultado de los disparos).
     **create_Headers** Función que genera las cabeceras de las columnas y transforma los números en letras.
