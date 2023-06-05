@@ -99,9 +99,10 @@ Módulo auxiliar muestra los textos y tableros en pantalla:
     **create_Headers** Función que genera las cabeceras de las columnas y transforma los números en letras.
 
 ### utils/indexFunctions.js
-    Exporta las funciones setUpGame y theGame que emplea el módulo principal index.js.
+
+Exporta las funciones setUpGame y theGame que emplea el módulo principal index.js.
 
 
 ### utils/utils.js
 
-    Módulo auxiliar para generar los títulos, números aleatorios, ver si un jugador ha sobrevivido al disparo, mostrar al ganador y mostrar los tableros finales tras la batalla.
+Módulo auxiliar para generar los títulos, números aleatorios, ver si un jugador ha sobrevivido al disparo, mostrar al ganador y mostrar los tableros finales tras la batalla.
