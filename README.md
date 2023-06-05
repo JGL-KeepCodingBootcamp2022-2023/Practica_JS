@@ -1,132 +1,107 @@
-# JavaScript
+# Práctica del Módulo de introducción a JavaScript.
 
 # HUNDIR LA FLOTA - SIMULACIÓN
 
+Battleship es un juego clásico de hundir la flota, donde dos jugadores se enfrentan en un tablero con barcos ocultos. El objetivo es adivinar las posiciones de los barcos del oponente y hundirlos antes de que él hunda los tuyos.
 
 En esta simulación se lleva a cabo una partida aleatoria a este juego en la que se enfrentan los jugadores Player A y Player B.
 
-Se crea un tablero de 10x10 mediante un array bidimensdional y en él se distribuyen los 10 barcos de la flota de cada jugador. Cada jugador constará de dos tableros, el suyo propio, y un en blanco del enemigo. Los barcos de que consta cada jugador son:
+Este script de javascript te permite jugar a battleship en la terminal usando node. Puedes elegir el número de disparos que tienes por jugador.
+
+Se crea un tablero de 10x10 mediante un array bidimensdional y en él se distribuyen los 10 barcos de la flota de cada jugador. Cada jugador constará de dos tableros, el suyo propio, y uno en blanco del enemigo. Los barcos de que consta cada jugador son:
 
 * 1 portaaviones (5 casillas)
 * 1 buque (4 casillas)
-* 2 submarinos (3 casillas)
-* 3 cruceros (2 casillas)
-* 3 lanchas (1 casilla)
+* 2 submarinos (3 casillas por submarino)
+* 3 cruceros (2 casillas por crucero)
+* 3 lanchas (1 casilla por lancha)
 
 ## Mecánica del juego:
 
 * Se asignan barcos de forma aleatoria para el tablero propio de cada jugador.
-* El juego es juego por turnos, empezando por el primer jugador, también de forma aleatoria. En cada turno, el jugador realiza un disparo:
-    * en caso de acertar, se sigue disparando.
+* El juego es juego por turnos, empezando por el Player A. En cada turno, el jugador realiza un disparo:
+    * en caso de acertar, el jugador sigue disparando.
     * en caso de no acertar, se pasa al turno al otro jugador.
 * el juego termina cuando todos los barcos de algún jugador hayan sido hundidos.
 
-El juego comienza mostrando un texto a modo de título informativo, continua con un ciclo do-while en el que ......
-
 ## Ejecución
+
+Para iniciar el script, necesitas tener instalado node en tu ordenador. Luego, abre la terminal y navega hasta la carpeta donde está el script. Ejecuta el siguiente comando:
 
 ```
 node index.js
 ```
 
-## Estructura de archivos //Revisar
+El script iniciará el juego, mostrará el tablero cada jugador e iniciará las rondas para cada jugador, comenzando por el Player A. El juego termina cuando uno de los jugadores hunde todos los barcos del otro.
+
+## Estructura de archivos
 
 El archivo principal es `index.js`, que es el que iniciamos y muestra el que lleva el orden del juego.
-El juego como tal está en `game.js`. Este juego `game.js` tiene a su vez 2 jugadores, que se sirven de `player.js`. Estos jugadores a su vez tienen 2 tableros `board.js`. Además contamos con funciones auxiliares en la carpeta `/utils` (`functions.js` y `printer.js`). También usamos la carpeta `/data` para almacenar constantes de configuración, como `settings.js` o `ships.js`
-
-Finalmente la capa de presentación la delegamos a `showGame.js` que nos permite mostrar la ejecución de la simulación.
+El juego como tal está en el archivo `game.js`. Este juego `game.js` tiene a su vez 2 jugadores, que se sirven de `data.js`. Estos jugadores a su vez tienen 2 tableros, `board.js`. Además, contamos con funciones auxiliares en la carpeta `/utils` (`indexFunctions.js`, `utils.js` y `printer.js`).
 
 ### index.js
-MIRAR
-Archivo principal que carga la dependencia del juego (`game.js`) y del visualizador del juego (`showGame.js`). 
+
+Archivo principal que carga las dependencias del juego (`game.js`), los datos de los jugadores y del resto de funciones .
+
+Se podrán definir los disparos a realizar para cada jugador en la línea 19, en la función `theGame()`.
+
+Cuando termine el juego, llama la función `toWin()` para decidir quién es el ganador.
+Con `showResults()` muestra los dos tableros de los jugadores con los resultados de la batalla.
 
 ### game.js
-MIRAR
+
 Archivo que contiene la lógica del desarrollo del juego. Exporta un objeto que contiene el array de jugadores, los barcos disponibles, las rondas, el ganador, y los métodos principales `setupGame` y `start`
 
-* **setupGame** Se encarga de generar los jugadores. Se apoya en `player.js`, `utils.js`
-* **start** Se encarga de la mecánica del juego. Hace la alternancia entre jugadores, registra en un array los disparos para poder reproducir el juego. Necesita de un prámetro "shootsNumber" para definir el total de disparos de la partida.
-* **updatePlayersBoards** Se encarga de escribir en los tableros correspondientes el resultado del disparo
-* **registerShoot** Sirve para registrar el disparo
-* **isShipDrawn** Nos ayuda a comprobar si un barco está hundido, para luego poder mostrar por pantalla "y hundido"
-* **stillShootsRemaining** Método informativo que indica si algún jugador tiene aún disparos disponibles
-* **resolveDraw** Deshace el empate en caso de que las naves a flote de cada jugador sean diferentes
+* **setupGame** Se encarga de generar los jugadores. Se apoya en `data.js`, `board.js` y `utils.js`. Registra las coordenadas de cada barco.
+    **shipsToPlayers** Añade los barcos basándose en la clase a cada jugador.
+    **playerShips** Coloca los barcos de cada jugador y almacena sus posiciones con la función placeShips.
+    **placeShips** Dibuja los barcos de cada jugador en el tablero de juego. Se apoya en las siguientes funciones:
+        **place** Dibuja el barco en el tablero de cada jugador.
+        **ramdonCoords** Devuelve una coordenada aleatoria del tablero.
+        **testCoord** Comprueba que la coordenada otenida en ramdonCoords, donde será colocado el barco, está libre. Llamará a jorozontalDraw o verticalDraw segúnel resultado de paridad.
+        **paridad** Decide si el barco irá en posición horizontal o vertical.
+        **freeSpace** Comprueba que no existen posiciones guardadas en el registro de posiciones de barcos del jugador.
+        **passValue** Devuelve pass para determinar si pasa o no el test pass para colocar el barco.
+        **horizontal / horizontalDraw** Se encargan de gestionar la ubicación horizontal del barco, dibujarlo y añadir las posicoines del mismo al registro de posiciones de los barcos.
+        **varical / verticalDraw** Se encargan de gestionar la ubicación vertical del barco, dibujarlo y añadir las posicoines del mismo al registro de posiciones de los barcos.
 
-LOS MÍOS
+
+* **start** Se apoya en `data.js`, `board.js` y `utils.js` principalmente, aunque también usa `printers.js` para los textos de título. Se encarga de iniciar la mecánica del juego. Muestra los textos iniciales de partida y controla la supervivencia de cada jugador:
+    * **paying** Controla la mecánica de cada ronda. Llama a `toPlay()` para realizar un disparo de un jugador para luego llamar a `toDecide()` para cambiar de jugador y que éste juegue.
+    * **toPlay** Llamando a la función de `playerRound()` y controlando la presentación de datos en pantalla tras las rondas de cada jugador.
+    * **playerRound** Controla cada ronda del jugador devolviendo si el contrario ha sobrevivido al disparo y repitiendo el disparo si éste ha impactado.
+    * **toShoot** Obtiene un valor aleatori para x e y y los guarda en un array [x, y], que es la coordenada del diparo de la variable shootCoord.
+    * **toTestLog** Comprueba que el disparo no se ha relizado anteriormente devolviendo el valor de la variable find.
+    * **toSeeEnemyGrid** "Mira" en el tablero enemigo. Si en la coordenada shootCoord (recibida como parámetro) la casilla está vacía, dibuja "agua" y si contiene un barco, dibuja "tocado".
+    * **showShootResults** Se encarga de escribir en los tableros correspondientes el resultado del disparo.
+    * **manageResults** Maneja el resultado del disparo.
+    * **touchedAndSunk** Muestra un mensaje indicando el nombre del barco que ha sido impactado y hundido.
+    * **toDecide** Cambia la función de cada jugador si su turno ha terminado, pasando éste de "shooter" a "enemy" y viceversa.
 
 
+### data.js
 
-**placeShips** Dibuja los barcos de cada jugador en el tablero de juego. Se apoya en las siguientes funciones:
-* **ramdonCoords** Devuelve una coordenada aleatoria del tablero.
-* **testCoord** Comprueba que la coordenada otenida en ramdonCoords, donde será colocado el barco, está libre.
-* **place** Dibuja el barco en el tablero de cada jugador.
-
-### player.js
-
-Módulo que nos exporta una única función y ésta se encara de devolvernos un nuevo jugador. Las propiedades de este nuevo jugador son: identificadores (nombre); tableros (propio y contrario); contadores (disparos hechos, celdas de barcos enemigos); barcos propios y celdas disponibles (todas las celdas disponibles y las priorizadas). Los métodos son:
-
-* **setupPlayer** Necesita un parámetro de barcos disponibles para colocarlos en el tablero. La colocación la delega a una función de `board.js`. Inicializa también variables en función de los barcos disponibles.
-* **getEnemyCoordinate** Acepta un modo de juego, de forma que si no se quiere que sea inteligente, devuelve una coordenada al azar, sino devuelve una coordenada enemiga priorizando mirar primero en la propiedad de posibles candidatos y si no los hay, entonces devolver una coordenada al azar. Se incrementa el número de disparos también
-* **updateBoardCell** Actualiza la celda de un tablero y si es el tablero enemigo entonces actualiza el listado de las celdas candidatas 
-* **getCellStatus** Devuelve el estado de una casilla de un tablero
-* **generateCandidates** Devolverá un listado de casillas disponibles según el disparo hecho, siendo las posibilidades de partida norte, sur, este, oeste de la casilla en cuestión. Posteriormente se filtra para asegurarnos que esa casilla está vacía según el tablero enemigo
-* **updateEnemyBoardCandidateCells** A partir de una coordenada, se generan unos candidatos. De esos candidatos, se añaden aquellos que aún no existen en el array de celdas candidatas a ser disparadas.
+Módulo con las clases PLAYER y TYPESHIP que nos exporta los jugadores y los tipos de barcos respectivamente. Las propiedades de los jugadores son: nombre, tablero, vida, disparos hechos, coordenada del disparo, coordenadas de todos los diparos y barcos hundidos.
+Tambiñen exporta un array con los tipos de resultado tras un disparo, "gua" y "tocado".
 
 ### board.js
-MIRAR
-Módulo para gestionar los tableros. Exporta 2 funciones a pesar de tener más de 2 (son de carácter interno y por eso no son exportadas).
 
-* **generateBoard** Genera un tablero que en este caso es un Array 2D
-* **placeShipsOnBoard** Coloca un listado de barcos en un tablero e informa de dónde han sido colocados (via playerShips)
-* *_placeShipOnBoard_* Coloca un barco en un tablero y devuelve las coordenadas. En un bucle infinito, genera las coordenadas, luego comprueba si todas las celdas que ocuparía ese barco están disponibles y si no lo están permanece en el bucle, mientras que si están disponibles, entonces coloca el barco y sale del bucle.
-* *_canBePlaced_* Comprueba si todas las celdas donde colocar el barco están vacías, respetando los bordes del tablero. Un barco se puede colocar en una coordenada si desde esa coordenada, hasta x casillas, determinadas por el barco (en sentido vertical u horizontal)
-* *_registerShipOnBoard_* Modifica las celdas del tablero según el barco y las coordenadas
-* *_getMaximumsColAndRow_* Función auxiliar que devuelve los límites al comprobar si un barco cabe o no en el tablero.
+Módulo para gestionar los tableros. También exporta la "casilla vacía" y el tamaño del tablero.
 
-### showGame.js
-MOSTRAR
-Módulo que exporta una única función que es la responsable de mostrar la ejecución del juego. Se apoya en `utils/printer.js` para mostrar por consola los resultados.
-
-Muestra primero los jugadores y sus barcos, luego recorre el registro de rondas y finalmente muestra el jugador vencedor, a la vez que saca también los tableros al final de la partida.
+* **create_Grid** Genera un tablero que en este caso es un Array 2D, segun el valor de la variable gridSize.
 
 ### utils/printer.js
 
-Módulo auxiliar que agrupa los mensajes en console.* según si son de tablero (console.table), o si son mensajes de linea (console.log)
+Módulo auxiliar muestra los textos y tableros en pantalla:
+    **printHeading** Imprime en pantalla los títilos de juego.
+    **printLine** Imprime una línea.
+    **print_Grid** Dibuja el tablero de cada jugador en función de si es el shooter (lo muestra completo) o si es enemy (muestra sólo el resultado de los disparos).
+    **create_Headers** Función que genera las cabeceras de las columnas y transforma los números en letras.
 
-### utils/functions.js
-
-Módulo auxiliar para generar números aleatorios, sacar un elemento de un array de forma aleatoria o convertir de número a letra para las coordenadas, así como convertir de un número a una coordenada o de coordenada a número.
-
-### data/ships.js
-
-Módulo que contiene los diferentes barcos
-
-### data/settings.js
-
-Módulo de configuración con dimensiones del tablero, casillas, número de jugadores, barcos disponibles...
+### utils/indexFunctions.js
+    Exporta las funciones setUpGame y theGame que emplea el módulo principal index.js.
 
 
-/*
-Battleship
-Battleship es un juego clásico de hundir la flota, donde dos jugadores se enfrentan en un tablero con barcos ocultos. El objetivo es adivinar las posiciones de los barcos del oponente y hundirlos antes de que él hunda los tuyos.
+### utils/utils.js
 
-Este script de javascript te permite jugar a battleship en la terminal usando node. Puedes elegir el número de disparos que tienes por turno, así como el tamaño del tablero y el número y tipo de barcos.
-
-Cómo iniciar el script
-Para iniciar el script, necesitas tener instalado node en tu ordenador. Luego, abre la terminal y navega hasta la carpeta donde está el script. Ejecuta el siguiente comando:
-
-node index.js
-Copiar
-El script te pedirá que introduzcas el número de disparos por turno, el tamaño del tablero y el número y tipo de barcos. Después, se iniciará el juego y podrás ver tu tablero y el del oponente. Para disparar, introduce las coordenadas en formato fila-columna, por ejemplo A1 o C5. El script te indicará si has acertado o fallado, y actualizará los tableros. El juego termina cuando uno de los jugadores hunde todos los barcos del otro.
-
-Descripción de las funciones
-El script contiene las siguientes funciones:
-
-NOMBRE_FUNCION1: Esta función se encarga de crear el tablero vacío con el tamaño indicado por el usuario. Devuelve una matriz bidimensional con los valores " " (espacio en blanco) para representar las casillas vacías.
-NOMBRE_FUNCION2: Esta función se encarga de colocar los barcos en el tablero de forma aleatoria. Recibe como parámetros la matriz del tablero, el número y tipo de barcos, y un booleano que indica si es el tablero del jugador o del oponente. Devuelve la matriz del tablero con los valores “B” para representar las casillas con barcos.
-NOMBRE_FUNCION3: Esta función se encarga de mostrar los tableros en la terminal. Recibe como parámetros las matrices de los tableros del jugador y del oponente. Imprime en la terminal los tableros con los valores " " para las casillas vacías, “B” para las casillas con barcos (solo en el tablero del jugador), “X” para las casillas con barcos hundidos y “O” para las casillas falladas.
-NOMBRE_FUNCION4: Esta función se encarga de validar la entrada del usuario al disparar. Recibe como parámetro la cadena introducida por el usuario. Comprueba que la cadena tenga dos caracteres, que el primero sea una letra mayúscula entre A y la última letra del alfabeto según el tamaño del tablero, y que el segundo sea un número entre 1 y el tamaño del tablero. Devuelve un booleano que indica si la entrada es válida o no.
-NOMBRE_FUNCION5: Esta función se encarga de disparar al tablero del oponente. Recibe como parámetros la cadena introducida por el usuario, la matriz del tablero del oponente y el número de disparos restantes. Convierte la cadena en coordenadas numéricas y comprueba si hay un barco en esa casilla. Si hay un barco, cambia el valor de la casilla a “X” y resta uno al número de disparos restantes. Si no hay un barco, cambia el valor de la casilla a “O”. Devuelve la matriz del tablero del oponente modificada y el número de disparos restantes actualizado.
-
-NOMBRE_FUNCION6: Esta función se encarga de disparar al tablero del jugador. Recibe como parámetros la matriz del tablero del jugador y el número de disparos por turno. Genera coordenadas aleatorias y comprueba si hay un barco en esa casilla. Si hay un barco, cambia el valor de la casilla a “X” y resta uno al número de disparos por turno. Si no hay un barco, cambia el valor de la casilla a “O”. Repite este proceso hasta que se agoten los disparos por turno o se hundan todos los barcos del jugador. Devuelve la matriz del tablero del jugador modificada.
-*/
+    Módulo auxiliar para generar los títulos, números aleatorios, ver si un jugador ha sobrevivido al disparo, mostrar al ganador y mostrar los tableros finales tras la batalla.

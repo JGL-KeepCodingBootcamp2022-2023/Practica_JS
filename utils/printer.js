@@ -1,6 +1,6 @@
-import * as board from './board.js';
-import { LANCHA, CRUCERO, SUBMARINO, BUQUE, PORTAAVIONES } from './data.js';
-import { EMPTY } from './board.js';
+
+import { LANCHA, CRUCERO, SUBMARINO, BUQUE, PORTAAVIONES } from '../data/data.js';
+import { EMPTY } from '../board/board.js';
 
 export default function usePrinter() {
     const LINEAINFERIOR = [

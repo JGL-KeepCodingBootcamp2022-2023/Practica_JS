@@ -10,11 +10,11 @@ import {
     BUQUE,
     PORTAAVIONES,
     FIGURES,
-} from './data.js';
-import * as board from './board.js';
-import { gridSize, EMPTY, playerAGrid, playerBGrid } from './board.js';
-import usePrinter from './printer.js';
-import { random, toDead, toWin } from './utils.js';
+} from './data/data.js';
+import * as board from './board/board.js';
+import { gridSize, EMPTY } from './board/board.js';
+import usePrinter from './utils/printer.js';
+import { random, toDead } from './utils/utils.js';
 const { printHeading, printLine, print_Grid } = usePrinter();
 
 export default {
@@ -352,14 +352,14 @@ export default {
 
                 console.log();
                 console.log(
-                    `The ship '${shipFound}' has been sunk. Well done!!`
+                    `TOUCHED AND SUNK! The ship '${shipFound}' has been sunk. Well done!!`
                 );
             }
         },
 
         showShootResults(shootCoord, find) {
             // Return Water if it misses or Touch if it hits an enemy ship.
-            
+
             let icon;
             let finding = this.enemy.positions.findIndex(
                 (el) => el[0] === shootCoord[0] && el[1] === shootCoord[1]
@@ -435,7 +435,6 @@ export default {
                     do {
                         shootCoord = this.toShoot();
                         finding = this.toTestLog(this.shooter, shootCoord);
-
                     } while (finding != -1);
                     //Show player's remaining shoots
                     console.log(
@@ -541,7 +540,6 @@ export default {
 
                 dead = this.playing(dead, turn, shootsNumber);
                 round++;
-
             } while (dead === false);
         },
     },

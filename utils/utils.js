@@ -1,7 +1,6 @@
 import usePrinter from './printer.js';
 const { printHeading, printLine, print_Grid } = usePrinter();
-import { playerA, playerB } from './data.js';
-import { gridSize } from './board.js';
+import { playerA, playerB } from '../data/data.js';
 
 export const random = (min, max) => {
     return Math.floor(Math.random() * (max - min + 1) + min);
@@ -16,7 +15,7 @@ export const printTitle = (tittle) => {
 
 export const toDead = (shootsNumber) => {
     let dead;
-    if (playerA.shoots == shootsNumber|| playerB.shoots == shootsNumber) {
+    if (playerA.shoots == shootsNumber || playerB.shoots == shootsNumber) {
         dead = true;
     } else {
         playerA.life <= 0 || playerB.life <= 0 ? (dead = true) : (dead = false);
@@ -55,7 +54,6 @@ export const toWin = (gridSize) => {
 };
 
 export const showResults = () => {
-
     let shipsAfloatA = playerA.ships.length - playerA.sunkenShips;
     let shipsAfloatB = playerB.ships.length - playerB.sunkenShips;
     if (playerA.life > 0 || playerB.life > 0) {

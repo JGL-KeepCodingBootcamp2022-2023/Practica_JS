@@ -1,19 +1,11 @@
 //IMPORTS
-import usePrinter from './printer.js';
-const { printHeading, printLine, print_Grid } = usePrinter();
-import game from './game.js';
-import {
-    playerA,
-    playerB,
-    LANCHA,
-    CRUCERO,
-    SUBMARINO,
-    BUQUE,
-    PORTAAVIONES,
-} from './data.js';
-import { EMPTY, gridSize, playerAGrid, playerBGrid } from './board.js';
-import { setUpGame, theGame } from './indexFunctions.js';
-import { printTitle, showResults, toWin } from './utils.js';
+import usePrinter from './utils/printer.js';
+const { printHeading } = usePrinter();
+
+import { playerA, playerB } from './data/data.js';
+import { gridSize, playerAGrid, playerBGrid } from './board/board.js';
+import { setUpGame, theGame } from './utils/indexFunctions.js';
+import { printTitle, showResults, toWin } from './utils/utils.js';
 
 //TITTLE
 printTitle('THE BATTTLESHIP SIMULATOR');
@@ -33,3 +25,5 @@ printHeading(`THE WINNER IS: ${toWin(gridSize)}!!!`);
 
 //SHOW FINAL RESULTS
 showResults();
+
+printHeading('Thank you for playing BATTTLESHIP SIMULATOR');

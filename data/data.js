@@ -1,4 +1,4 @@
-import { playerAGrid, playerBGrid } from './board.js';
+import { playerAGrid, playerBGrid } from '../board/board.js';
 
 class PLAYER {
     constructor(name, grid, life, shoots, shootCoord, shootsLog, sunkenShips) {
